@@ -1,4 +1,3 @@
-
 # Minishell
 
 42Malaga Cursus team exercise.
@@ -39,7 +38,9 @@ The program has been tested against following tests:
 
 ## Contributors
 
-[anramire](https://profile.intra.42.fr/users/anramire)
-[jseijo-p](https://profile.intra.42.fr/users/jseijo-p)
+- [anramire](https://profile.intra.42.fr/users/anramire)
+- [jseijo-p](https://profile.intra.42.fr/users/jseijo-p)
 
-[git@github.com:kikoseijo/minishell.git]Repository
+## Public Repository
+
+- [Repository](git@github.com:kikoseijo/minishell.git)
