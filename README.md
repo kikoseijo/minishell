@@ -1,6 +1,7 @@
 # Minishell
 
 This project is about creating a simple shell. For the 42 Malaga School Cursus, as a team exercise.
+In this project we learn a lot about processes and file descriptors.
 
 ## Requirements
 

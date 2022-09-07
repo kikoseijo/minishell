@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/07 11:29:37 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/07 16:47:21 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,30 @@ void print()
 
 }
 
-void execute()
+void execute(t_command *cmd)
 {
-
+	int ret;
+	for ( int i = 0; i < cmd->_numberOfSimpleCommands; i++ )
+	{
+		ret = fork();
+		if (ret == 0) {
+			//child
+			execvp(sCom[i]­>_args[0], sCom[i]­>_args);
+			perror(“execvp”);
+			_exit(1);
+		}
+		else if (ret < 0)
+		{
+			perror(“fork”);
+			return;
+		}
+		// Parent shell continue
+	} // for
+	if (!background)
+	{
+		// wait for last process
+		waitpid(ret, NULL);
+	}
 }
 
 void clear()
