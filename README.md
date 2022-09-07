@@ -11,7 +11,7 @@ Any linux based distro as Mac or Linux.
 
 ```
 $ make
-$ ./minishelld
+$ ./minishell
 ```
 
 ## Contributors
