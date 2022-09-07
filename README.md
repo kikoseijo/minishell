@@ -14,6 +14,20 @@ $ make
 $ ./minishell
 ```
 
+## Norminette
+
+Check the Norminette norme errors using the Makefile by running:
+
+```
+$ make norme
+```
+
+## Tests
+
+The program has been tested against following tests:
+
+- [#] Test 1
+
 ## Contributors
 
 [https://profile.intra.42.fr/users/anramire]anramire
