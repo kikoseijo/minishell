@@ -35,11 +35,11 @@ The program has been tested against following tests:
 ## References
 
 - https://harm-smits.github.io/42docs/projects/minishell
-- 
+-
 
 ## Contributors
 
-[https://profile.intra.42.fr/users/anramire](anramire)
-[https://profile.intra.42.fr/users/jseijo-p](jseijo-p)
+[anramire](https://profile.intra.42.fr/users/anramire)
+[jseijo-p](https://profile.intra.42.fr/users/jseijo-p)
 
 [git@github.com:kikoseijo/minishell.git]Repository
