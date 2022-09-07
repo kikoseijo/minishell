@@ -27,20 +27,19 @@ $ make norme
 
 The program has been tested against following tests:
 
-- [] Test 1
-- [] Test 1
-- [x] Test 1
+- [ ] Test 1
+- [ ] Test 2
+- [x] Test 3
 
 ## References
 
 - https://harm-smits.github.io/42docs/projects/minishell
--
 
 ## Contributors
 
-- [anramire](https://profile.intra.42.fr/users/anramire)
-- [jseijo-p](https://profile.intra.42.fr/users/jseijo-p)
+- [anramire](https://profile.intra.42.fr/users/anramire) Andrés Ramírez
+- [jseijo-p](https://profile.intra.42.fr/users/jseijo-p) Kiko Seijo
 
-## Public Repository
+## Public Repo
 
-- [Repository](git@github.com:kikoseijo/minishell.git)
+- [Github Repository](git@github.com:kikoseijo/minishell.git)
