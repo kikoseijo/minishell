@@ -1,8 +1,6 @@
 # Minishell
 
-42Malaga Cursus team exercise.
-
-Write a `C` Program that behaves like a shell.
+This project is about creating a simple shell. For the 42 Malaga School Cursus, as a team exercise.
 
 ## Requirements
 
@@ -17,7 +15,7 @@ $ ./minishell
 
 ## Norminette
 
-Check the Norminette norme errors using the Makefile by running:
+Convenient check using the Norminette to check for norm errors using the Makefile by running:
 
 ```
 $ make norme
@@ -34,6 +32,7 @@ The program has been tested against following tests:
 ## References
 
 - https://harm-smits.github.io/42docs/projects/minishell
+
 
 ## Contributors
 

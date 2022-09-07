@@ -6,7 +6,7 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/09/07 09:00:15 by jseijo-p         ###   ########.fr        #
+#    Updated: 2022/09/07 11:30:23 by jseijo-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 FLAGS = -Wall -Wextra -Werror -g -Og
 
-SRC = src/minishell.c src/parser.c
+SRC = src/minishell.c src/parser.c src/command.c
 # SRC_BONUS = pipex_bonus.c helpers.c
 
 OBJ = $(SRC:.c=.o)
