@@ -55,7 +55,9 @@ typedef struct s_simple_command {
 	size_t	num_args;//without null
 	char **fd_simple_in;//input
 	char **fd_simple_out;//output
-	char **fd_doble_out;//double output
+	size_t	num_simple_out;//Number of simple outputs
+	char **fd_double_out;//double output
+	size_t num_double_out;//Number of double outputs
 	char *heredoc_close; //heredoc
 	int	pipe; //True or false
 	char *error;
@@ -73,5 +75,8 @@ void	parser_command(char *str);
 
 char *clean_white_spaces(char *str);
 int get_arguments_with_quotes(t_simple_command *command, char *str, int pos, int *num_argument);
+void	show_list(model *command_line);//Helper function to show list
+void	init_command(t_simple_command **);//Function to init the simple_command
+int	get_output_file(t_simple_command *command, char *str, int pos);//Insert files
 
 #endif
