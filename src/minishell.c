@@ -28,6 +28,13 @@
 
 int main(int argc, char **argv, char **envp)
 {
-	parser(argc, argv, envp);
+	
+	char *str;
+	while(1)
+	{
+		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
+
+		parser_command(str);
+	}
 	return(0);
 }

@@ -14,7 +14,7 @@ NAME = minishell
 
 FLAGS = -Wall -Wextra -Werror -g -Og
 
-SRC = src/minishell.c src/parser.c src/command.c
+SRC = src/minishell.c src/parser.c src/parser_utils.c
 # SRC_BONUS = pipex_bonus.c helpers.c
 
 OBJ = $(SRC:.c=.o)
@@ -26,7 +26,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(FLAGS) -I libft $(OBJ) ./libft/libft.a -o $(NAME)
+	$(CC) $(FLAGS) -I libft $(OBJ) ./libft/libft.a -lreadline -lncurses -o $(NAME)
 
 clean:
 	$(MAKE) -C libft fclean
