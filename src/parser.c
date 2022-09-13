@@ -19,7 +19,6 @@ void	parser_command(char *str) {
 	model *command_line;
 	char *str_aux;
 	int i;
-	int n;
 
 	command_line = (model *)malloc(sizeof(model));
 	command_line->num_commands = 0;
@@ -30,18 +29,10 @@ void	parser_command(char *str) {
 	{
 		str_aux = get_command(str_aux, &(command_line->commands[command_line->num_commands]));
 		command_line->num_commands++;
+
 	}
 	
-	n = 0;
-	while(n < (command_line->num_commands)){
-	i = 0;
-		ft_printf("command: %s\n", command_line->commands[n]->command);
-	while(command_line->commands[n]->args[i] != NULL){
-			ft_printf("args[%d]: %s\n", i, command_line->commands[n]->args[i]);
-			i++;
-		}
-		n++;
-	}
+	show_list(command_line);
 }
 
 char	*get_command(char *str, t_simple_command **new_command) 
@@ -52,22 +43,44 @@ char	*get_command(char *str, t_simple_command **new_command)
 	int arg_found = 0;
 	int pos;
 	char *str_aux;
-
-	*new_command = (t_simple_command *)malloc(sizeof(t_simple_command));
-	(*new_command)->command = (char *)malloc(sizeof(char));
-	(*new_command)->command[0] = '\0';
-	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
-	(*new_command)->pipe = 0;
+	int ht_number;//Higher than number
+				  
+	init_command(new_command);
 	str_aux = clean_white_spaces(str);
+	if((str_aux[0] == ';') || (str_aux[0] == ';'))
+		str_aux = clean_white_spaces(str);
 	
 	while(str_aux[i] != '\0')
 	{
+		if(str_aux[i] == '>')
+		{
+			ht_number = 0;
+			while(str_aux[i] == '>')
+			{
+				ht_number++;
+				i++;
+			}
+			if(ht_number == 1)
+			{
+				i = get_output_file(*new_command, str_aux, i + 1);
+				continue;
+			}
+			else if(ht_number == 2)
+			{
+
+			}else{
+				//Error
+				return NULL;
+			}
+
+		}
+
 		if(str_aux[i] == '|')
 		{	
 			(*new_command)->pipe = 1;
 			break;
 		}
-		if(str_aux[i] == ';' && command_found == 1)
+		if(str_aux[i] == ';')
 			break;
 		if(str_aux[i] == '"')
 		{
@@ -114,7 +127,9 @@ char	*get_command(char *str, t_simple_command **new_command)
 			printf("args[%d]: %s\n",i, new_command->args[i]);
 			i++;
 		}*/
-	return ft_substr_modified(str_aux, pos);
+	char *new_str;
+	new_str = ft_substr_modified(str_aux, pos);
+	return new_str;
 }
 
 char *ft_substr_modified(char *str, int pos){
@@ -125,7 +140,7 @@ char *ft_substr_modified(char *str, int pos){
 	
 	i = pos;
 	len = 0;
-	if(str[pos] == '\0')
+	if(str[pos] == '\0' || str[pos - 1] == '\0')
 		return NULL;
 	while(str[pos] != '\0'){
 		len++;
