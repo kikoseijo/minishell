@@ -6,23 +6,23 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/07/05 21:35:46 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/14 16:45:52 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char *ft_substr_modified(char *str, int pos);
+char	*ft_substr_modified(char *str, int pos);
 char	*get_command(char *str, t_simple_command **new_command);
 
 void	parser_command(char *str) {
-	model *command_line;
+	t_model *command_line;
 	char *str_aux;
-	int i;
+	// int i;
 
-	command_line = (model *)malloc(sizeof(model));
+	command_line = (t_model *)malloc(sizeof(t_model));
 	command_line->num_commands = 0;
-	command_line->commands = (t_simple_command **)malloc(100 * sizeof(t_simple_command *));
+	command_line->commands = (t_simple_command **) malloc(100 * sizeof(t_simple_command *));
 	str_aux = get_command(str, (&command_line->commands[command_line->num_commands]));
 	command_line->num_commands++;
 	while(str_aux)
@@ -31,11 +31,11 @@ void	parser_command(char *str) {
 		command_line->num_commands++;
 
 	}
-	
+
 	show_list(command_line);
 }
 
-char	*get_command(char *str, t_simple_command **new_command) 
+char	*get_command(char *str, t_simple_command **new_command)
 {
 	int i = 0;
 	int command_found = 0;
@@ -44,12 +44,12 @@ char	*get_command(char *str, t_simple_command **new_command)
 	int pos;
 	char *str_aux;
 	int ht_number;//Higher than number
-				  
+
 	init_command(new_command);
 	str_aux = clean_white_spaces(str);
 	if((str_aux[0] == ';') || (str_aux[0] == ';'))
 		str_aux = clean_white_spaces(str);
-	
+
 	while(str_aux[i] != '\0')
 	{
 		if(str_aux[i] == '>')
@@ -76,7 +76,7 @@ char	*get_command(char *str, t_simple_command **new_command)
 		}
 
 		if(str_aux[i] == '|')
-		{	
+		{
 			(*new_command)->pipe = 1;
 			break;
 		}
@@ -102,7 +102,7 @@ char	*get_command(char *str, t_simple_command **new_command)
 		{
 			if(arg_found == 0){
 				num_argument++;
-				(*new_command)->args[num_argument] = (char *)malloc(sizeof(char));	
+				(*new_command)->args[num_argument] = (char *)malloc(sizeof(char));
 				(*new_command)->args[num_argument][0] = '\0';
 				arg_found = 1;
 			}
@@ -113,11 +113,11 @@ char	*get_command(char *str, t_simple_command **new_command)
 				arg_found = 0;
 			}
 		}
-		
+
 		i++;
 	}
 	pos = i + 1;
-	
+
 	(*new_command)->args[num_argument + 1] = NULL;
 
 
@@ -133,11 +133,11 @@ char	*get_command(char *str, t_simple_command **new_command)
 }
 
 char *ft_substr_modified(char *str, int pos){
-	
+
 	char *str_aux;
 	int len;
 	int i;
-	
+
 	i = pos;
 	len = 0;
 	if(str[pos] == '\0' || str[pos - 1] == '\0')
