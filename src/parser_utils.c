@@ -47,7 +47,7 @@ int get_arguments_with_quotes(t_simple_command *command, char *str, int pos, int
 
 //Function to show list of commands
 
-void	show_list(model *command_line){
+void	show_list(t_model *command_line){
 	
 	int	i;
 	int	n;
@@ -89,7 +89,6 @@ int	get_output_file(t_simple_command *command, char *str, int pos)
 	int end;
 	char *file;
 	int i;
-
 	end = pos;
 	while(str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;

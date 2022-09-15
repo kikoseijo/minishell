@@ -13,21 +13,30 @@
 #include "../inc/minishell.h"
 
 char	*ft_substr_modified(char *str, int pos);
-char	*get_command(char *str, t_simple_command **new_command);
+char	*get_command(char *str, t_simple_command **new_command, int *err);
 
 void	parser_command(char *str) {
 	t_model *command_line;
 	char *str_aux;
+	int error;
 	// int i;
 
 	command_line = (t_model *)malloc(sizeof(t_model));
 	command_line->num_commands = 0;
 	command_line->commands = (t_simple_command **) malloc(100 * sizeof(t_simple_command *));
-	str_aux = get_command(str, (&command_line->commands[command_line->num_commands]));
+	str_aux = get_command(str, (&command_line->commands[command_line->num_commands]), &error);
+	if(error == -1){
+		ft_printf("Error: Bad command syntax!!!\n");
+		return;
+	}
 	command_line->num_commands++;
 	while(str_aux)
 	{
-		str_aux = get_command(str_aux, &(command_line->commands[command_line->num_commands]));
+		str_aux = get_command(str_aux, &(command_line->commands[command_line->num_commands]), &error);
+		if(error == -1){
+			ft_printf("Error: Bad command syntax!!!\n");
+			return;
+		}
 		command_line->num_commands++;
 
 	}
@@ -35,7 +44,7 @@ void	parser_command(char *str) {
 	show_list(command_line);
 }
 
-char	*get_command(char *str, t_simple_command **new_command)
+char	*get_command(char *str, t_simple_command **new_command, int *err)
 {
 	int i = 0;
 	int command_found = 0;
@@ -60,9 +69,18 @@ char	*get_command(char *str, t_simple_command **new_command)
 				ht_number++;
 				i++;
 			}
+			while(str_aux[i] == ' ')
+				i++;
 			if(ht_number == 1)
 			{
-				i = get_output_file(*new_command, str_aux, i + 1);
+				if(!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A') 
+							&& (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9') && str_aux[i] !='\\')
+				{
+					ft_printf("char: %c\n", str_aux[i]);
+					(*err) = -1;
+					return NULL;
+				}
+				i = get_output_file(*new_command, str_aux, i);
 				continue;
 			}
 			else if(ht_number == 2)
