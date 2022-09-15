@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/14 16:45:52 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/15 20:30:43 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 
 	while(str_aux[i] != '\0')
 	{
+		//Checks output
 		if(str_aux[i] == '>')
 		{
 			ht_number = 0;
@@ -95,7 +96,42 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 			}
 
 		}
+		//Checks input
 
+		if(str_aux[i] == '<')
+		{
+			ht_number = 0;
+			while(str_aux[i] == '<')
+			{
+				ht_number++;
+				i++;
+			}
+			while(str_aux[i] == ' ')
+				i++;
+			if(!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A') 
+				&& (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9') 
+				&& str_aux[i] !='\\')
+				{
+					ft_printf("char: %c\n", str_aux[i]);
+					(*err) = -1;
+					return NULL;
+				}
+			if(ht_number == 1)
+			{
+
+				i = get_input_file(*new_command, str_aux, i);
+				continue;
+			}
+			else if(ht_number == 2)
+			{
+				continue;
+			}else{
+				*err = -1;
+				return NULL;
+			}
+
+		}
+		//-------------------
 		if(str_aux[i] == '|')
 		{
 			(*new_command)->pipe = 1;

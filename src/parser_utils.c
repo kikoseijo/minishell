@@ -63,13 +63,19 @@ void	show_list(t_model *command_line){
 			}
 		i = 0;
 		while(i < command_line->commands[n]->num_simple_out){
-			ft_printf("simple file[%d]: %s\n", i, command_line->commands[n]->fd_simple_out[i]);
+			ft_printf("simple output file[%d]: %s\n", i, command_line->commands[n]->fd_simple_out[i]);
 			i++;
 		}
 
 		i = 0;
 		while(i < command_line->commands[n]->num_double_out){
-			ft_printf("double file[%d]: %s\n", i, command_line->commands[n]->fd_double_out[i]);
+			ft_printf("double output file[%d]: %s\n", i, command_line->commands[n]->fd_double_out[i]);
+			i++;
+		}
+
+		i = 0;
+		while(i < command_line->commands[n]->num_simple_in){
+			ft_printf("simple input file[%d]: %s\n", i, command_line->commands[n]->fd_simple_in[i]);
 			i++;
 		}
 		ft_printf("pipe: %d\n", command_line->commands[n]->pipe);
@@ -88,6 +94,8 @@ void	init_command(t_simple_command **new_command){
 	(*new_command)->num_simple_out = 0;
 	(*new_command)->fd_double_out = (char **)malloc(100 * sizeof(char *));
 	(*new_command)->num_double_out = 0;
+	(*new_command)->fd_simple_in = (char **)malloc(100 * sizeof(char *));
+	(*new_command)->num_simple_in = 0;
 }
 
 int	get_output_file(t_simple_command *command, char *str, int pos)
