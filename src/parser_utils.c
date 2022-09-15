@@ -66,6 +66,12 @@ void	show_list(t_model *command_line){
 			ft_printf("simple file[%d]: %s\n", i, command_line->commands[n]->fd_simple_out[i]);
 			i++;
 		}
+
+		i = 0;
+		while(i < command_line->commands[n]->num_double_out){
+			ft_printf("double file[%d]: %s\n", i, command_line->commands[n]->fd_double_out[i]);
+			i++;
+		}
 		ft_printf("pipe: %d\n", command_line->commands[n]->pipe);
 		n++;
 	}
@@ -104,5 +110,30 @@ int	get_output_file(t_simple_command *command, char *str, int pos)
 	}
 	command->fd_simple_out[command->num_simple_out][i] = '\0';
 	(command->num_simple_out)++;
+	ft_printf("end: %s\n", &str[end]);
+	return end;
+}
+
+int	get_double_file(t_simple_command *command, char *str, int pos)
+{
+	int end;
+	char *file;
+	int i;
+	end = pos;
+	while(str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
+		end++;
+	command->fd_double_out[command->num_double_out] = (char *)malloc((end - pos + 1) * sizeof(char));
+	if(command->fd_double_out[command->num_double_out] == NULL)
+		return -1;
+	i = 0;
+	while(str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
+	{
+		command->fd_double_out[command->num_double_out][i] = str[pos];
+		pos++;
+		i++;
+	}
+	command->fd_double_out[command->num_double_out][i] = '\0';
+	(command->num_double_out)++;
+	ft_printf("end double: %s\n", &str[end]);
 	return end;
 }

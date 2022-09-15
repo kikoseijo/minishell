@@ -83,5 +83,6 @@ int get_arguments_with_quotes(t_simple_command *command, char *str, int pos, int
 void	show_list(t_model *command_line);//Helper function to show list
 void	init_command(t_simple_command **);//Function to init the simple_command
 int	get_output_file(t_simple_command *command, char *str, int pos);//Insert files
+int	get_double_file(t_simple_command *command, char *str, int pos);
 
 #endif

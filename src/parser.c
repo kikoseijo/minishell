@@ -71,23 +71,26 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 			}
 			while(str_aux[i] == ' ')
 				i++;
-			if(ht_number == 1)
-			{
-				if(!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A') 
-							&& (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9') && str_aux[i] !='\\')
+			if(!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A') 
+				&& (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9') 
+				&& str_aux[i] !='\\')
 				{
 					ft_printf("char: %c\n", str_aux[i]);
 					(*err) = -1;
 					return NULL;
 				}
+			if(ht_number == 1)
+			{
+
 				i = get_output_file(*new_command, str_aux, i);
 				continue;
 			}
 			else if(ht_number == 2)
 			{
-
+				i = get_double_file(*new_command, str_aux, i);
+				continue;
 			}else{
-				//Error
+				*err = -1;
 				return NULL;
 			}
 
