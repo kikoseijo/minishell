@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/15 20:24:56 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/15 21:33:06 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,12 @@ int	get_input_file(t_simple_command *command, char *str, int pos){
 	(command->num_simple_in)++;
 	ft_printf("end: %s\n", &str[end]);
 	return end;	
+}
+
+
+int	get_heredocs(t_simple_command *command, char *str, int pos){
+	
+	//TO-DO
+	return 0;
+	
 }

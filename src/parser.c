@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/15 20:30:43 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/15 21:32:30 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 			}
 			else if(ht_number == 2)
 			{
+				i = get_heredocs(*new_command, str_aux, i);
 				continue;
 			}else{
 				*err = -1;
@@ -177,13 +178,6 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 
 	(*new_command)->args[num_argument + 1] = NULL;
 
-
-	/*	printf("command: %s\n",new_command->command);
-		i = 0;
-		while(new_command->args[i] != NULL){
-			printf("args[%d]: %s\n",i, new_command->args[i]);
-			i++;
-		}*/
 	char *new_str;
 	new_str = ft_substr_modified(str_aux, pos);
 	return new_str;
