@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/14 16:42:53 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/16 07:11:28 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ void	init_command(t_simple_command **);//Function to init the simple_command
 int	get_output_file(t_simple_command *command, char *str, int pos);//Insert simple output files
 int	get_double_file(t_simple_command *command, char *str, int pos);//Insert double output files
 int	get_input_file(t_simple_command *command, char *str, int pos);//Insert simple input files
+int	get_heredocs(t_simple_command *command, char *str, int pos);
 
 #endif
