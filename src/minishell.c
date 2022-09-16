@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/07 11:57:45 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/16 07:43:45 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,20 @@
 ** tgetnum, tgetstr, tgoto, tputs
 */
 
+
+
 int main(int argc, char **argv, char **envp)
 {
-	
+	t_model *model;
 	char *str;
+
+	model = (t_model *)malloc(sizeof(t_model));
 	while(1)
 	{
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
 
-		parser_command(str);
+		parser_command(str, model);
+
 	}
 	return(0);
 }

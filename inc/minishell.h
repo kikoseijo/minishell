@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/16 07:11:28 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/16 07:44:11 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int parser(int argc, char **argv, char **envp);
 #include <stdlib.h>
 
 #include <sys/wait.h>
+#include <fcntl.h>
 
 #include "../libft/inc/libft.h"
 
@@ -72,9 +73,10 @@ typedef struct s_model
 	t_simple_command **commands;
 	int num_commands;
 	int background;
+	const char* infile;
 } t_model;
 
-void	parser_command(char *str);
+void	parser_command(char *str, t_model *model);
 
 //Utilities functions
 

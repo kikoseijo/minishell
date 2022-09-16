@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/15 21:32:30 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/16 07:44:30 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,32 @@
 char	*ft_substr_modified(char *str, int pos);
 char	*get_command(char *str, t_simple_command **new_command, int *err);
 
-void	parser_command(char *str) {
-	t_model *command_line;
+void	parser_command(char *str, t_model *model)
+{
 	char *str_aux;
 	int error;
 	// int i;
 
-	command_line = (t_model *)malloc(sizeof(t_model));
-	command_line->num_commands = 0;
-	command_line->commands = (t_simple_command **) malloc(100 * sizeof(t_simple_command *));
-	str_aux = get_command(str, (&command_line->commands[command_line->num_commands]), &error);
+	model->num_commands = 0;
+	model->commands = (t_simple_command **) malloc(100 * sizeof(t_simple_command *));
+	str_aux = get_command(str, (&model->commands[model->num_commands]), &error);
 	if(error == -1){
 		ft_printf("Error: Bad command syntax!!!\n");
 		return;
 	}
-	command_line->num_commands++;
+	model->num_commands++;
 	while(str_aux)
 	{
-		str_aux = get_command(str_aux, &(command_line->commands[command_line->num_commands]), &error);
+		str_aux = get_command(str_aux, &(model->commands[model->num_commands]), &error);
 		if(error == -1){
 			ft_printf("Error: Bad command syntax!!!\n");
 			return;
 		}
-		command_line->num_commands++;
+		model->num_commands++;
 
 	}
 
-	show_list(command_line);
+	show_list(model);
 }
 
 char	*get_command(char *str, t_simple_command **new_command, int *err)
@@ -72,8 +71,8 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 			}
 			while(str_aux[i] == ' ')
 				i++;
-			if(!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A') 
-				&& (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9') 
+			if(!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A')
+				&& (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9')
 				&& str_aux[i] !='\\')
 				{
 					ft_printf("char: %c\n", str_aux[i]);
@@ -108,8 +107,8 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 			}
 			while(str_aux[i] == ' ')
 				i++;
-			if(!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A') 
-				&& (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9') 
+			if(!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A')
+				&& (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9')
 				&& str_aux[i] !='\\')
 				{
 					ft_printf("char: %c\n", str_aux[i]);
