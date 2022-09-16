@@ -34,9 +34,9 @@ int get_arguments_with_quotes(t_simple_command *command, char *str, int pos, int
 {
 	(*num_argument)++;
 	pos++;
-	command->args[*num_argument] = (char *)malloc(sizeof(char));	
+	command->args[*num_argument] = (char *)malloc(sizeof(char));
 	command->args[*num_argument][0] = '\0';
-	
+
 	while(str[pos] != '"'){
 		command->args[*num_argument] = ft_concat_char(command->args[*num_argument], str[pos]);
 		pos++;
@@ -48,10 +48,11 @@ int get_arguments_with_quotes(t_simple_command *command, char *str, int pos, int
 //Function to show list of commands
 
 void	show_list(t_model *command_line){
-	
+
 	int	i;
 	int	n;
 
+	ft_printf("N. pipes: %d\n", command_line->num_commands);
 	n = 0;
 	while(n < (command_line->num_commands)){
 	i = 0;
