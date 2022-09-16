@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/16 07:44:11 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/16 07:50:00 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,13 @@ typedef struct s_model
 	int num_commands;
 	int background;
 	const char* infile;
+	char	**env_paths;
 } t_model;
 
 void	parser_command(char *str, t_model *model);
+void execute(t_model *model, char **envp);
 
 //Utilities functions
-
 
 char *clean_white_spaces(char *str);
 int get_arguments_with_quotes(t_simple_command *command, char *str, int pos, int *num_argument);

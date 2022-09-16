@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/16 07:43:45 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/16 07:50:37 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@
 ** tgetnum, tgetstr, tgoto, tputs
 */
 
-
+static char	*get_env_path(char **envp)
+{
+	while (ft_strncmp("PATH", *envp, 4))
+		envp++;
+	return (*envp + 5);
+}
 
 int main(int argc, char **argv, char **envp)
 {
@@ -34,12 +39,12 @@ int main(int argc, char **argv, char **envp)
 	char *str;
 
 	model = (t_model *)malloc(sizeof(t_model));
+	model->env_paths = ft_split(get_env_path(envp), ':');
 	while(1)
 	{
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
-
 		parser_command(str, model);
-
+		execute(model, envp);
 	}
 	return(0);
 }
