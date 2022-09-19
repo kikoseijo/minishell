@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/16 07:44:30 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/19 19:57:01 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,16 +143,6 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 		{
 			i = get_arguments_with_quotes(*new_command, str_aux, i, &num_argument);
 			continue;
-		}
-
-		if(str_aux[i] != ' ' && command_found == 0)
-		{
-			(*new_command)->command = ft_concat_char((*new_command)->command, str_aux[i]);
-			i++;
-			continue;
-		}
-		else {
-			command_found = 1;
 		}
 
 		if(str_aux[i] != ' ' && (str_aux[i] != '\0'))

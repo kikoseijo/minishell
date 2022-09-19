@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/16 08:31:16 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/19 20:05:03 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void execute(t_model *model, char **envp)
 			perror("execve");
 			exit(1);
 		}
+		i++;
 	}
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
@@ -153,7 +154,7 @@ void execute_simple_DEPRECATED(t_model *model)
 		if (ret == 0) {
 			//child
 
-			execvp(model->commands[i]->command, model->commands[i]->args);
+			execvp(model->commands[i]->args[0], model->commands[i]->args);
 			perror("execvp");
 			_exit(1);
 		}
