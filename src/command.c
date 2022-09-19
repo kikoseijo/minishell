@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
 /*   Updated: 2022/09/19 20:05:03 by anramire         ###   ########.fr       */
@@ -11,42 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-/*
-** SimpleCommand/s
-*/
-
-
-
-void simple_command()
-{
-	// constructs a simple empty command
-}
-
-/*
-** 	inserts a new argument into the simple_command and enlarges
-** 	the _arguments array if necessary.
-** 	It also makes sure that the last element is NULL
-** 	since that is required for the exec() system call.
-*/
-void insert_argument(char *argument)
-{
-	printf("insert_argument(): %s\n", argument);
-}
-
-/*
-** Command processor
-*/
-
-void prompt()
-{
-
-}
-
-void print()
-{
-
-}
 
 static char	*get_cmd(char **paths, char *cmd)
 {
@@ -126,8 +90,12 @@ void execute(t_model *model, char **envp)
 		ret = fork();
 		if(ret == 0)
 		{
-			// TODO: aclarar si el comando se pasa tambien como primer argumento.
 			cmd = get_cmd(model->env_paths, model->commands[i]->args[0]);
+			if(cmd == 0)
+			{
+				printf("%s: Command not found.\n", model->commands[i]->args[0]);
+				return;
+			}
 			execve(cmd, model->commands[i]->args, envp);
 			// execvp(model->commands[i]->command, model->commands[i]->args);
 			perror("execve");
