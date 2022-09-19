@@ -7,7 +7,6 @@ char *clean_white_spaces(char *str)
 	int end;
 	int pos;
 	int i;
-
 	pos = 0;
 	while(str[pos] == ' ')
 		pos++;
