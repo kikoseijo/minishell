@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/19 19:36:17 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/19 20:05:03 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,57 @@ void execute(t_model *model, char **envp)
 	close(tmpin);
 	close(tmpout);
 	waitpid(ret, NULL, 0);
+}
+
+void execute_simple_DEPRECATED(t_model *model)
+{
+	int ret;
+	int i;
+
+	i = 0;
+	while ( i < model->num_commands )
+	{
+		ret = fork();
+		if (ret == 0) {
+			//child
+
+			execvp(model->commands[i]->args[0], model->commands[i]->args);
+			perror("execvp");
+			_exit(1);
+		}
+		else if (ret < 0)
+		{
+			perror("fork");
+			return;
+		}
+		i++;
+		// Parent shell continue
+	} // for
+	if (!model->background)
+	{
+		// wait for last process
+		waitpid(ret, NULL, 0);
+	}
+}
+
+void clear()
+{
+
+}
+
+/*
+** The constructor C​ommand::Command(​) constructs and empty command that will
+** be populated with the method
+** Command::i​nsertSimpleCommand(SimpleCommand* simpleCommand).​insertSimpleCommand
+** also enlarges the array _simpleCommands if necessary.
+** The variables _outFile, _inputFile, _errFile will be NULL if
+** no redirection was done, or the name of the file they are being redirected
+**< to.
+*/
+
+
+
+void insert_simple_command( t_simple_command *simpleCommand )
+{
+
 }

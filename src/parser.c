@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/16 07:44:30 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/19 21:33:09 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	parser_command(char *str, t_model *model)
 	char *str_aux;
 	int error;
 	// int i;
-
+	
+	add_history(str);
 	model->num_commands = 0;
 	model->commands = (t_simple_command **) malloc(100 * sizeof(t_simple_command *));
 	str_aux = get_command(str, (&model->commands[model->num_commands]), &error);
@@ -55,9 +56,8 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 
 	init_command(new_command);
 	str_aux = clean_white_spaces(str);
-	if((str_aux[0] == ';') || (str_aux[0] == ';'))
+	if((str_aux[0] == ';') || (str_aux[0] == '|'))
 		str_aux = clean_white_spaces(str);
-
 	while(str_aux[i] != '\0')
 	{
 		//Checks output
@@ -145,16 +145,6 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 			continue;
 		}
 
-		if(str_aux[i] != ' ' && command_found == 0)
-		{
-			(*new_command)->command = ft_concat_char((*new_command)->command, str_aux[i]);
-			i++;
-			continue;
-		}
-		else {
-			command_found = 1;
-		}
-
 		if(str_aux[i] != ' ' && (str_aux[i] != '\0'))
 		{
 			if(arg_found == 0){
@@ -200,6 +190,7 @@ char *ft_substr_modified(char *str, int pos){
 	if(str_aux == NULL)
 		return NULL;
 	pos = 0;
+	ft_printf("primer caracter insertado[%d]: %c\n", i, str[i]);
 	while(str[i] != '\0'){
 		str_aux[pos] = str[i];
 		pos++;

@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/16 07:50:00 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/19 20:02:56 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int parser(int argc, char **argv, char **envp);
 
 typedef struct s_simple_command
 {
-	char *command;
 	char **args; // terminated null
 	size_t	num_args; // without null
 	char **fd_simple_in; // input

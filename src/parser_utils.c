@@ -7,7 +7,6 @@ char *clean_white_spaces(char *str)
 	int end;
 	int pos;
 	int i;
-
 	pos = 0;
 	while(str[pos] == ' ')
 		pos++;
@@ -57,7 +56,6 @@ void	show_list(t_model *command_line){
 	while(n < (command_line->num_commands)){
 	i = 0;
 		ft_printf("<------------------------->\n");
-		ft_printf("command: %s\n", command_line->commands[n]->command);
 		while(command_line->commands[n]->args[i] != NULL){
 				ft_printf("args[%d]: %s\n", i, command_line->commands[n]->args[i]);
 				i++;
@@ -87,8 +85,6 @@ void	show_list(t_model *command_line){
 void	init_command(t_simple_command **new_command){
 
 	*new_command = (t_simple_command *)malloc(sizeof(t_simple_command));
-	(*new_command)->command = (char *)malloc(sizeof(char));
-	(*new_command)->command[0] = '\0';
 	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
 	(*new_command)->pipe = 0;
 	(*new_command)->fd_simple_out = (char **)malloc(100 * sizeof(char *));
