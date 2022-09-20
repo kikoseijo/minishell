@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/19 20:02:56 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/20 19:06:44 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ typedef struct s_simple_command
 	size_t	num_simple_out; // Number of simple outputs
 	char **fd_double_out; // double output
 	size_t num_double_out; // Number of double outputs
-	char *heredoc_close; // heredoc
+	char **heredocs_close; // heredocs close
+	size_t num_heredocs; //number of heredocs arguments
 	int	pipe; // True or false
 	char *error;
 } t_simple_command;
