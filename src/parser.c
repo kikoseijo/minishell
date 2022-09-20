@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/19 21:33:09 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/20 18:53:05 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,11 +173,10 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 }
 
 char *ft_substr_modified(char *str, int pos){
-
+	
 	char *str_aux;
 	int len;
 	int i;
-
 	i = pos;
 	len = 0;
 	if(str[pos] == '\0' || str[pos - 1] == '\0')
@@ -190,7 +189,6 @@ char *ft_substr_modified(char *str, int pos){
 	if(str_aux == NULL)
 		return NULL;
 	pos = 0;
-	ft_printf("primer caracter insertado[%d]: %c\n", i, str[i]);
 	while(str[i] != '\0'){
 		str_aux[pos] = str[i];
 		pos++;
