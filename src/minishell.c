@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/16 07:50:37 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:03:55 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int main(int argc, char **argv, char **envp)
 	while(1)
 	{
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
-		parser_command(str, model);
+		parser_command(str, model, envp);
 		execute(model, envp);
 	}
 	return(0);

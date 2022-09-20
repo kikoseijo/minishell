@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/20 18:53:05 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:39:14 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_substr_modified(char *str, int pos);
 char	*get_command(char *str, t_simple_command **new_command, int *err);
 
-void	parser_command(char *str, t_model *model)
+void	parser_command(char *str, t_model *model, char **envp)
 {
 	char *str_aux;
 	int error;
@@ -40,7 +40,7 @@ void	parser_command(char *str, t_model *model)
 		model->num_commands++;
 
 	}
-
+	check_expansions(model, envp);
 	show_list(model);
 }
 
