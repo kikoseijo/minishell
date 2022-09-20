@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/19 20:02:56 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:50:28 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ typedef struct s_simple_command
 	size_t	num_simple_out; // Number of simple outputs
 	char **fd_double_out; // double output
 	size_t num_double_out; // Number of double outputs
-	char *heredoc_close; // heredoc
+	char **heredocs_close; // heredocs close
+	size_t num_heredocs; //number of heredocs arguments
 	int	pipe; // True or false
 	char *error;
 } t_simple_command;
@@ -76,7 +77,7 @@ typedef struct s_model
 	char	**env_paths;
 } t_model;
 
-void	parser_command(char *str, t_model *model);
+void	parser_command(char *str, t_model *model, char **envp);
 void execute(t_model *model, char **envp);
 
 //Utilities functions
@@ -88,6 +89,7 @@ void	init_command(t_simple_command **);//Function to init the simple_command
 int	get_output_file(t_simple_command *command, char *str, int pos);//Insert simple output files
 int	get_double_file(t_simple_command *command, char *str, int pos);//Insert double output files
 int	get_input_file(t_simple_command *command, char *str, int pos);//Insert simple input files
-int	get_heredocs(t_simple_command *command, char *str, int pos);
+int	get_heredocs(t_simple_command *command, char *str, int pos);//Insert input heredocs
+void check_expansions(t_model *model, char **enviroment);//This function makes variable expansions
 
 #endif

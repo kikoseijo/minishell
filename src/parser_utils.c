@@ -77,6 +77,12 @@ void	show_list(t_model *command_line){
 			ft_printf("simple input file[%d]: %s\n", i, command_line->commands[n]->fd_simple_in[i]);
 			i++;
 		}
+
+		i = 0;
+		while(i < command_line->commands[n]->num_heredocs){
+			ft_printf("heredocs[%d]: %s\n", i, command_line->commands[n]->heredocs_close[i]);
+			i++;
+		}
 		ft_printf("pipe: %d\n", command_line->commands[n]->pipe);
 		n++;
 	}
@@ -93,6 +99,8 @@ void	init_command(t_simple_command **new_command){
 	(*new_command)->num_double_out = 0;
 	(*new_command)->fd_simple_in = (char **)malloc(100 * sizeof(char *));
 	(*new_command)->num_simple_in = 0;
+	(*new_command)->heredocs_close = (char **)malloc(100 * sizeof(char *));
+	(*new_command)->num_heredocs = 0;
 }
 
 int	get_output_file(t_simple_command *command, char *str, int pos)
@@ -139,6 +147,5 @@ int	get_double_file(t_simple_command *command, char *str, int pos)
 	}
 	command->fd_double_out[command->num_double_out][i] = '\0';
 	(command->num_double_out)++;
-	ft_printf("end double: %s\n", &str[end]);
 	return end;
 }
