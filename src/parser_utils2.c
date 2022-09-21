@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 16:58:07 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 20:37:18 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,31 @@ static void	get_expansion(char *str)
 		}
 		i++;
 	}
+}
+
+int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
+		int *num_argument)
+{
+	int error;
+	int quotes_found;
+
+	quotes_found = 0;
+	error = 0;
+	(*num_argument)++;
+	(*pos)++;
+	command->args[*num_argument] = (char *)malloc(sizeof(char));
+	command->args[*num_argument][0] = '\0';
+	while (str[*pos] != '\0' && str[*pos]!= '\'' )
+	{
+
+		command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
+														str[*pos]);
+		(*pos) += 1;
+		if(str[*pos] == '\'')
+			quotes_found = 1;
+	}
+	(*pos) += 1;
+	if(quotes_found == 0)
+		error = -2;
+	return error;
 }

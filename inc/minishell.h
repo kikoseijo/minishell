@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 19:35:29 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/21 20:34:28 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ int				ft_cd(char *path, char **envp);
 //Utilities functions
 char			*clean_white_spaces(char *str);
 int	get_arguments_with_quotes(t_cmd *command,
+								char *str,
+								int *pos,
+								int *num_argument);
+
+int	get_arguments_with_simp_quotes(t_cmd *command,
 								char *str,
 								int *pos,
 								int *num_argument);
