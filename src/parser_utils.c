@@ -1,23 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
+/*   Updated: 2022/09/21 10:35:07 by jseijo-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-
-char *clean_white_spaces(char *str)
+char	*clean_white_spaces(char *str)
 {
-	char *str_aux;
-	int end;
-	int pos;
-	int i;
+	char	*str_aux;
+	int		end;
+	int		pos;
+	int		i;
+
 	pos = 0;
-	while(str[pos] == ' ')
+	while (str[pos] == ' ')
 		pos++;
 	end = pos;
-	while(str[end] != '\0')
+	while (str[end] != '\0')
 		end++;
 	str_aux = (char *)malloc((end - pos + 1) * sizeof(char));
-	if(str_aux == NULL)
-		return NULL;
+	if (str_aux == NULL)
+		return (NULL);
 	i = 0;
-	while(pos < end)
+	while (pos < end)
 	{
 		str_aux[i] = str[pos];
 		pos++;
@@ -25,62 +37,70 @@ char *clean_white_spaces(char *str)
 	}
 	free(str);
 	str_aux[i] = '\0';
-	return str_aux;
+	return (str_aux);
 }
 
-
-int get_arguments_with_quotes(t_simple_command *command, char *str, int pos, int *num_argument)
+int	get_arguments_with_quotes(t_simple_command *command, char *str, int pos,
+		int *num_argument)
 {
 	(*num_argument)++;
 	pos++;
 	command->args[*num_argument] = (char *)malloc(sizeof(char));
 	command->args[*num_argument][0] = '\0';
-
-	while(str[pos] != '"'){
-		command->args[*num_argument] = ft_concat_char(command->args[*num_argument], str[pos]);
+	while (str[pos] != '"')
+	{
+		command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
+														str[pos]);
 		pos++;
 	}
 	pos++;
-	return pos;
+	return (pos);
 }
 
 //Function to show list of commands
 
-void	show_list(t_model *command_line){
-
+void	show_list(t_model *command_line)
+{
 	int	i;
 	int	n;
 
 	ft_printf("N. pipes: %d\n", command_line->num_commands);
 	n = 0;
-	while(n < (command_line->num_commands)){
-	i = 0;
+	while (n < (command_line->num_commands))
+	{
+		i = 0;
 		ft_printf("<------------------------->\n");
-		while(command_line->commands[n]->args[i] != NULL){
-				ft_printf("args[%d]: %s\n", i, command_line->commands[n]->args[i]);
-				i++;
-			}
-		i = 0;
-		while(i < command_line->commands[n]->num_simple_out){
-			ft_printf("simple output file[%d]: %s\n", i, command_line->commands[n]->fd_simple_out[i]);
+		while (command_line->commands[n]->args[i] != NULL)
+		{
+			ft_printf("args[%d]: %s\n", i, command_line->commands[n]->args[i]);
 			i++;
 		}
-
 		i = 0;
-		while(i < command_line->commands[n]->num_double_out){
-			ft_printf("double output file[%d]: %s\n", i, command_line->commands[n]->fd_double_out[i]);
+		while (i < command_line->commands[n]->num_simple_out)
+		{
+			ft_printf("simple output file[%d]: %s\n", i,
+					command_line->commands[n]->fd_simple_out[i]);
 			i++;
 		}
-
 		i = 0;
-		while(i < command_line->commands[n]->num_simple_in){
-			ft_printf("simple input file[%d]: %s\n", i, command_line->commands[n]->fd_simple_in[i]);
+		while (i < command_line->commands[n]->num_double_out)
+		{
+			ft_printf("double output file[%d]: %s\n", i,
+					command_line->commands[n]->fd_double_out[i]);
 			i++;
 		}
-
 		i = 0;
-		while(i < command_line->commands[n]->num_heredocs){
-			ft_printf("heredocs[%d]: %s\n", i, command_line->commands[n]->heredocs_close[i]);
+		while (i < command_line->commands[n]->num_simple_in)
+		{
+			ft_printf("simple input file[%d]: %s\n", i,
+					command_line->commands[n]->fd_simple_in[i]);
+			i++;
+		}
+		i = 0;
+		while (i < command_line->commands[n]->num_heredocs)
+		{
+			ft_printf("heredocs[%d]: %s\n", i,
+					command_line->commands[n]->heredocs_close[i]);
 			i++;
 		}
 		ft_printf("pipe: %d\n", command_line->commands[n]->pipe);
@@ -88,8 +108,8 @@ void	show_list(t_model *command_line){
 	}
 }
 
-void	init_command(t_simple_command **new_command){
-
+void	init_command(t_simple_command **new_command)
+{
 	*new_command = (t_simple_command *)malloc(sizeof(t_simple_command));
 	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
 	(*new_command)->pipe = 0;
@@ -105,17 +125,19 @@ void	init_command(t_simple_command **new_command){
 
 int	get_output_file(t_simple_command *command, char *str, int pos)
 {
-	int end;
-	char *file;
-	int i;
+	int		end;
+	char	*file;
+	int		i;
+
 	end = pos;
-	while(str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
+	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;
-	command->fd_simple_out[command->num_simple_out] = (char *)malloc((end - pos + 1) * sizeof(char));
-	if(command->fd_simple_out[command->num_simple_out] == NULL)
-		return -1;
+	command->fd_simple_out[command->num_simple_out] = (char *)malloc((end - pos
+				+ 1) * sizeof(char));
+	if (command->fd_simple_out[command->num_simple_out] == NULL)
+		return (-1);
 	i = 0;
-	while(str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
+	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
 	{
 		command->fd_simple_out[command->num_simple_out][i] = str[pos];
 		pos++;
@@ -124,22 +146,24 @@ int	get_output_file(t_simple_command *command, char *str, int pos)
 	command->fd_simple_out[command->num_simple_out][i] = '\0';
 	(command->num_simple_out)++;
 	ft_printf("end: %s\n", &str[end]);
-	return end;
+	return (end);
 }
 
 int	get_double_file(t_simple_command *command, char *str, int pos)
 {
-	int end;
-	char *file;
-	int i;
+	int	end;
+	int	i;
+
+	char *file; // Unused
 	end = pos;
-	while(str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
+	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;
-	command->fd_double_out[command->num_double_out] = (char *)malloc((end - pos + 1) * sizeof(char));
-	if(command->fd_double_out[command->num_double_out] == NULL)
-		return -1;
+	command->fd_double_out[command->num_double_out] = (char *)malloc((end - pos
+				+ 1) * sizeof(char));
+	if (command->fd_double_out[command->num_double_out] == NULL)
+		return (-1);
 	i = 0;
-	while(str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
+	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
 	{
 		command->fd_double_out[command->num_double_out][i] = str[pos];
 		pos++;
@@ -147,5 +171,5 @@ int	get_double_file(t_simple_command *command, char *str, int pos)
 	}
 	command->fd_double_out[command->num_double_out][i] = '\0';
 	(command->num_double_out)++;
-	return end;
+	return (end);
 }
