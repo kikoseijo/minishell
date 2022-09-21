@@ -1,6 +1,6 @@
 [
   {
-    "files": ["**/*.c", "*.h"],
+    "files": ["**/*.c", "**/*.h"],
     "command": "c_formatter_42 ${srcFile}",
     "showError": true
   }

@@ -6,48 +6,43 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 10:35:56 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 10:49:37 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_substr_modified(char *str, int pos);
-char	*get_command(char *str, t_simple_command **new_command, int *err);
-
-void	parser_command(char *str, t_model *model, char **envp)
+static char	*ft_substr_modified(char *str, int pos)
 {
 	char	*str_aux;
-	int		error;
+	int		len;
+	int		i;
 
-	// int i;
-	add_history(str);
-	model->num_commands = 0;
-	model->commands = (t_simple_command **)malloc(100
-			* sizeof(t_simple_command *));
-	str_aux = get_command(str, (&model->commands[model->num_commands]), &error);
-	if (error == -1)
+	i = pos;
+	len = 0;
+	if (str[pos] == '\0' || str[pos - 1] == '\0')
+		return (NULL);
+	while (str[pos] != '\0')
 	{
-		ft_printf("Error: Bad command syntax!!!\n");
-		return ;
+		len++;
+		pos++;
 	}
-	model->num_commands++;
-	while (str_aux)
+	str_aux = (char *)malloc((len + 1) * sizeof(char));
+	if (str_aux == NULL)
+		return (NULL);
+	pos = 0;
+	while (str[i] != '\0')
 	{
-		str_aux = get_command(str_aux, &(model->commands[model->num_commands]),
-				&error);
-		if (error == -1)
-		{
-			ft_printf("Error: Bad command syntax!!!\n");
-			return ;
-		}
-		model->num_commands++;
+		str_aux[pos] = str[i];
+		pos++;
+		i++;
 	}
-	check_expansions(model, envp);
-	show_list(model);
+	str_aux[pos] = '\0';
+	free(str);
+	return (str_aux);
 }
 
-char	*get_command(char *str, t_simple_command **new_command, int *err)
+static char	*get_command(char *str, t_simple_command **new_command, int *err)
 {
 	int		i;
 	int		command_found;
@@ -175,32 +170,34 @@ char	*get_command(char *str, t_simple_command **new_command, int *err)
 	return (new_str);
 }
 
-char	*ft_substr_modified(char *str, int pos)
+void	parser(char *str, t_model *model, char **envp)
 {
 	char	*str_aux;
-	int		len;
-	int		i;
+	int		error;
 
-	i = pos;
-	len = 0;
-	if (str[pos] == '\0' || str[pos - 1] == '\0')
-		return (NULL);
-	while (str[pos] != '\0')
+	// int i;
+	add_history(str);
+	model->num_commands = 0;
+	model->commands = (t_simple_command **)malloc(100
+			* sizeof(t_simple_command *));
+	str_aux = get_command(str, (&model->commands[model->num_commands]), &error);
+	if (error == -1)
 	{
-		len++;
-		pos++;
+		ft_printf("Error: Bad command syntax!!!\n");
+		return ;
 	}
-	str_aux = (char *)malloc((len + 1) * sizeof(char));
-	if (str_aux == NULL)
-		return (NULL);
-	pos = 0;
-	while (str[i] != '\0')
+	model->num_commands++;
+	while (str_aux)
 	{
-		str_aux[pos] = str[i];
-		pos++;
-		i++;
+		str_aux = get_command(str_aux, &(model->commands[model->num_commands]),
+				&error);
+		if (error == -1)
+		{
+			ft_printf("Error: Bad command syntax!!!\n");
+			return ;
+		}
+		model->num_commands++;
 	}
-	str_aux[pos] = '\0';
-	free(str);
-	return (str_aux);
+	check_expansions(model, envp);
+	show_list(model);
 }
