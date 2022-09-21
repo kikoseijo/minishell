@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 17:16:46 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:11:09 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,9 @@ int	main(int argc, char **argv, char **envp)
 	t_model	*model;
 	char	*str;
 
-	signal(SIGINT, handler);
-	signal(SIGQUIT, SIG_IGN);
+	//Provisional hasta que este corregido el handler
+	//signal(SIGINT, handler);
+	//signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
 	model->env_paths = ft_split(get_env_path(envp), ':');
 	while (1)

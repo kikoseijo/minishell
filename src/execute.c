@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 12:44:24 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:00:59 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ void	execute(t_model *model, char **envp)
 	int	fdin;
 	int	ret;
 	int	i;
-
+	
+	if(model == NULL)
+		return ;
 	tmpin = dup(0);
 	tmpout = dup(1);
 	if (model->infile)
