@@ -6,7 +6,7 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/09/21 10:49:19 by jseijo-p         ###   ########.fr        #
+#    Updated: 2022/09/21 16:58:27 by jseijo-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ NAME = minishell
 FLAGS = -Wall -Wextra -Werror -g -Og
 
 SRC = src/minishell.c \
+			src/env.c \
+			src/built_in.c \
 			src/parser.c \
 			src/parser_utils.c \
 			src/parser_utils2.c \

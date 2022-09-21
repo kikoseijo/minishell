@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 10:35:07 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:58:01 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*clean_white_spaces(char *str)
 	return (str_aux);
 }
 
-int	get_arguments_with_quotes(t_simple_command *command, char *str, int pos,
+int	get_arguments_with_quotes(t_cmd *command, char *str, int pos,
 		int *num_argument)
 {
 	(*num_argument)++;
@@ -108,9 +108,9 @@ void	show_list(t_model *command_line)
 	}
 }
 
-void	init_command(t_simple_command **new_command)
+void	init_command(t_cmd **new_command)
 {
-	*new_command = (t_simple_command *)malloc(sizeof(t_simple_command));
+	*new_command = (t_cmd *)malloc(sizeof(t_cmd));
 	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
 	(*new_command)->pipe = 0;
 	(*new_command)->fd_out = (char **)malloc(100 * sizeof(char *));
@@ -123,7 +123,7 @@ void	init_command(t_simple_command **new_command)
 	(*new_command)->num_heredocs = 0;
 }
 
-int	get_output_file(t_simple_command *command, char *str, int pos)
+int	get_output_file(t_cmd *command, char *str, int pos)
 {
 	int		end;
 	char	*file;
@@ -132,8 +132,8 @@ int	get_output_file(t_simple_command *command, char *str, int pos)
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;
-	command->fd_out[command->n_fdout] = (char *)malloc((end - pos
-				+ 1) * sizeof(char));
+	command->fd_out[command->n_fdout] = (char *)malloc((end - pos + 1)
+			* sizeof(char));
 	if (command->fd_out[command->n_fdout] == NULL)
 		return (-1);
 	i = 0;
@@ -149,7 +149,7 @@ int	get_output_file(t_simple_command *command, char *str, int pos)
 	return (end);
 }
 
-int	get_double_file(t_simple_command *command, char *str, int pos)
+int	get_double_file(t_cmd *command, char *str, int pos)
 {
 	int	end;
 	int	i;

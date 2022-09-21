@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 10:49:37 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:58:13 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	*ft_substr_modified(char *str, int pos)
 	return (str_aux);
 }
 
-static char	*get_command(char *str, t_simple_command **new_command, int *err)
+static char	*get_command(char *str, t_cmd **new_command, int *err)
 {
 	int		i;
 	int		command_found;
@@ -178,8 +178,7 @@ void	parser(char *str, t_model *model, char **envp)
 	// int i;
 	add_history(str);
 	model->n_cmd = 0;
-	model->cmds = (t_simple_command **)malloc(100
-			* sizeof(t_simple_command *));
+	model->cmds = (t_cmd **)malloc(100 * sizeof(t_cmd *));
 	str_aux = get_command(str, (&model->cmds[model->n_cmd]), &error);
 	if (error == -1)
 	{
@@ -189,8 +188,7 @@ void	parser(char *str, t_model *model, char **envp)
 	model->n_cmd++;
 	while (str_aux)
 	{
-		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]),
-				&error);
+		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
 		if (error == -1)
 		{
 			ft_printf("Error: Bad command syntax!!!\n");

@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 10:35:24 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:58:07 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	get_expansion(char *str);
 
-int	get_input_file(t_simple_command *command, char *str, int pos)
+int	get_input_file(t_cmd *command, char *str, int pos)
 {
 	int		end;
 	char	*file;
@@ -39,7 +39,7 @@ int	get_input_file(t_simple_command *command, char *str, int pos)
 	return (end);
 }
 
-int	get_heredocs(t_simple_command *command, char *str, int pos)
+int	get_heredocs(t_cmd *command, char *str, int pos)
 {
 	int		end;
 	char	*file;
