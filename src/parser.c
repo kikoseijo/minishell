@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 16:58:13 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 18:59:55 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 	command_found = 0;
 	num_argument = -1;
 	arg_found = 0;
+	//hola
 	int ht_number; //Higher than number
 	init_command(new_command);
 	str_aux = clean_white_spaces(str);
