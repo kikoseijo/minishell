@@ -57,53 +57,53 @@ int	get_arguments_with_quotes(t_simple_command *command, char *str, int pos,
 	return (pos);
 }
 
-//Function to show list of commands
+//Function to show list of cmds
 
 void	show_list(t_model *command_line)
 {
 	int	i;
 	int	n;
 
-	ft_printf("N. pipes: %d\n", command_line->num_commands);
+	ft_printf("N. pipes: %d\n", command_line->n_cmd);
 	n = 0;
-	while (n < (command_line->num_commands))
+	while (n < (command_line->n_cmd))
 	{
 		i = 0;
 		ft_printf("<------------------------->\n");
-		while (command_line->commands[n]->args[i] != NULL)
+		while (command_line->cmds[n]->args[i] != NULL)
 		{
-			ft_printf("args[%d]: %s\n", i, command_line->commands[n]->args[i]);
+			ft_printf("args[%d]: %s\n", i, command_line->cmds[n]->args[i]);
 			i++;
 		}
 		i = 0;
-		while (i < command_line->commands[n]->num_simple_out)
+		while (i < command_line->cmds[n]->n_fdout)
 		{
 			ft_printf("simple output file[%d]: %s\n", i,
-					command_line->commands[n]->fd_simple_out[i]);
+					command_line->cmds[n]->fd_out[i]);
 			i++;
 		}
 		i = 0;
-		while (i < command_line->commands[n]->num_double_out)
+		while (i < command_line->cmds[n]->num_double_out)
 		{
 			ft_printf("double output file[%d]: %s\n", i,
-					command_line->commands[n]->fd_double_out[i]);
+					command_line->cmds[n]->fd_double_out[i]);
 			i++;
 		}
 		i = 0;
-		while (i < command_line->commands[n]->num_simple_in)
+		while (i < command_line->cmds[n]->num_simple_in)
 		{
 			ft_printf("simple input file[%d]: %s\n", i,
-					command_line->commands[n]->fd_simple_in[i]);
+					command_line->cmds[n]->fd_simple_in[i]);
 			i++;
 		}
 		i = 0;
-		while (i < command_line->commands[n]->num_heredocs)
+		while (i < command_line->cmds[n]->num_heredocs)
 		{
 			ft_printf("heredocs[%d]: %s\n", i,
-					command_line->commands[n]->heredocs_close[i]);
+					command_line->cmds[n]->heredocs_close[i]);
 			i++;
 		}
-		ft_printf("pipe: %d\n", command_line->commands[n]->pipe);
+		ft_printf("pipe: %d\n", command_line->cmds[n]->pipe);
 		n++;
 	}
 }
@@ -113,8 +113,8 @@ void	init_command(t_simple_command **new_command)
 	*new_command = (t_simple_command *)malloc(sizeof(t_simple_command));
 	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
 	(*new_command)->pipe = 0;
-	(*new_command)->fd_simple_out = (char **)malloc(100 * sizeof(char *));
-	(*new_command)->num_simple_out = 0;
+	(*new_command)->fd_out = (char **)malloc(100 * sizeof(char *));
+	(*new_command)->n_fdout = 0;
 	(*new_command)->fd_double_out = (char **)malloc(100 * sizeof(char *));
 	(*new_command)->num_double_out = 0;
 	(*new_command)->fd_simple_in = (char **)malloc(100 * sizeof(char *));
@@ -132,19 +132,19 @@ int	get_output_file(t_simple_command *command, char *str, int pos)
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;
-	command->fd_simple_out[command->num_simple_out] = (char *)malloc((end - pos
+	command->fd_out[command->n_fdout] = (char *)malloc((end - pos
 				+ 1) * sizeof(char));
-	if (command->fd_simple_out[command->num_simple_out] == NULL)
+	if (command->fd_out[command->n_fdout] == NULL)
 		return (-1);
 	i = 0;
 	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
 	{
-		command->fd_simple_out[command->num_simple_out][i] = str[pos];
+		command->fd_out[command->n_fdout][i] = str[pos];
 		pos++;
 		i++;
 	}
-	command->fd_simple_out[command->num_simple_out][i] = '\0';
-	(command->num_simple_out)++;
+	command->fd_out[command->n_fdout][i] = '\0';
+	(command->n_fdout)++;
 	ft_printf("end: %s\n", &str[end]);
 	return (end);
 }

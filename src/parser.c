@@ -177,26 +177,26 @@ void	parser(char *str, t_model *model, char **envp)
 
 	// int i;
 	add_history(str);
-	model->num_commands = 0;
-	model->commands = (t_simple_command **)malloc(100
+	model->n_cmd = 0;
+	model->cmds = (t_simple_command **)malloc(100
 			* sizeof(t_simple_command *));
-	str_aux = get_command(str, (&model->commands[model->num_commands]), &error);
+	str_aux = get_command(str, (&model->cmds[model->n_cmd]), &error);
 	if (error == -1)
 	{
 		ft_printf("Error: Bad command syntax!!!\n");
 		return ;
 	}
-	model->num_commands++;
+	model->n_cmd++;
 	while (str_aux)
 	{
-		str_aux = get_command(str_aux, &(model->commands[model->num_commands]),
+		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]),
 				&error);
 		if (error == -1)
 		{
 			ft_printf("Error: Bad command syntax!!!\n");
 			return ;
 		}
-		model->num_commands++;
+		model->n_cmd++;
 	}
 	check_expansions(model, envp);
 	show_list(model);

@@ -70,12 +70,12 @@ void	check_expansions(t_model *model, char **enviroment)
 	int	i;
 
 	n = 0;
-	while (n < model->num_commands)
+	while (n < model->n_cmd)
 	{
 		i = 1;
-		while (model->commands[n]->args[i] != NULL)
+		while (model->cmds[n]->args[i] != NULL)
 		{
-			get_expansion(model->commands[n]->args[i]);
+			get_expansion(model->cmds[n]->args[i]);
 			i++;
 		}
 		n++;

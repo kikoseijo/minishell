@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 10:52:45 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 12:46:41 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ typedef struct s_simple_command
 	size_t				num_args;
 	char				**fd_simple_in;
 	size_t				num_simple_in;
-	char				**fd_simple_out;
-	size_t				num_simple_out;
+	char				**fd_out;
+	size_t				n_fdout;
 	char				**fd_double_out;
 	size_t				num_double_out;
 	char				**heredocs_close;
@@ -39,8 +39,8 @@ typedef struct s_simple_command
 
 typedef struct s_model
 {
-	t_simple_command	**commands;
-	int					num_commands;
+	t_simple_command	**cmds;
+	int					n_cmd;
 	int					background;
 	const char			*infile;
 	char				**env_paths;
@@ -57,7 +57,7 @@ int	get_arguments_with_quotes(t_simple_command *command,
 								int pos,
 								int *num_argument);
 void					show_list(t_model *command_line);
-void					init_command(t_simple_command **);
+void					init_command(t_simple_command **new_command);
 int						get_output_file(t_simple_command *command, char *str,
 							int pos);
 int						get_double_file(t_simple_command *command, char *str,
