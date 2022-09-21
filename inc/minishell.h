@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 17:22:16 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:35:29 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # include <stdlib.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
-
+# define ERROR_QUOTES -2
+# define ERROR_SYNTAX -1
 typedef struct s_cmd
 {
 	char		**args;
@@ -64,7 +65,7 @@ int				ft_cd(char *path, char **envp);
 char			*clean_white_spaces(char *str);
 int	get_arguments_with_quotes(t_cmd *command,
 								char *str,
-								int pos,
+								int *pos,
 								int *num_argument);
 void			show_list(t_model *command_line);
 void			init_command(t_cmd **new_command);

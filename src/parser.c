@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 18:59:55 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/21 20:11:20 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,10 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 			break ;
 		if (str_aux[i] == '"')
 		{
-			i = get_arguments_with_quotes(*new_command, str_aux, i,
+			(*err) = get_arguments_with_quotes(*new_command, str_aux, &i,
 					&num_argument);
+			if(*err != 0)
+				return NULL;
 			continue ;
 		}
 		if (str_aux[i] != ' ' && (str_aux[i] != '\0'))
@@ -177,6 +179,7 @@ void	parser(char *str, t_model *model, char **envp)
 	int		error;
 
 	// int i;
+	error = 0;
 	add_history(str);
 	model->n_cmd = 0;
 	model->cmds = (t_cmd **)malloc(100 * sizeof(t_cmd *));
@@ -184,8 +187,13 @@ void	parser(char *str, t_model *model, char **envp)
 	if (error == -1)
 	{
 		ft_printf("Error: Bad command syntax!!!\n");
+		model = NULL;
 		return ;
-	}
+	}else if(error == -2){
+			ft_printf("Error: Quotes not closed!!!\n");
+			model = NULL;
+			return ;
+		}
 	model->n_cmd++;
 	while (str_aux)
 	{
@@ -193,6 +201,11 @@ void	parser(char *str, t_model *model, char **envp)
 		if (error == -1)
 		{
 			ft_printf("Error: Bad command syntax!!!\n");
+			model = NULL;
+			return ;
+		}else if(error == -2){
+			ft_printf("Error: Quotes not closed!!!\n");
+			model = NULL;
 			return ;
 		}
 		model->n_cmd++;

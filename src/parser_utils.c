@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 16:58:01 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:55:05 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,31 @@ char	*clean_white_spaces(char *str)
 	return (str_aux);
 }
 
-int	get_arguments_with_quotes(t_cmd *command, char *str, int pos,
+int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 		int *num_argument)
 {
+	int error;
+	int quotes_found;
+
+	quotes_found = 0;
+	error = 0;
 	(*num_argument)++;
-	pos++;
+	(*pos)++;
 	command->args[*num_argument] = (char *)malloc(sizeof(char));
 	command->args[*num_argument][0] = '\0';
-	while (str[pos] != '"')
+	while (str[*pos] != '\0' && str[*pos]!= '"' )
 	{
+
 		command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
-														str[pos]);
-		pos++;
+														str[*pos]);
+		(*pos) += 1;
+		if(str[*pos] == '"')
+			quotes_found = 1;
 	}
-	pos++;
-	return (pos);
+	(*pos) += 1;
+	if(quotes_found == 0)
+		error = -2;
+	return error;
 }
 
 //Function to show list of cmds
