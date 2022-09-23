@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 12:48:23 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:50:28 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*check_dir(char *cmd, char **paths, int i)
 			ret = ft_strjoin(tmp, cmd);
 			free(tmp);
 			closedir(dir);
-			ft_split_free(paths);
+			// ft_split_free(paths);
 			return (ret);
 		}
 		file = readdir(dir);
@@ -103,6 +103,6 @@ char	*get_path(char *cmd, char **envp)
 		if (ret)
 			return (ret);
 	}
-	ft_split_free(paths);
+	// ft_split_free(paths);
 	return (NULL);
 }

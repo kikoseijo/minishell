@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 16:15:59 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:51:13 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	free_model(t_model *model)
 		// ft_split_free(model->cmds[i]->heredocs_close);
 		free(model->cmds[i]);
 	}
+	ft_split_free(*model->env);
 	free(model->cmds);
 	free((void *)model->infile);
 	free(model);

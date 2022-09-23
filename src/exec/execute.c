@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 16:22:53 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:36:13 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
 {
 	int	i;
 	int	ret;
-	int	childs[1024];
+	int	childs[256];
 
 	i = 0;
 	while (i < model->n_cmd)

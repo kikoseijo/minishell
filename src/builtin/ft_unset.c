@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 16:21:04 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:33:46 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	del_str_split(char *str, char ***envp)
 		ptr++;
 	}
 	new_tab[i] = NULL;
-	ft_split_free(*envp);
+	// ft_split_free(*envp);
 	*envp = new_tab;
 	return (0);
 }
