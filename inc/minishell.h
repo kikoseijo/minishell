@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 20:34:28 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 09:18:35 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 # include <stdlib.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
+
 # define ERROR_QUOTES -2
 # define ERROR_SYNTAX -1
+
 typedef struct s_cmd
 {
 	char		**args;
@@ -57,9 +59,14 @@ void			free_model(t_model *model);
 char			*get_env_value(char *key, char **envp);
 void			set_env_value(char *key, char *value, char **envp);
 
-// built_in.c
-int				ft_exit(t_model *model);
+// builtin
 int				ft_cd(char *path, char **envp);
+void			ft_echo(int argc, char **args);
+void			ft_env(char **envp);
+int				ft_exit(t_model *model);
+void			ft_export(char *input, char ***envp);
+void			ft_pwd(void);
+void			ft_unset(char *input, char ***envp);
 
 //Utilities functions
 char			*clean_white_spaces(char *str);
@@ -69,9 +76,9 @@ int	get_arguments_with_quotes(t_cmd *command,
 								int *num_argument);
 
 int	get_arguments_with_simp_quotes(t_cmd *command,
-								char *str,
-								int *pos,
-								int *num_argument);
+									char *str,
+									int *pos,
+									int *num_argument);
 void			show_list(t_model *command_line);
 void			init_command(t_cmd **new_command);
 int				get_output_file(t_cmd *command, char *str, int pos);

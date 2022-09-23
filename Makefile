@@ -6,7 +6,7 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/09/21 16:58:27 by jseijo-p         ###   ########.fr        #
+#    Updated: 2022/09/23 09:16:50 by jseijo-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,18 @@ NAME = minishell
 FLAGS = -Wall -Wextra -Werror -g -Og
 
 SRC = src/minishell.c \
-			src/env.c \
-			src/built_in.c \
-			src/parser.c \
-			src/parser_utils.c \
-			src/parser_utils2.c \
-			src/execute.c
+			src/exec/execute.c \
+			src/builtin/ft_cd.c \
+			src/builtin/ft_echo.c \
+			src/builtin/ft_env.c \
+			src/builtin/ft_exit.c \
+			src/builtin/ft_export.c \
+			src/builtin/ft_pwd.c \
+			src/builtin/ft_unset.c \
+			src/parser/parser.c \
+			src/parser/parser_utils.c \
+			src/parser/parser_utils2.c \
+			src/env.c
 
 # SRC_BONUS = pipex_bonus.c helpers.c
 

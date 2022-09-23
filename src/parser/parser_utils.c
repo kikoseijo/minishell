@@ -6,11 +6,11 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 19:55:05 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 09:17:19 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 char	*clean_white_spaces(char *str)
 {
@@ -43,8 +43,8 @@ char	*clean_white_spaces(char *str)
 int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 		int *num_argument)
 {
-	int error;
-	int quotes_found;
+	int	error;
+	int	quotes_found;
 
 	quotes_found = 0;
 	error = 0;
@@ -52,19 +52,18 @@ int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 	(*pos)++;
 	command->args[*num_argument] = (char *)malloc(sizeof(char));
 	command->args[*num_argument][0] = '\0';
-	while (str[*pos] != '\0' && str[*pos]!= '"' )
+	while (str[*pos] != '\0' && str[*pos] != '"')
 	{
-
 		command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
 														str[*pos]);
 		(*pos) += 1;
-		if(str[*pos] == '"')
+		if (str[*pos] == '"')
 			quotes_found = 1;
 	}
 	(*pos) += 1;
-	if(quotes_found == 0)
+	if (quotes_found == 0)
 		error = -2;
-	return error;
+	return (error);
 }
 
 //Function to show list of cmds

@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 19:11:09 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 09:11:15 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	main(int argc, char **argv, char **envp)
 	model->env_paths = ft_split(get_env_path(envp), ':');
 	while (1)
 	{
-		print_terminal();
+		// print_terminal();
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
 		parser(str, model, envp);
 		execute(model, envp);
