@@ -6,11 +6,11 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/21 20:33:11 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 09:17:25 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 static char	*ft_substr_modified(char *str, int pos)
 {
@@ -142,19 +142,16 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		{
 			(*err) = get_arguments_with_quotes(*new_command, str_aux, &i,
 					&num_argument);
-
-			if(*err != 0)
-				return NULL;
+			if (*err != 0)
+				return (NULL);
 			continue ;
 		}
-
 		if (str_aux[i] == '\'')
 		{
 			(*err) = get_arguments_with_simp_quotes(*new_command, str_aux, &i,
 					&num_argument);
-
-			if(*err != 0)
-				return NULL;
+			if (*err != 0)
+				return (NULL);
 			continue ;
 		}
 		if (str_aux[i] != ' ' && (str_aux[i] != '\0'))
@@ -200,11 +197,13 @@ void	parser(char *str, t_model *model, char **envp)
 		ft_printf("Error: Bad command syntax!!!\n");
 		model = NULL;
 		return ;
-	}else if(error == -2){
-			ft_printf("Error: Quotes not closed!!!\n");
-			model = NULL;
-			return ;
-		}
+	}
+	else if (error == -2)
+	{
+		ft_printf("Error: Quotes not closed!!!\n");
+		model = NULL;
+		return ;
+	}
 	model->n_cmd++;
 	while (str_aux)
 	{
@@ -214,7 +213,9 @@ void	parser(char *str, t_model *model, char **envp)
 			ft_printf("Error: Bad command syntax!!!\n");
 			model = NULL;
 			return ;
-		}else if(error == -2){
+		}
+		else if (error == -2)
+		{
 			ft_printf("Error: Quotes not closed!!!\n");
 			model = NULL;
 			return ;

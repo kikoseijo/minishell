@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in.c                                         :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/21 16:50:24 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 17:26:14 by jseijo-p         ###   ########.fr       */
+/*   Created: 2022/09/23 08:51:52 by jseijo-p          #+#    #+#             */
+/*   Updated: 2022/09/23 13:16:18 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
-
-/*
-** void	ft_pwd(void)
-** {
-** 	char	buffer[200];
-**
-** 	getcwd(buffer, 200);
-** 	printf("%s\n", buffer);
-** }
-*/
+#include "../../inc/minishell.h"
 
 int	ft_exit(t_model *model)
 {
@@ -46,23 +36,4 @@ int	ft_exit(t_model *model)
 		ft_putstr_fd("exit: numeric argument required\n", 2);
 		return (-1);
 	}
-}
-
-int	ft_cd(char *path, char **envp)
-{
-	char	buffer[200];
-
-	if (!path)
-		path = get_env_value("HOME", envp);
-	if (!path)
-		path = getenv("HOME");
-	if (chdir(path) == -1)
-	{
-		perror("cd");
-		return (1);
-	}
-	set_env_value("OLDPWD", get_env_value("PWD", envp), envp);
-	getcwd(buffer, 200);
-	set_env_value("PWD", buffer, envp);
-	return (0);
 }
