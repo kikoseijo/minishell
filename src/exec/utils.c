@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 09:14:36 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 10:52:08 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,24 @@ int	exec_builtin(t_cmd *cmd, char ***envp)
 		built = 0;
 	set_env_value("?", "0", envp);
 	return (built);
+}
+
+char	*get_cmd(char **paths, char *cmd)
+{
+	char	*tmp;
+	char	*res;
+
+	if (ft_strchr(cmd, '/') && access(cmd, F_OK | X_OK) == 0)
+		return (cmd);
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		res = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(res, F_OK | X_OK) == 0)
+			return (res);
+		free(res);
+		paths++;
+	}
+	return (0);
 }

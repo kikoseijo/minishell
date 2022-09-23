@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 09:11:15 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 13:16:37 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,36 +36,16 @@ void	free_model(t_model *model)
 	while (i > 0)
 	{
 		i--;
-		ft_split_free(model->cmds[i]->args);
-		ft_split_free(model->cmds[i]->fd_simple_in);
-		ft_split_free(model->cmds[i]->fd_out);
-		ft_split_free(model->cmds[i]->fd_double_out);
-		ft_split_free(model->cmds[i]->heredocs_close);
+		// ft_split_free(model->cmds[i]->args);
+		// ft_split_free(model->cmds[i]->fd_simple_in);
+		// ft_split_free(model->cmds[i]->fd_out);
+		// ft_split_free(model->cmds[i]->fd_double_out);
+		// ft_split_free(model->cmds[i]->heredocs_close);
 		free(model->cmds[i]);
 	}
 	free(model->cmds);
 	free((void *)model->infile);
 	free(model);
-}
-
-static void	print_terminal(void)
-{
-	int				index;
-	struct winsize	w;
-	char			working_dir[150];
-
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	index = 0;
-	while (w.ws_col != index)
-	{
-		write(1, "─", 3);
-		index++;
-	}
-	write(1, "\n", 1);
-	getcwd(working_dir, 150);
-	ft_putstr_fd("\e[1;35m", 1);
-	ft_putstr_fd(working_dir, 1);
-	ft_putstr_fd("\n\e[0;37m", 1);
 }
 
 static void	handler(int signal)
@@ -75,36 +55,54 @@ static void	handler(int signal)
 		printf("\n");
 		rl_on_new_line();
 		// rl_replace_line("", 0);
-		print_terminal();
 		rl_redisplay();
-		// set_env_value("?", "1", &g_envp);
-		// set_env_value("_", "1", &g_envp);
+		set_env_value("?", "1", &g_envp);
+		set_env_value("_", "1", &g_envp);
 	}
 }
 
-static char	*get_env_path(char **envp)
+static int	check_exit(t_model *model, char *str)
 {
-	while (ft_strncmp("PATH", *envp, 4))
-		envp++;
-	return (*envp + 5);
+	int	ret;
+
+	if (!ft_strncmp(model->cmds[0]->args[0], "exit", 5))
+	{
+		ret = ft_exit(model);
+		if (ret >= 0)
+		{
+			free(str);
+			ft_split_free(g_envp);
+			clear_history();
+			system("leaks -q minishell");
+			return (ret);
+		}
+	}
+	return (-1);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_model	*model;
 	char	*str;
+	int		ret;
 
-	//Provisional hasta que este corregido el handler
-	//signal(SIGINT, handler);
-	//signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handler);
+	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
-	model->env_paths = ft_split(get_env_path(envp), ':');
+	model->env = &envp;
 	while (1)
 	{
-		// print_terminal();
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
 		parser(str, model, envp);
-		execute(model, envp);
+		ret = check_exit(model, str);
+		if (ret >= 0)
+			return (ret);
+		else
+			execute(model, envp);
+		free(str);
+		free_model(model);
 	}
+	clear_history();
+	ft_split_free(g_envp);
 	return (0);
 }

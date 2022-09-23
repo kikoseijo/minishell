@@ -6,13 +6,13 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:51:52 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 09:04:46 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 09:38:22 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	ft_cd(char *path, char **envp)
+int	ft_cd(char *path, char ***envp)
 {
 	char	buffer[256];
 

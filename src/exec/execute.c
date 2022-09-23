@@ -6,113 +6,132 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/21 21:00:59 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 11:34:22 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-static char	*get_cmd(char **paths, char *cmd)
+static int	exe_fds(t_model *m, int i, t_pipes *pipes)
 {
-	char	*tmp;
-	char	*res;
-
-	if (ft_strchr(cmd, '/') && access(cmd, F_OK | X_OK) == 0)
-		return (cmd);
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		res = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(res, F_OK | X_OK) == 0)
-			return (res);
-		free(res);
-		paths++;
-	}
-	return (0);
-}
-
-static void	exe_fds(t_model *m, int i, int tmpout, int fdin)
-{
-	int	t;
-	int	fdout;
 	int	fdpipe[2];
 
 	if (i == m->n_cmd - 1)
 	{
-		if (m->cmds[i]->n_fdout > 0)
-		{
-			t = 0;
-			while (t < m->cmds[i]->n_fdout)
-				fdout = open(m->cmds[i]->fd_out[t++], O_CREAT | O_RDWR, 0644);
-		}
+		if (m->outfile && ft_strlen(m->outfile_type) == 1)
+			pipes->fdout = open(m->outfile,
+								O_WRONLY | O_CREAT | O_TRUNC,
+								0664);
+		else if (m->outfile && ft_strlen(m->outfile_type) == 2)
+			pipes->fdout = open(m->outfile, O_WRONLY | O_APPEND);
 		else
-			fdout = dup(tmpout);
-	}
-	else
-	{
-		pipe(fdpipe);
-		fdout = fdpipe[1];
-		fdin = fdpipe[0];
-	}
-	dup2(fdout, 1);
-	close(fdout);
-}
-
-static int	exe_cmd(t_model *m, char **envp, int i)
-{
-	int		res;
-	char	*cmd;
-
-	res = fork();
-	if (res == 0)
-	{
-		cmd = get_cmd(m->env_paths, m->cmds[i]->args[0]);
-		if (cmd == 0)
+			pipes->fdout = dup(pipes->tmpout);
+		if (pipes->fdout < 0)
 		{
-			printf("%s: Command not found.\n", m->cmds[i]->args[0]);
+			perror(m->outfile);
 			return (-1);
 		}
-		execve(cmd, m->cmds[i]->args, envp);
-		perror("execve");
-		exit(1);
 	}
-	return (res);
-}
-
-void	exe_close_and_wait(int ret, int tmpin, int tmpout)
-{
-	dup2(tmpin, 0);
-	dup2(tmpout, 1);
-	close(tmpin);
-	close(tmpout);
-	waitpid(ret, NULL, 0);
-}
-
-void	execute(t_model *model, char **envp)
-{
-	int	tmpin;
-	int	tmpout;
-	int	fdin;
-	int	ret;
-	int	i;
-	
-	if(model == NULL)
-		return ;
-	tmpin = dup(0);
-	tmpout = dup(1);
-	if (model->infile)
-		fdin = open(model->infile, O_RDONLY);
 	else
-		fdin = dup(tmpin);
+	{
+		if (pipe(fdpipe) < 0)
+			return (-1);
+		pipes->fdout = fdpipe[1];
+		pipes->fdin = fdpipe[0];
+	}
+	return (0);
+}
+
+static int	exe_cmd(t_cmd *cmd, char ***envp)
+{
+	int	pid;
+
+	if (exec_builtin(cmd, envp))
+		return (-1);
+	pid = fork();
+	if (pid == 0)
+	{
+		execve(get_path(cmd->args[0], *envp), cmd->args, *envp);
+		printf("command not found: %s\n", cmd->args[0]);
+		exit(-1);
+	}
+	else if (pid < 0)
+	{
+		perror("fork");
+		return (-1);
+	}
+	return (pid);
+}
+
+static int	exe_fdin(t_model *model, t_pipes pipes)
+{
+	if (model->infile)
+		pipes.fdin = open(model->infile, O_RDONLY);
+	else
+		pipes.fdin = dup(pipes.tmpin);
+	if (pipes.fdin < 0)
+	{
+		perror(model->infile);
+		close(pipes.tmpin);
+		close(pipes.tmpout);
+		return (-1);
+	}
+	return (0);
+}
+
+static void	kill_childs(int *childs, int i, t_model *model)
+{
+	int		wstatus;
+	char	*n_status;
+
+	waitpid(childs[i], &wstatus, 0);
+	n_status = ft_itoa(WEXITSTATUS(wstatus));
+	set_env_value("?", n_status, model->env);
+	free(n_status);
+	while (--i >= 0)
+	{
+		if (childs[i] > 0)
+			kill(childs[i], SIGKILL);
+	}
+}
+
+static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
+{
+	int	i;
+	int	ret;
+	int	childs[1024];
+
 	i = 0;
 	while (i < model->n_cmd)
 	{
-		dup2(fdin, 0);
-		close(fdin);
-		exe_fds(model, i, tmpout, fdin);
-		ret = exe_cmd(model, envp, i);
+		dup2(pipes->fdin, 0);
+		close(pipes->fdin);
+		ret = exe_fds(model, i, pipes);
+		if (ret < 0)
+			return (-1);
+		dup2(pipes->fdout, 1);
+		close(pipes->fdout);
+		childs[i] = exe_cmd(model->cmds[i], &envp);
 		i++;
 	}
-	exe_close_and_wait(ret, tmpin, tmpout);
+	kill_childs(childs, i - 1, model);
+	return (0);
+}
+
+int	execute(t_model *model, char **envp)
+{
+	t_pipes	pipes;
+	int		ret;
+
+	pipes.tmpin = dup(0);
+	pipes.tmpout = dup(1);
+	ret = exe_fdin(model, pipes);
+	if (ret == -1)
+		return (-1);
+	ret = exe_pipes(model, &pipes, envp);
+	dup2(pipes.tmpin, 0);
+	dup2(pipes.tmpout, 1);
+	close(pipes.tmpin);
+	close(pipes.tmpout);
+	// waitpid(ret, NULL, 0);
 }

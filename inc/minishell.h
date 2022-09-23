@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 09:18:35 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 12:51:54 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 # define MINISHELL_H
 
 # include "../libft/inc/libft.h"
+# include <dirent.h>
+# include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
-# include <stdlib.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
 
@@ -46,21 +47,34 @@ typedef struct s_model
 {
 	t_cmd		**cmds;
 	int			n_cmd;
-	int			background;
+	char		***env;
 	const char	*infile;
-	char		**env_paths;
+	const char	*infile_type;
+	const char	*outfile;
+	const char	*outfile_type;
 }				t_model;
 
+typedef struct s_pipes
+{
+	int			tmpin;
+	int			tmpout;
+	int			fdin;
+	int			fdout;
+}				t_pipes;
+
 void			parser(char *str, t_model *model, char **envp);
-void			execute(t_model *model, char **envp);
+int				execute(t_model *model, char **envp);
+int				exec_builtin(t_cmd *cmd, char ***envp);
+char			*get_cmd(char **paths, char *cmd);
 void			free_model(t_model *model);
 
 // env.c
-char			*get_env_value(char *key, char **envp);
-void			set_env_value(char *key, char *value, char **envp);
+char			*get_env_value(char *key, char ***envp);
+void			set_env_value(char *key, char *value, char ***envp);
+char			*get_path(char *cmd, char **envp);
 
 // builtin
-int				ft_cd(char *path, char **envp);
+int				ft_cd(char *path, char ***envp);
 void			ft_echo(int argc, char **args);
 void			ft_env(char **envp);
 int				ft_exit(t_model *model);
@@ -70,10 +84,8 @@ void			ft_unset(char *input, char ***envp);
 
 //Utilities functions
 char			*clean_white_spaces(char *str);
-int	get_arguments_with_quotes(t_cmd *command,
-								char *str,
-								int *pos,
-								int *num_argument);
+int				get_arguments_with_quotes(t_cmd *cmd, char *str, int *pos,
+					int *narg);
 
 int	get_arguments_with_simp_quotes(t_cmd *command,
 									char *str,
