@@ -6,13 +6,13 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/09/23 09:28:03 by jseijo-p         ###   ########.fr        #
+#    Updated: 2022/09/23 15:23:52 by jseijo-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-FLAGS = -Wall -Wextra -Werror -g -Og
+CFLAGS = -Wall -Wextra -Werror -g -Og
 
 SRC = src/minishell.c \
 			src/exec/execute.c \
@@ -40,7 +40,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(FLAGS) -I libft $(OBJ) ./libft/libft.a -lreadline -lncurses -o $(NAME)
+	$(CC) $(CFLAGS) -I libft $(OBJ) ./libft/libft.a -lreadline -lncurses -o $(NAME)
 
 clean:
 	$(MAKE) -C libft fclean
