@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 09:17:19 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 17:54:24 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 
 void	show_list(t_model *command_line)
 {
-	int	i;
+	size_t	i;
 	int	n;
 
 	ft_printf("N. pipes: %d\n", command_line->n_cmd);
@@ -135,7 +135,7 @@ void	init_command(t_cmd **new_command)
 int	get_output_file(t_cmd *command, char *str, int pos)
 {
 	int		end;
-	char	*file;
+	//char	*file; Unused
 	int		i;
 
 	end = pos;
@@ -163,7 +163,7 @@ int	get_double_file(t_cmd *command, char *str, int pos)
 	int	end;
 	int	i;
 
-	char *file; // Unused
+	//char *file; Unused
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;

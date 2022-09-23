@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 09:17:25 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 18:45:14 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,8 @@ static char	*ft_substr_modified(char *str, int pos)
 	if (str[pos] == '\0' || str[pos - 1] == '\0')
 		return (NULL);
 	while (str[pos] != '\0')
-	{
-		len++;
 		pos++;
-	}
+	len += (pos - i);
 	str_aux = (char *)malloc((len + 1) * sizeof(char));
 	if (str_aux == NULL)
 		return (NULL);
@@ -186,40 +184,19 @@ void	parser(char *str, t_model *model, char **envp)
 	char	*str_aux;
 	int		error;
 
-	// int i;
 	error = 0;
 	add_history(str);
 	model->n_cmd = 0;
 	model->cmds = (t_cmd **)malloc(100 * sizeof(t_cmd *));
 	str_aux = get_command(str, (&model->cmds[model->n_cmd]), &error);
-	if (error == -1)
-	{
-		ft_printf("Error: Bad command syntax!!!\n");
-		model = NULL;
+	if(check_error(error, model) != 0)
 		return ;
-	}
-	else if (error == -2)
-	{
-		ft_printf("Error: Quotes not closed!!!\n");
-		model = NULL;
-		return ;
-	}
 	model->n_cmd++;
 	while (str_aux)
 	{
 		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
-		if (error == -1)
-		{
-			ft_printf("Error: Bad command syntax!!!\n");
-			model = NULL;
+		if(check_error(error, model) != 0)
 			return ;
-		}
-		else if (error == -2)
-		{
-			ft_printf("Error: Quotes not closed!!!\n");
-			model = NULL;
-			return ;
-		}
 		model->n_cmd++;
 	}
 	check_expansions(model, envp);

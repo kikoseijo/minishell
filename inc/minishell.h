@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 15:41:24 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 18:35:00 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void			ft_unset(char *input, char ***envp);
 char			*clean_white_spaces(char *str);
 int				get_arguments_with_quotes(t_cmd *cmd, char *str, int *pos,
 					int *narg);
-
+//Parser functions
 int	get_arguments_with_simp_quotes(t_cmd *command,
 									char *str,
 									int *pos,
@@ -101,5 +101,5 @@ int				get_double_file(t_cmd *command, char *str, int pos);
 int				get_input_file(t_cmd *command, char *str, int pos);
 int				get_heredocs(t_cmd *command, char *str, int pos);
 void			check_expansions(t_model *model, char **enviroment);
-
+int				check_error(int error, t_model *model);
 #endif
