@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 13:16:37 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:15:59 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,27 +80,29 @@ static int	check_exit(t_model *model, char *str)
 	return (-1);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(void)
 {
-	t_model	*model;
-	char	*str;
-	int		ret;
+	t_model		*model;
+	extern char	**environ;
+	char		*str;
+	int			ret;
 
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
-	model->env = &envp;
+	model->env = &environ;
+	g_envp = join_split(*model->env, NULL);
 	while (1)
 	{
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
-		parser(str, model, envp);
+		parser(str, model, *model->env);
 		ret = check_exit(model, str);
 		if (ret >= 0)
 			return (ret);
 		else
-			execute(model, envp);
-		free(str);
-		free_model(model);
+			execute(model, *model->env);
+		// free(str);
+		// free_model(model);
 	}
 	clear_history();
 	ft_split_free(g_envp);

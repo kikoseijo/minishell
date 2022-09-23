@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 12:51:54 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:41:24 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
 
@@ -67,6 +68,8 @@ int				execute(t_model *model, char **envp);
 int				exec_builtin(t_cmd *cmd, char ***envp);
 char			*get_cmd(char **paths, char *cmd);
 void			free_model(t_model *model);
+int				len_table(char **table);
+char			**join_split(char **a, char **b);
 
 // env.c
 char			*get_env_value(char *key, char ***envp);

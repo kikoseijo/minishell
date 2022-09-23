@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 11:34:22 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:22:53 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,17 @@ static int	exe_cmd(t_cmd *cmd, char ***envp)
 	return (pid);
 }
 
-static int	exe_fdin(t_model *model, t_pipes pipes)
+static int	exe_fdin(t_model *model, t_pipes *pipes)
 {
 	if (model->infile)
-		pipes.fdin = open(model->infile, O_RDONLY);
+		pipes->fdin = open(model->infile, O_RDONLY);
 	else
-		pipes.fdin = dup(pipes.tmpin);
-	if (pipes.fdin < 0)
+		pipes->fdin = dup(pipes->tmpin);
+	if (pipes->fdin < 0)
 	{
 		perror(model->infile);
-		close(pipes.tmpin);
-		close(pipes.tmpout);
+		close(pipes->tmpin);
+		close(pipes->tmpout);
 		return (-1);
 	}
 	return (0);
@@ -125,7 +125,7 @@ int	execute(t_model *model, char **envp)
 
 	pipes.tmpin = dup(0);
 	pipes.tmpout = dup(1);
-	ret = exe_fdin(model, pipes);
+	ret = exe_fdin(model, &pipes);
 	if (ret == -1)
 		return (-1);
 	ret = exe_pipes(model, &pipes, envp);
@@ -133,5 +133,6 @@ int	execute(t_model *model, char **envp)
 	dup2(pipes.tmpout, 1);
 	close(pipes.tmpin);
 	close(pipes.tmpout);
-	// waitpid(ret, NULL, 0);
+	waitpid(ret, NULL, 0);
+	return (0);
 }

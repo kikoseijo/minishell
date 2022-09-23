@@ -6,30 +6,20 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 09:38:38 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:21:04 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	len_table(char **table)
-{
-	int	len;
-
-	len = 0;
-	while (table && table[len])
-		len++;
-	return (len);
-}
-
-static int	get_new_size(char *str, char ***table)
+static int	get_new_size(char *str, char ***envp)
 {
 	int		count;
 	char	**ptr;
 	int		size;
 
 	count = 0;
-	ptr = *table;
+	ptr = *envp;
 	while (*ptr)
 	{
 		if (!ft_strncmp(*ptr, str,
@@ -37,28 +27,28 @@ static int	get_new_size(char *str, char ***table)
 			count++;
 		ptr++;
 	}
-	size = len_table(*table) - count;
+	size = len_table(*envp) - count;
 	if (size <= 0)
 	{
-		free(*table);
-		*table = NULL;
+		// free(*envp);
+		// *envp = NULL;
 		return (0);
 	}
 	return (size);
 }
 
-static int	del_str_split(char *str, char ***table)
+static int	del_str_split(char *str, char ***envp)
 {
 	int		size;
 	char	**ptr;
 	char	**new_tab;
 	int		i;
 
-	size = get_new_size(str, table);
+	size = get_new_size(str, envp);
 	if (!size)
 		return (0);
 	new_tab = (char **)malloc(sizeof(char *) * (size + 1));
-	ptr = *table;
+	ptr = *envp;
 	i = 0;
 	while (*ptr)
 	{
@@ -68,8 +58,8 @@ static int	del_str_split(char *str, char ***table)
 		ptr++;
 	}
 	new_tab[i] = NULL;
-	ft_split_free(*table);
-	*table = new_tab;
+	ft_split_free(*envp);
+	*envp = new_tab;
 	return (0);
 }
 
