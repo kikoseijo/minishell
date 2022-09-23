@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 19:06:46 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 19:44:03 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,5 @@ int				get_heredocs(t_cmd *command, char *str, int pos);
 void			check_expansions(t_model *model, char **enviroment);
 int				check_error(int error, t_model *model);
 int				checks_output(t_cmd **new_command, char *str_aux, int *i, int *err);
+int				checks_input(t_cmd **new_command, char *str_aux, int *i, int *err);
 #endif

@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 19:30:24 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 19:46:45 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 	command_found = 0;
 	num_argument = -1;
 	arg_found = 0;
-	//hola
-	int ht_number; //Higher than number
 	init_command(new_command);
 	str_aux = clean_white_spaces(str);
 	if ((str_aux[0] == ';') || (str_aux[0] == '|'))
@@ -68,38 +66,11 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		else if(checks_output(new_command, str_aux, &i, err) == -1)
 			return NULL;
 		//Checks input
-		if (str_aux[i] == '<')
-		{
-			ht_number = 0;
-			while (str_aux[i] == '<')
-			{
-				ht_number++;
-				i++;
-			}
-			while (str_aux[i] == ' ')
-				i++;
-			if (!((str_aux[i] >= 'a') && (str_aux[i] <= 'z')) && !((str_aux[i] >= 'A') && (str_aux[i] <= 'Z')) && !((str_aux[i] >= '0') && str_aux[i] <= '9') && str_aux[i] != '\\')
-			{
-				ft_printf("char: %c\n", str_aux[i]);
-				(*err) = -1;
-				return (NULL);
-			}
-			if (ht_number == 1)
-			{
-				i = get_input_file(*new_command, str_aux, i);
-				continue ;
-			}
-			else if (ht_number == 2)
-			{
-				i = get_heredocs(*new_command, str_aux, i);
-				continue ;
-			}
-			else
-			{
-				*err = -1;
-				return (NULL);
-			}
-		}
+		
+		if(checks_input(new_command, str_aux, &i, err) == 0)
+			continue;
+		else if(checks_input(new_command, str_aux, &i, err) == -1)
+			return NULL;
 		//-------------------
 		if (str_aux[i] == '|')
 		{
@@ -139,9 +110,7 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		else
 		{
 			if (arg_found != 0)
-			{
 				arg_found = 0;
-			}
 		}
 		i++;
 	}
