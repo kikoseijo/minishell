@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 19:46:45 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:54:05 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,32 +79,22 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		}
 		if (str_aux[i] == ';')
 			break ;
-		if (str_aux[i] == '"')
-		{
-			(*err) = get_arguments_with_quotes(*new_command, str_aux, &i,
-					&num_argument);
-			if (*err != 0)
-				return (NULL);
-			continue ;
-		}
-		if (str_aux[i] == '\'')
-		{
-			(*err) = get_arguments_with_simp_quotes(*new_command, str_aux, &i,
-					&num_argument);
-			if (*err != 0)
-				return (NULL);
-			continue ;
-		}
+		
+		if(check_quotes(new_command, str_aux, &i, err) == 0)
+			continue;
+		else if(check_quotes(new_command, str_aux, &i, err) == -1)
+			return NULL;
+
 		if (str_aux[i] != ' ' && (str_aux[i] != '\0'))
 		{
 			if (arg_found == 0)
 			{
-				num_argument++;
-				(*new_command)->args[num_argument] = (char *)malloc(sizeof(char));
-				(*new_command)->args[num_argument][0] = '\0';
+				(*new_command)->num_args += 1;
+				(*new_command)->args[(*new_command)->num_args] = (char *)malloc(sizeof(char));
+				(*new_command)->args[(*new_command)->num_args][0] = '\0';
 				arg_found = 1;
 			}
-			(*new_command)->args[num_argument] = ft_concat_char((*new_command)->args[num_argument],
+			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args],
 																str_aux[i]);
 		}
 		else
@@ -115,7 +105,7 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		i++;
 	}
 	pos = i + 1;
-	(*new_command)->args[num_argument + 1] = NULL;
+	(*new_command)->args[(*new_command)->num_args + 1] = NULL;
 	new_str = ft_substr_modified(str_aux, pos);
 	return (new_str);
 }

@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 17:54:24 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:50:31 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 
 void	show_list(t_model *command_line)
 {
-	size_t	i;
+	int	i;
 	int	n;
 
 	ft_printf("N. pipes: %d\n", command_line->n_cmd);
@@ -115,12 +115,14 @@ void	show_list(t_model *command_line)
 		ft_printf("pipe: %d\n", command_line->cmds[n]->pipe);
 		n++;
 	}
+	ft_printf("final\n");
 }
 
 void	init_command(t_cmd **new_command)
 {
 	*new_command = (t_cmd *)malloc(sizeof(t_cmd));
 	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
+	(*new_command)->num_args = -1;
 	(*new_command)->pipe = 0;
 	(*new_command)->fd_out = (char **)malloc(100 * sizeof(char *));
 	(*new_command)->n_fdout = 0;
