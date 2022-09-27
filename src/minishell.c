@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 19:23:46 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/27 22:13:31 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ int	main(void)
 	g_envp = join_split(*model->env, NULL);
 	while (1)
 	{
-		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
+		//str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
+		str = readline("MINISHELL> ");
 		parser(str, model, *model->env);
 		ret = check_exit(model, str);
 		if (ret >= 0)

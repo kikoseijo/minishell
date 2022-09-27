@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 20:54:05 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/27 22:00:43 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 				(*new_command)->args[(*new_command)->num_args][0] = '\0';
 				arg_found = 1;
 			}
-			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args],
-																str_aux[i]);
+			ft_printf("char: %c\n", str_aux[i]);
+			if(str_aux[i] == '\\')
+				i++;
+			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args], str_aux[i]);
 		}
 		else
 		{
