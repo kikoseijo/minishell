@@ -6,15 +6,15 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 18:55:51 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 19:48:52 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/27 19:58:24 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int		checks_output(t_cmd **new_command, char *str_aux, int *i, int *err)
+int	checks_output(t_cmd **new_command, char *str_aux, int *i, int *err)
 {
-	int ht_number;
+	int	ht_number;
 
 	if (str_aux[*i] == '>')
 	{

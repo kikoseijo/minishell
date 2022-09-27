@@ -6,13 +6,13 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 17:55:08 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/27 20:53:44 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	get_expansion(char *str, char **enviroment);
+static void	get_expansion(char **str, char **enviroment);
 
 int	get_input_file(t_cmd *command, char *str, int pos)
 {
@@ -75,46 +75,59 @@ void	check_expansions(t_model *model, char **enviroment)
 		i = 1;
 		while (model->cmds[n]->args[i] != NULL)
 		{
-			get_expansion(model->cmds[n]->args[i], enviroment);
+			get_expansion(&(model->cmds[n]->args[i]), enviroment);
 			i++;
 		}
 		n++;
 	}
 }
 
-static void	get_expansion(char *str, char **enviroment)
+static void	get_expansion(char **str, char **enviroment)
 {
 	int		i;
 	int		init;
 	char	*aux;
 	int		j;
-
-	ft_printf("argumentos: %s\n", str);
+	char *copy_str;
+	
+	copy_str = *str;
+	*str = (char *)malloc(sizeof(char));
+	(*str)[0] = '\0';
+	ft_printf("argumentos: %s\n", copy_str);
 	i = 0;
-	while (str[i] != '\0')
+	while (copy_str[i] != '\0')
 	{
-		if (str[i] == '$')
+		if (copy_str[i] == '$')
 		{
 			i++;
 			init = i;
-			while (str[i] != ' ' && str[i] != '$' && str[i] != '\0')
+			while (copy_str[i] != ' ' && copy_str[i] != '$' && copy_str[i] != '\0')
 				i++;
-			aux = ft_substr(str, init, i - init + 1);
+			aux = ft_substr(copy_str, init, i - init + 1);
 			ft_printf("substr: %s\n", aux);
 			j = 0;
 			while (enviroment[j])
 			{
 				if (ft_strncmp(aux, enviroment[j], i - init) == 0)
 				{
-					ft_printf("prueba==> %s: %s\n", aux, enviroment[j]);
+					free(aux);
+					aux = *str;
+					char *env2 = ft_substr(enviroment[j], i - init + 1, ft_strlen(enviroment[j]));
+					ft_printf("prueba==> %s: %s\n", aux, env2);
+					free(aux);
+					*str = ft_strjoin(*str, env2);
+					free(env2);
 					break ;
 				}
 				j++;
 			}
 			continue ;
 		}
+		*str = ft_concat_char(*str, copy_str[i]);
 		i++;
 	}
+	copy_str[i] = '\0';
+	free(copy_str);
 }
 
 int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
