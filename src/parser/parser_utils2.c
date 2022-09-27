@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/27 21:22:16 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/27 22:56:09 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,13 @@ static void	get_expansion(char **str, char **enviroment)
 	i = 0;
 	while (copy_str[i] != '\0')
 	{
+		if(copy_str[i] == '\\')
+		{
+			i++;
+			*str = ft_concat_char(*str, copy_str[i]);
+			i++;
+			continue ;
+		}
 		if (copy_str[i] == '$')
 		{
 			i++;
