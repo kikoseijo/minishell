@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/27 20:16:17 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:13:31 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,16 @@ typedef struct s_cmd
 	char		**args;
 	int			num_args;
 	char		**fd_simple_in;
-	int		num_simple_in;
+	int			num_simple_in;
 	char		**fd_out;
-	int		n_fdout;
+	int			n_fdout;
 	char		**fd_double_out;
-	int		num_double_out;
+	int			num_double_out;
 	char		**heredocs_close;
-	int		num_heredocs;
+	int			num_heredocs;
 	int			pipe;
 	char		*error;
+	int			*expansions;
 }				t_cmd;
 
 typedef struct s_model

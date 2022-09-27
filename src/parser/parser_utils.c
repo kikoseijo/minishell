@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/23 20:50:31 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:19:22 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,17 @@ void	show_list(t_model *command_line)
 
 void	init_command(t_cmd **new_command)
 {
+	int i;
+
+	i = 0;
 	*new_command = (t_cmd *)malloc(sizeof(t_cmd));
 	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
+	(*new_command)->expansions = (int *)malloc(200 * sizeof(int));
+	while(i < 200)
+	{
+		(*new_command)->expansions[i] = 1;
+		i++;
+	}
 	(*new_command)->num_args = -1;
 	(*new_command)->pipe = 0;
 	(*new_command)->fd_out = (char **)malloc(100 * sizeof(char *));

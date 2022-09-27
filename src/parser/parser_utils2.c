@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/27 20:53:44 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:22:16 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ void	check_expansions(t_model *model, char **enviroment)
 		i = 1;
 		while (model->cmds[n]->args[i] != NULL)
 		{
-			get_expansion(&(model->cmds[n]->args[i]), enviroment);
+			if(model->cmds[n]->expansions[i] != 0)
+			{
+				get_expansion(&(model->cmds[n]->args[i]), enviroment);
+			}
 			i++;
 		}
 		n++;
@@ -150,6 +153,7 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 		if (str[*pos] == '\'')
 			quotes_found = 1;
 	}
+	(command)->expansions[*num_argument] = 0;
 	(*pos) += 1;
 	if (quotes_found == 0)
 		error = -2;
