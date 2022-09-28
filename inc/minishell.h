@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/28 22:00:45 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/28 22:11:58 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef struct s_cmd
 	int			num_heredocs;
 	int			pipe;
 	char		*error;
+	int			*expansions;
+	int			*scape_arguments;
 }				t_cmd;
 
 typedef struct s_model
