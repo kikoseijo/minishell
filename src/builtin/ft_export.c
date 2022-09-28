@@ -35,7 +35,7 @@ void	ft_export(char *input, char ***envp)
 	ft_unset(key, envp);
 	new_input[0] = input;
 	new_input[1] = NULL;
-	new_env = join_split(*envp, new_input);
+	new_env = ft_array_join(*envp, new_input);
 	ft_split_free(*envp);
 	*envp = new_env;
 }

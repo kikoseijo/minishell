@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 16:33:46 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/28 21:52:16 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static int	get_new_size(char *str, char ***envp)
 	ptr = *envp;
 	while (*ptr)
 	{
-		if (!ft_strncmp(*ptr, str,
-				ft_strlen(str)) && (*ptr)[ft_strlen(str)] == '=')
+		if (!ft_strncmp(*ptr, str, ft_strlen(str))
+			&& (*ptr)[ft_strlen(str)] == '=')
 			count++;
 		ptr++;
 	}
-	size = len_table(*envp) - count;
+	size = ft_array_len(*envp) - count;
 	if (size <= 0)
 	{
 		// free(*envp);
@@ -52,8 +52,8 @@ static int	del_str_split(char *str, char ***envp)
 	i = 0;
 	while (*ptr)
 	{
-		if (!(!ft_strncmp(*ptr, str,
-					ft_strlen(str)) && (*ptr)[ft_strlen(str)] == '='))
+		if (!(!ft_strncmp(*ptr, str, ft_strlen(str))
+				&& (*ptr)[ft_strlen(str)] == '='))
 			new_tab[i++] = ft_strdup(*ptr);
 		ptr++;
 	}
