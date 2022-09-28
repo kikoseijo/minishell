@@ -6,13 +6,13 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/27 22:56:09 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/28 20:39:27 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	get_expansion(char **str, char **enviroment);
+static void	get_expansion(char **str, char **enviroment, int scape);
 
 int	get_input_file(t_cmd *command, char *str, int pos)
 {
@@ -77,7 +77,7 @@ void	check_expansions(t_model *model, char **enviroment)
 		{
 			if(model->cmds[n]->expansions[i] != 0)
 			{
-				get_expansion(&(model->cmds[n]->args[i]), enviroment);
+				get_expansion(&(model->cmds[n]->args[i]), enviroment, model->cmds[n]->scape_arguments[i]);
 			}
 			i++;
 		}
@@ -85,7 +85,7 @@ void	check_expansions(t_model *model, char **enviroment)
 	}
 }
 
-static void	get_expansion(char **str, char **enviroment)
+static void	get_expansion(char **str, char **enviroment, int scape)
 {
 	int		i;
 	int		init;
@@ -100,7 +100,7 @@ static void	get_expansion(char **str, char **enviroment)
 	i = 0;
 	while (copy_str[i] != '\0')
 	{
-		if(copy_str[i] == '\\')
+		if(copy_str[i] == '\\' && scape == 1)
 		{
 			i++;
 			*str = ft_concat_char(*str, copy_str[i]);
@@ -154,12 +154,24 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 	command->args[*num_argument][0] = '\0';
 	while (str[*pos] != '\0' && str[*pos] != '\'')
 	{
+		if(str[*pos] == '\\')
+			{
+				if(str[*pos + 1] == '\"')
+				{
+					*pos += 1;
+					command->args[*num_argument] = ft_concat_char(command->args[*num_argument], str[*pos]);
+					*pos += 1;
+					continue ;
+				}
+			}
+
 		command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
 														str[*pos]);
 		(*pos) += 1;
 		if (str[*pos] == '\'')
 			quotes_found = 1;
 	}
+
 	(command)->expansions[*num_argument] = 0;
 	(*pos) += 1;
 	if (quotes_found == 0)

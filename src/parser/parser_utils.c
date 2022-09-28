@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/27 21:19:22 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/28 20:15:52 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,27 @@ int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 	(*pos)++;
 	command->args[*num_argument] = (char *)malloc(sizeof(char));
 	command->args[*num_argument][0] = '\0';
-	while (str[*pos] != '\0' && str[*pos] != '"')
+	while (str[*pos] != '\0' && str[*pos] != '\"')
 	{
+		if(str[*pos] == '\\')
+		{
+			if(str[*pos + 1] == '\"')
+			{
+				*pos += 1;
+				command->args[*num_argument] = ft_concat_char(command->args[*num_argument], str[*pos]);
+				*pos += 1;
+				continue ;
+			}
+		}
 		command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
 														str[*pos]);
 		(*pos) += 1;
-		if (str[*pos] == '"')
+		if (str[*pos] == '\"')
 			quotes_found = 1;
 	}
+	command->scape_arguments[*num_argument] = 0;
+	if(str[*pos] == '\"')
+		quotes_found = 1;
 	(*pos) += 1;
 	if (quotes_found == 0)
 		error = -2;
@@ -126,9 +139,11 @@ void	init_command(t_cmd **new_command)
 	*new_command = (t_cmd *)malloc(sizeof(t_cmd));
 	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
 	(*new_command)->expansions = (int *)malloc(200 * sizeof(int));
+	(*new_command)->scape_arguments = (int *)malloc(200 * sizeof(int));
 	while(i < 200)
 	{
 		(*new_command)->expansions[i] = 1;
+		(*new_command)->scape_arguments[i] = 1;
 		i++;
 	}
 	(*new_command)->num_args = -1;
