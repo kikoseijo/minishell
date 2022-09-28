@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/28 21:34:31 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/28 22:00:45 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,11 @@ int				execute(t_model *model, char **envp);
 int				exec_builtin(t_cmd *cmd, char ***envp);
 char			*get_cmd(char **paths, char *cmd);
 void			free_model(t_model *model);
-int				len_table(char **table);
-char			**join_split(char **a, char **b);
+void			kill_childs(int *childs, int i, t_model *model);
 
 // env.c
 char			*get_env_value(char *key, char ***envp);
 void			set_env_value(char *key, char *value, char ***envp);
-char			*get_path(char *cmd, char **envp);
 
 // builtin
 int				ft_cd(char *path, char ***envp);

@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/28 21:34:11 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/28 21:58:55 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_model(t_model *model)
 	}
 	ft_split_free(*model->env);
 	free(model->cmds);
-	free((void *)model->infile);
+	// free((void *)model->infile);
 	free(model);
 }
 
@@ -101,7 +101,7 @@ int	main(void)
 	model = (t_model *)malloc(sizeof(t_model));
 	model->env = &environ;
 	model->env_paths = ft_split(get_env_path(environ), ':');
-	g_envp = join_split(*model->env, NULL);
+	g_envp = ft_array_join(*model->env, NULL);
 	while (1)
 	{
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");

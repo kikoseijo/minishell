@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/28 21:44:08 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/28 21:59:15 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,6 @@ static int	exe_fdin(t_model *model, t_pipes *pipes)
 		return (-1);
 	}
 	return (0);
-}
-
-static void	kill_childs(int *childs, int i, t_model *model)
-{
-	int		wstatus;
-	char	*n_status;
-
-	waitpid(childs[i], &wstatus, 0);
-	n_status = ft_itoa(WEXITSTATUS(wstatus));
-	set_env_value("?", n_status, model->env);
-	free(n_status);
-	while (--i >= 0)
-	{
-		if (childs[i] > 0)
-			kill(childs[i], SIGKILL);
-	}
 }
 
 static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
