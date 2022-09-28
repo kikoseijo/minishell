@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 19:23:46 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/28 21:34:11 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,13 @@ static int	check_exit(t_model *model, char *str)
 	return (-1);
 }
 
+static char	*get_env_path(char **envp)
+{
+	while (ft_strncmp("PATH", *envp, 4))
+		envp++;
+	return (*envp + 5);
+}
+
 int	main(void)
 {
 	t_model		*model;
@@ -93,6 +100,7 @@ int	main(void)
 	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
 	model->env = &environ;
+	model->env_paths = ft_split(get_env_path(environ), ':');
 	g_envp = join_split(*model->env, NULL);
 	while (1)
 	{

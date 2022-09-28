@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 20:48:29 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/28 21:34:31 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ typedef struct s_cmd
 	char		**args;
 	int			num_args;
 	char		**fd_simple_in;
-	int		num_simple_in;
+	int			num_simple_in;
 	char		**fd_out;
-	int		n_fdout;
+	int			n_fdout;
 	char		**fd_double_out;
-	int		num_double_out;
+	int			num_double_out;
 	char		**heredocs_close;
-	int		num_heredocs;
+	int			num_heredocs;
 	int			pipe;
 	char		*error;
 }				t_cmd;
@@ -49,6 +49,7 @@ typedef struct s_model
 	t_cmd		**cmds;
 	int			n_cmd;
 	char		***env;
+	char		**env_paths;
 	const char	*infile;
 	const char	*infile_type;
 	const char	*outfile;
@@ -102,7 +103,10 @@ int				get_input_file(t_cmd *command, char *str, int pos);
 int				get_heredocs(t_cmd *command, char *str, int pos);
 void			check_expansions(t_model *model, char **enviroment);
 int				check_error(int error, t_model *model);
-int				checks_output(t_cmd **new_command, char *str_aux, int *i, int *err);
-int				checks_input(t_cmd **new_command, char *str_aux, int *i, int *err);
-int		check_quotes(t_cmd **new_command, char *str_aux, int *i, int *err);
+int				checks_output(t_cmd **new_command, char *str_aux, int *i,
+					int *err);
+int				checks_input(t_cmd **new_command, char *str_aux, int *i,
+					int *err);
+int				check_quotes(t_cmd **new_command, char *str_aux, int *i,
+					int *err);
 #endif
