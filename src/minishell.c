@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/27 22:13:31 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/28 21:58:55 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_model(t_model *model)
 	}
 	ft_split_free(*model->env);
 	free(model->cmds);
-	free((void *)model->infile);
+	// free((void *)model->infile);
 	free(model);
 }
 
@@ -82,6 +82,13 @@ static int	check_exit(t_model *model, char *str)
 	return (-1);
 }
 
+static char	*get_env_path(char **envp)
+{
+	while (ft_strncmp("PATH", *envp, 4))
+		envp++;
+	return (*envp + 5);
+}
+
 int	main(void)
 {
 	t_model		*model;
@@ -93,11 +100,11 @@ int	main(void)
 	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
 	model->env = &environ;
-	g_envp = join_split(*model->env, NULL);
+	model->env_paths = ft_split(get_env_path(environ), ':');
+	g_envp = ft_array_join(*model->env, NULL);
 	while (1)
 	{
-		//str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
-		str = readline("MINISHELL> ");
+		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
 		parser(str, model, *model->env);
 		ret = check_exit(model, str);
 		if (ret >= 0)

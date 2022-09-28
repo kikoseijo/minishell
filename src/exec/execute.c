@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 16:36:13 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/28 21:59:15 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	exe_fds(t_model *m, int i, t_pipes *pipes)
+static int	exe_fdout(t_model *m, int i, t_pipes *pipes)
 {
 	int	fdpipe[2];
 
@@ -42,18 +42,28 @@ static int	exe_fds(t_model *m, int i, t_pipes *pipes)
 	return (0);
 }
 
-static int	exe_cmd(t_cmd *cmd, char ***envp)
+static int	exe_cmd(t_model *model, int i, char ***envp)
 {
-	int	pid;
+	int		pid;
+	t_cmd	*cmd;
+	char	*cmd_path;
 
+	cmd = model->cmds[i];
 	if (exec_builtin(cmd, envp))
 		return (-1);
 	pid = fork();
 	if (pid == 0)
 	{
-		execve(get_path(cmd->args[0], *envp), cmd->args, *envp);
-		printf("command not found: %s\n", cmd->args[0]);
-		exit(-1);
+		cmd_path = get_cmd(model->env_paths, cmd->args[0]);
+		if (cmd == 0)
+		{
+			printf("%s: Command not found.\n", cmd->args[0]);
+			return (-1);
+		}
+		execve(cmd_path, model->cmds[i]->args, *envp);
+		printf("%s: Command not found.\n", cmd->args[0]);
+		perror("execve");
+		exit(1);
 	}
 	else if (pid < 0)
 	{
@@ -79,22 +89,6 @@ static int	exe_fdin(t_model *model, t_pipes *pipes)
 	return (0);
 }
 
-static void	kill_childs(int *childs, int i, t_model *model)
-{
-	int		wstatus;
-	char	*n_status;
-
-	waitpid(childs[i], &wstatus, 0);
-	n_status = ft_itoa(WEXITSTATUS(wstatus));
-	set_env_value("?", n_status, model->env);
-	free(n_status);
-	while (--i >= 0)
-	{
-		if (childs[i] > 0)
-			kill(childs[i], SIGKILL);
-	}
-}
-
 static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
 {
 	int	i;
@@ -106,12 +100,12 @@ static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
 	{
 		dup2(pipes->fdin, 0);
 		close(pipes->fdin);
-		ret = exe_fds(model, i, pipes);
+		ret = exe_fdout(model, i, pipes);
 		if (ret < 0)
 			return (-1);
 		dup2(pipes->fdout, 1);
 		close(pipes->fdout);
-		childs[i] = exe_cmd(model->cmds[i], &envp);
+		childs[i] = exe_cmd(model, i, &envp);
 		i++;
 	}
 	kill_childs(childs, i - 1, model);

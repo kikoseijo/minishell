@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 16:50:28 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/28 22:00:21 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,68 +41,4 @@ void	set_env_value(char *key, char *value, char ***envp)
 	ft_unset(key, envp);
 	ft_export(entry, envp);
 	free(entry);
-}
-
-static char	*check_dir(char *cmd, char **paths, int i)
-{
-	DIR				*dir;
-	struct dirent	*file;
-	char			*tmp;
-	char			*ret;
-
-	dir = opendir(paths[i]);
-	file = readdir(dir);
-	while (file)
-	{
-		if (!ft_strncmp(file->d_name, cmd, ft_strlen(cmd) + 1))
-		{
-			tmp = ft_strjoin(paths[i], "/");
-			ret = ft_strjoin(tmp, cmd);
-			free(tmp);
-			closedir(dir);
-			// ft_split_free(paths);
-			return (ret);
-		}
-		file = readdir(dir);
-	}
-	closedir(dir);
-	return (NULL);
-}
-
-static char	*relative_path(char *cmd)
-{
-	char	pwd_buf[150];
-	int		len;
-
-	getcwd(pwd_buf, 150);
-	len = ft_strlen(pwd_buf);
-	if (len > 148)
-		return (NULL);
-	pwd_buf[len + 1] = '\0';
-	pwd_buf[len] = '/';
-	return (ft_strjoin(pwd_buf, cmd));
-}
-
-char	*get_path(char *cmd, char **envp)
-{
-	char	**paths;
-	char	*ret;
-	int		i;
-
-	if (*cmd == '/')
-		return (cmd);
-	if (*cmd == '.')
-		return (relative_path(cmd));
-	paths = ft_split(get_env_value((char *)"PATH", &envp), ':');
-	if (!paths)
-		return (NULL);
-	i = -1;
-	while (paths[++i])
-	{
-		ret = check_dir(cmd, paths, i);
-		if (ret)
-			return (ret);
-	}
-	// ft_split_free(paths);
-	return (NULL);
 }

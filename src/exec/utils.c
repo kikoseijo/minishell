@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 15:29:07 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/28 21:55:54 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,33 +61,18 @@ char	*get_cmd(char **paths, char *cmd)
 	return (0);
 }
 
-int	len_table(char **table)
+void	kill_childs(int *childs, int i, t_model *model)
 {
-	int	len;
+	int		wstatus;
+	char	*n_status;
 
-	len = 0;
-	while (table && table[len])
-		len++;
-	return (len);
-}
-
-char	**join_split(char **a, char **b)
-{
-	int		size;
-	char	**ret;
-	int		i;
-	int		j;
-
-	size = len_table(a) + len_table(b) + 1;
-	ret = (char **)malloc(size * sizeof(char *));
-	if (!ret)
-		return (NULL);
-	i = -1;
-	while (a && a[++i])
-		ret[i] = ft_strdup(a[i]);
-	j = 0;
-	while (b && b[j])
-		ret[i++] = ft_strdup(b[j++]);
-	ret[i] = NULL;
-	return (ret);
+	waitpid(childs[i], &wstatus, 0);
+	n_status = ft_itoa(WEXITSTATUS(wstatus));
+	set_env_value("?", n_status, model->env);
+	free(n_status);
+	while (--i >= 0)
+	{
+		if (childs[i] > 0)
+			kill(childs[i], SIGKILL);
+	}
 }
