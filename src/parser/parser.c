@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/27 22:54:56 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/28 22:25:07 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,15 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		str_aux = clean_white_spaces(str);
 	while (str_aux[i] != '\0')
 	{
-		//Checks output
 		if(checks_output(new_command, str_aux, &i, err) == 0)
 			continue;
 		else if(checks_output(new_command, str_aux, &i, err) == -1)
 			return NULL;
-		//Checks input
 		
 		if(checks_input(new_command, str_aux, &i, err) == 0)
 			continue;
 		else if(checks_input(new_command, str_aux, &i, err) == -1)
 			return NULL;
-		//-------------------
 		if (str_aux[i] == '|')
 		{
 			(*new_command)->pipe = 1;
@@ -94,8 +91,6 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 				(*new_command)->args[(*new_command)->num_args][0] = '\0';
 				arg_found = 1;
 			}
-			//if(str_aux[i] == '\\')
-			//	i++;
 			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args], str_aux[i]);
 		}
 		else
