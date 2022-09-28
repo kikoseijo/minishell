@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 16:36:13 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:04:10 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ static int	exe_fds(t_model *m, int i, t_pipes *pipes)
 
 	if (i == m->n_cmd - 1)
 	{
-		if (m->outfile && ft_strlen(m->outfile_type) == 1)
-			pipes->fdout = open(m->outfile,
-								O_WRONLY | O_CREAT | O_TRUNC,
-								0664);
-		else if (m->outfile && ft_strlen(m->outfile_type) == 2)
-			pipes->fdout = open(m->outfile, O_WRONLY | O_APPEND);
+		if (m->cmds[i]->num_double_out > 0)
+			pipes->fdout = open(m->cmds[i]->fd_double_out[0],
+								O_WRONLY | O_APPEND);
+		else if (m->cmds[i]->n_fdout > 0)
+			pipes->fdout = open(m->cmds[i]->fd_out[0],
+								O_CREAT | O_RDWR | O_TRUNC,
+								0644);
 		else
 			pipes->fdout = dup(pipes->tmpout);
 		if (pipes->fdout < 0)
@@ -108,7 +109,10 @@ static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
 		close(pipes->fdin);
 		ret = exe_fds(model, i, pipes);
 		if (ret < 0)
+		{
+			printf("No output %s", model->cmds[i]->args[0]);
 			return (-1);
+		}
 		dup2(pipes->fdout, 1);
 		close(pipes->fdout);
 		childs[i] = exe_cmd(model->cmds[i], &envp);
@@ -120,19 +124,20 @@ static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
 
 int	execute(t_model *model, char **envp)
 {
-	t_pipes	pipes;
+	t_pipes	*pipes;
 	int		ret;
 
-	pipes.tmpin = dup(0);
-	pipes.tmpout = dup(1);
-	ret = exe_fdin(model, &pipes);
+	pipes = (t_pipes *)malloc(sizeof(t_pipes));
+	pipes->tmpin = dup(0);
+	pipes->tmpout = dup(1);
+	ret = exe_fdin(model, pipes);
 	if (ret == -1)
 		return (-1);
-	ret = exe_pipes(model, &pipes, envp);
-	dup2(pipes.tmpin, 0);
-	dup2(pipes.tmpout, 1);
-	close(pipes.tmpin);
-	close(pipes.tmpout);
+	ret = exe_pipes(model, pipes, envp);
+	dup2(pipes->tmpin, 0);
+	dup2(pipes->tmpout, 1);
+	close(pipes->tmpin);
+	close(pipes->tmpout);
 	waitpid(ret, NULL, 0);
 	return (0);
 }
