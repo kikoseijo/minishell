@@ -26,9 +26,8 @@ $ make norme
 
 The program has been tested against following tests:
 
-- [ ] Test 1
-- [ ] Test 2
-- [x] Test 3
+- [ ] Minishell-tester https://github.com/solaldunckel/minishell-tester
+- [ ] minishell_tester https://github.com/thallard/minishell_tester
 
 ## References
 
