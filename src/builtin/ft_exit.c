@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:51:52 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 13:16:18 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/29 18:11:00 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_exit(t_model *model)
 {
 	int	ret;
 
-	if (model->cmds[0]->num_args > 2)
+	if (model->cmds[0]->num_args + 1 > 2)
 	{
 		ft_putstr_fd((char *)"exit: too many arguments\n", 2);
 		return (-1);
