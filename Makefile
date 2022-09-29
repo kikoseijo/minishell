@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
+#    By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/09/23 20:42:21 by anramire         ###   ########.fr        #
+#    Updated: 2022/09/29 16:03:17 by cmac             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,6 @@ fclean: clean
 re: fclean $(MAKE) $(NAME)
 
 norme:
-	norminette -R CheckForbiddenSourceHeader ${wildcard src/*.c} ${wildcard inc/*.h} ${wildcard libft/src/**/*.c} ${wildcard libft/inc/*.h}
+	norminette -R CheckForbiddenSourceHeader ${wildcard src/*.c} ${wildcard src/**/*.c} ${wildcard inc/*.h} ${wildcard libft/src/**/*.c} ${wildcard libft/inc/*.h}
 
 .PHONY: re, fclean, clean , all
