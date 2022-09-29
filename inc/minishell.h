@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 18:40:06 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 19:33:29 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_pipes
 }				t_pipes;
 
 void			parser(char *str, t_model *model, char **envp);
-int				execute(t_model *model, char **envp);
+int				execute(t_model *model, char ***envp);
 int				exec_builtin(t_cmd *cmd, char ***envp);
 char			*get_cmd(char **paths, char *cmd);
 void			free_model(t_model *model);

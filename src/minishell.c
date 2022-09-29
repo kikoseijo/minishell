@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 18:39:53 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 19:32:06 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	main(void)
 		if (ret >= 0)
 			return (ret);
 		else
-			execute(model, *model->env);
+			execute(model, model->env);
 		// free(str);
 		// free_model(model);
 	}

@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 19:04:14 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 19:32:46 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static int	exe_fdin(t_model *model, t_pipes *pipes)
 	return (0);
 }
 
-static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
+static int	exe_pipes(t_model *model, t_pipes *pipes, char ***envp)
 {
 	int	i;
 	int	ret;
@@ -112,14 +112,14 @@ static int	exe_pipes(t_model *model, t_pipes *pipes, char **envp)
 			return (-1);
 		dup2(pipes->fdout, 1);
 		close(pipes->fdout);
-		childs[i] = exe_cmd(model, i, &envp);
+		childs[i] = exe_cmd(model, i, envp);
 		i++;
 	}
 	kill_childs(childs, i - 1, model);
 	return (0);
 }
 
-int	execute(t_model *model, char **envp)
+int	execute(t_model *model, char ***envp)
 {
 	t_pipes	pipes;
 	int		ret;
