@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 19:32:46 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 20:22:33 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ static int	exe_cmd(t_model *model, int i, char ***envp)
 			return (-1);
 		}
 		execve(cmd_path, model->cmds[i]->args, *envp);
-		// printf("bash: %s: No such file or directory.\n", cmd->args[0]);
-		// perror("execve");
 		exit(1);
 	}
 	else if (pid < 0)
@@ -78,10 +76,7 @@ static int	exe_fdin(t_model *model, t_pipes *pipes)
 		{
 			t = 0;
 			while (t < model->cmds[i]->num_simple_in)
-			{
-				pipes->fdin = open(model->cmds[i]->fd_simple_in[t], O_RDONLY);
-				t++;
-			}
+				pipes->fdin = open(model->cmds[i]->fd_simple_in[t++], O_RDONLY);
 		}
 		else
 			pipes->fdin = dup(pipes->tmpin);

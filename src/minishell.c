@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 19:32:06 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 20:28:01 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 ** tgetnum, tgetstr, tgoto, tputs
 */
 
-// char		**g_envp;
-
 void	free_model(t_model *model)
 {
 	int	i;
@@ -36,16 +34,9 @@ void	free_model(t_model *model)
 	while (i > 0)
 	{
 		i--;
-		// ft_split_free(model->cmds[i]->args);
-		// ft_split_free(model->cmds[i]->fd_simple_in);
-		// ft_split_free(model->cmds[i]->fd_out);
-		// ft_split_free(model->cmds[i]->fd_double_out);
-		// ft_split_free(model->cmds[i]->heredocs_close);
 		free(model->cmds[i]);
 	}
-	// ft_split_free(*model->env);
 	free(model->cmds);
-	// free((void *)model->infile);
 	free(model);
 }
 
@@ -55,10 +46,7 @@ static void	handler(int signal)
 	{
 		printf("\n");
 		rl_on_new_line();
-		// rl_replace_line("", 0);
 		rl_redisplay();
-		// set_env_value("?", "1", &g_envp);
-		// set_env_value("_", "1", &g_envp);
 		exit(-1);
 	}
 }
@@ -73,14 +61,13 @@ static int	check_exit(t_model *model, char *str)
 		if (ret >= 0)
 		{
 			free(str);
-			// ft_split_free(g_envp);
 			clear_history();
-			// system("leaks -q minishell");
 			return (ret);
 		}
 	}
 	return (-1);
 }
+// system("leaks -q minishell");
 
 static char	*get_env_path(char **envp)
 {
@@ -101,7 +88,6 @@ int	main(void)
 	model = (t_model *)malloc(sizeof(t_model));
 	model->env = &environ;
 	model->env_paths = ft_split(get_env_path(environ), ':');
-	// g_envp = ft_array_join(*model->env, NULL);
 	while (1)
 	{
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
@@ -111,10 +97,7 @@ int	main(void)
 			return (ret);
 		else
 			execute(model, model->env);
-		// free(str);
-		// free_model(model);
 	}
 	clear_history();
-	// ft_split_free(g_envp);
 	return (0);
 }

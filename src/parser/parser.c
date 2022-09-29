@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/28 22:25:07 by anramire         ###   ########.fr       */
+/*   Updated: 2022/09/29 20:17:03 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,14 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		str_aux = clean_white_spaces(str);
 	while (str_aux[i] != '\0')
 	{
-		if(checks_output(new_command, str_aux, &i, err) == 0)
-			continue;
-		else if(checks_output(new_command, str_aux, &i, err) == -1)
-			return NULL;
-		
-		if(checks_input(new_command, str_aux, &i, err) == 0)
-			continue;
-		else if(checks_input(new_command, str_aux, &i, err) == -1)
-			return NULL;
+		if (checks_output(new_command, str_aux, &i, err) == 0)
+			continue ;
+		else if (checks_output(new_command, str_aux, &i, err) == -1)
+			return (NULL);
+		if (checks_input(new_command, str_aux, &i, err) == 0)
+			continue ;
+		else if (checks_input(new_command, str_aux, &i, err) == -1)
+			return (NULL);
 		if (str_aux[i] == '|')
 		{
 			(*new_command)->pipe = 1;
@@ -76,12 +75,10 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		}
 		if (str_aux[i] == ';')
 			break ;
-		
-		if(check_quotes(new_command, str_aux, &i, err) == 0)
-			continue;
-		else if(check_quotes(new_command, str_aux, &i, err) == -1)
-			return NULL;
-
+		if (check_quotes(new_command, str_aux, &i, err) == 0)
+			continue ;
+		else if (check_quotes(new_command, str_aux, &i, err) == -1)
+			return (NULL);
 		if (str_aux[i] != ' ' && (str_aux[i] != '\0'))
 		{
 			if (arg_found == 0)
@@ -91,7 +88,8 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 				(*new_command)->args[(*new_command)->num_args][0] = '\0';
 				arg_found = 1;
 			}
-			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args], str_aux[i]);
+			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args],
+					str_aux[i]);
 		}
 		else
 		{
@@ -116,16 +114,19 @@ void	parser(char *str, t_model *model, char **envp)
 	model->n_cmd = 0;
 	model->cmds = (t_cmd **)malloc(100 * sizeof(t_cmd *));
 	str_aux = get_command(str, (&model->cmds[model->n_cmd]), &error);
-	if(check_error(error, model) != 0)
+	if (check_error(error, model) != 0)
 		return ;
 	model->n_cmd++;
 	while (str_aux)
 	{
 		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
-		if(check_error(error, model) != 0)
+		if (check_error(error, model) != 0)
 			return ;
 		model->n_cmd++;
 	}
 	check_expansions(model, envp);
-	show_list(model);
 }
+
+/*
+** show_list(model);
+*/
