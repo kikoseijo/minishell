@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 17:08:16 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 18:13:13 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_builtin(t_cmd *cmd, char ***envp)
 
 	built = 1;
 	if (!ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_echo(cmd->num_args, cmd->args);
+		ft_echo(cmd->num_args + 1, cmd->args);
 	else if (!ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])))
 	{
 		if (ft_cd(cmd->args[1], envp))
