@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/28 21:55:54 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 17:08:16 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,33 @@ void	kill_childs(int *childs, int i, t_model *model)
 		if (childs[i] > 0)
 			kill(childs[i], SIGKILL);
 	}
+}
+
+void	setup_fdout(t_model *m, int i, t_pipes *pipes)
+{
+	int		t;
+	t_cmd	*cmd;
+
+	cmd = m->cmds[i];
+	if (cmd->num_double_out > 0)
+	{
+		t = 0;
+		while (t < cmd->num_double_out)
+		{
+			pipes->fdout = open(cmd->fd_double_out[t], O_WRONLY | O_APPEND);
+			t++;
+		}
+	}
+	else if (cmd->n_fdout > 0)
+	{
+		t = 0;
+		while (t < cmd->n_fdout)
+		{
+			pipes->fdout = open(cmd->fd_out[t], O_WRONLY | O_CREAT | O_TRUNC,
+					0664);
+			t++;
+		}
+	}
+	else
+		pipes->fdout = dup(pipes->tmpout);
 }

@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/28 21:59:15 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 17:14:51 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,10 @@ static int	exe_fdout(t_model *m, int i, t_pipes *pipes)
 
 	if (i == m->n_cmd - 1)
 	{
-		if (m->outfile && ft_strlen(m->outfile_type) == 1)
-			pipes->fdout = open(m->outfile,
-								O_WRONLY | O_CREAT | O_TRUNC,
-								0664);
-		else if (m->outfile && ft_strlen(m->outfile_type) == 2)
-			pipes->fdout = open(m->outfile, O_WRONLY | O_APPEND);
-		else
-			pipes->fdout = dup(pipes->tmpout);
+		setup_fdout(m, i, pipes);
 		if (pipes->fdout < 0)
 		{
-			perror(m->outfile);
+			perror(m->cmds[i]->fd_out[0]);
 			return (-1);
 		}
 	}
@@ -55,14 +48,14 @@ static int	exe_cmd(t_model *model, int i, char ***envp)
 	if (pid == 0)
 	{
 		cmd_path = get_cmd(model->env_paths, cmd->args[0]);
-		if (cmd == 0)
-		{
-			printf("%s: Command not found.\n", cmd->args[0]);
-			return (-1);
-		}
+		// if (cmd == 0)
+		// {
+		// 	printf("%s: Command not found.\n", cmd->args[0]);
+		// 	return (-1);
+		// }
 		execve(cmd_path, model->cmds[i]->args, *envp);
-		printf("%s: Command not found.\n", cmd->args[0]);
-		perror("execve");
+		printf("bash: %s: No such file or directory.\n", cmd->args[0]);
+		// perror("execve");
 		exit(1);
 	}
 	else if (pid < 0)
@@ -75,10 +68,24 @@ static int	exe_cmd(t_model *model, int i, char ***envp)
 
 static int	exe_fdin(t_model *model, t_pipes *pipes)
 {
-	if (model->infile)
-		pipes->fdin = open(model->infile, O_RDONLY);
-	else
-		pipes->fdin = dup(pipes->tmpin);
+	int	i;
+	int	t;
+
+	i = -1;
+	while (++i < model->n_cmd)
+	{
+		if (model->cmds[i]->num_simple_in > 0)
+		{
+			t = 0;
+			while (t < model->cmds[i]->num_simple_in)
+			{
+				pipes->fdin = open(model->cmds[i]->fd_simple_in[t], O_RDONLY);
+				t++;
+			}
+		}
+		else
+			pipes->fdin = dup(pipes->tmpin);
+	}
 	if (pipes->fdin < 0)
 	{
 		perror(model->infile);
