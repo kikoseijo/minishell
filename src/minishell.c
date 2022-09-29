@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/28 21:58:55 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 18:39:53 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 ** tgetnum, tgetstr, tgoto, tputs
 */
 
-char		**g_envp;
+// char		**g_envp;
 
 void	free_model(t_model *model)
 {
@@ -43,7 +43,7 @@ void	free_model(t_model *model)
 		// ft_split_free(model->cmds[i]->heredocs_close);
 		free(model->cmds[i]);
 	}
-	ft_split_free(*model->env);
+	// ft_split_free(*model->env);
 	free(model->cmds);
 	// free((void *)model->infile);
 	free(model);
@@ -57,8 +57,8 @@ static void	handler(int signal)
 		rl_on_new_line();
 		// rl_replace_line("", 0);
 		rl_redisplay();
-		set_env_value("?", "1", &g_envp);
-		set_env_value("_", "1", &g_envp);
+		// set_env_value("?", "1", &g_envp);
+		// set_env_value("_", "1", &g_envp);
 		exit(-1);
 	}
 }
@@ -73,9 +73,9 @@ static int	check_exit(t_model *model, char *str)
 		if (ret >= 0)
 		{
 			free(str);
-			ft_split_free(g_envp);
+			// ft_split_free(g_envp);
 			clear_history();
-			system("leaks -q minishell");
+			// system("leaks -q minishell");
 			return (ret);
 		}
 	}
@@ -101,7 +101,7 @@ int	main(void)
 	model = (t_model *)malloc(sizeof(t_model));
 	model->env = &environ;
 	model->env_paths = ft_split(get_env_path(environ), ':');
-	g_envp = ft_array_join(*model->env, NULL);
+	// g_envp = ft_array_join(*model->env, NULL);
 	while (1)
 	{
 		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
@@ -115,6 +115,6 @@ int	main(void)
 		// free_model(model);
 	}
 	clear_history();
-	ft_split_free(g_envp);
+	// ft_split_free(g_envp);
 	return (0);
 }

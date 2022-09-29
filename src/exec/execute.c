@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 17:14:51 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 18:39:38 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	exe_cmd(t_model *model, int i, char ***envp)
 		// 	return (-1);
 		// }
 		execve(cmd_path, model->cmds[i]->args, *envp);
-		printf("bash: %s: No such file or directory.\n", cmd->args[0]);
+		// printf("bash: %s: No such file or directory.\n", cmd->args[0]);
 		// perror("execve");
 		exit(1);
 	}
