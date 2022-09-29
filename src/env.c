@@ -6,23 +6,23 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 18:40:12 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 20:13:41 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*get_env_value(char *key, char ***envp)
+char	*get_env_value(char *key, char **envp)
 {
 	int	i;
-	int	len_key;
+	int	len;
 
-	len_key = ft_strlen(key);
+	len = ft_strlen(key);
 	i = 0;
 	while (envp[i])
 	{
-		if (!ft_strncmp(*envp[i], key, len_key) && *envp[i][len_key] == '=')
-			return (envp[i][len_key + 1]);
+		if (!ft_strncmp(envp[i], key, len) && envp[i][len] == '=')
+			return (&envp[i][len + 1]);
 		i++;
 	}
 	return (NULL);

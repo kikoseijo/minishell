@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 19:33:29 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 20:11:42 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void			kill_childs(int *childs, int i, t_model *model);
 void			setup_fdout(t_model *m, int i, t_pipes *pipes);
 
 // env.c
-char			*get_env_value(char *key, char ***envp);
+char			*get_env_value(char *key, char **envp);
 void			set_env_value(char *key, char *value, char ***envp);
 
 // builtin

@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 18:39:41 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/29 19:52:28 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ char	*get_cmd(char **paths, char *cmd)
 
 void	kill_childs(int *childs, int i, t_model *model)
 {
-	int		wstatus;
-	char	*n_status;
+	int		exit_int_code;
+	char	*exit_str_code;
 
-	waitpid(childs[i], &wstatus, 0);
-	n_status = ft_itoa(WEXITSTATUS(wstatus));
-	set_env_value("?", n_status, model->env);
-	free(n_status);
+	waitpid(childs[i], &exit_int_code, 0);
+	exit_str_code = ft_itoa(WEXITSTATUS(exit_int_code));
+	set_env_value("?", exit_str_code, model->env);
+	free(exit_str_code);
 	while (--i >= 0)
 	{
 		if (childs[i] > 0)
