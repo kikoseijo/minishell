@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 13:26:45 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/30 17:30:00 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ void	set_env_value(char *key, char *value, char ***envp)
 	ft_unset(key, envp);
 	ft_export(entry, envp);
 	free(entry);
+}
+
+char	*get_env_path(char **envp)
+{
+	while (ft_strncmp("PATH", *envp, 4))
+		envp++;
+	return (*envp + 5);
 }
 
 void	clear_terminal(void)

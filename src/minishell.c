@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 11:23:33 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/30 17:30:12 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static void	handler(int signal)
 	{
 		printf("\n");
 		rl_on_new_line();
-		// rl_replace_line("", 0);
 		print_prompt();
 		rl_redisplay();
 		exit(-1);
@@ -68,13 +67,6 @@ static int	check_exit(t_model *model, char *str)
 }
 // system("leaks -q minishell");
 
-static char	*get_env_path(char **envp)
-{
-	while (ft_strncmp("PATH", *envp, 4))
-		envp++;
-	return (*envp + 5);
-}
-
 int	main(void)
 {
 	t_model		*model;
@@ -86,7 +78,6 @@ int	main(void)
 	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
 	model->env = &environ;
-	model->env_paths = ft_split(get_env_path(environ), ':');
 	clear_terminal();
 	while (1)
 	{

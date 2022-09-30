@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 11:45:03 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/30 17:29:10 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	exe_cmd(t_model *model, int i, char ***envp)
 	pid = fork();
 	if (pid == 0)
 	{
-		cmd_path = get_cmd(model->env_paths, cmd->args[0]);
+		cmd_path = get_cmd(ft_split(get_env_path(*envp), ':'), cmd->args[0]);
 		if (cmd_path == 0)
 		{
 			printf("bash: %s: Command not found.\n", cmd->args[0]);
