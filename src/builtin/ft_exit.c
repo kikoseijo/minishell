@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:51:52 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 18:39:30 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/30 11:53:11 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_exit(t_model *model)
 	}
 	else
 	{
-		ft_putstr_fd("exit: numeric argument required\n", 2);
-		return (-1);
+		ft_putstr_fd((char *)"exit: numeric argument required\n", 2);
+		return (255);
 	}
 }
