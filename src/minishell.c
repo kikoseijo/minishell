@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 20:28:01 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/30 09:01:16 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,8 @@ void	free_model(t_model *model)
 	int	i;
 
 	i = model->n_cmd;
-	while (i > 0)
-	{
-		i--;
+	while (i-- > 0 && model->cmds[i])
 		free(model->cmds[i]);
-	}
 	free(model->cmds);
 	free(model);
 }

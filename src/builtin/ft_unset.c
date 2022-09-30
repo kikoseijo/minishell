@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 20:25:54 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/30 09:00:52 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static int	get_new_size(char *str, char ***envp)
 	ptr = *envp;
 	while (*ptr)
 	{
-		if (!ft_strncmp(*ptr, str, ft_strlen(str))
-			&& (*ptr)[ft_strlen(str)] == '=')
+		if (!ft_strncmp(*ptr, str,
+				ft_strlen(str)) && (*ptr)[ft_strlen(str)] == '=')
 			count++;
 		ptr++;
 	}
@@ -48,13 +48,12 @@ static int	del_str_split(char *str, char ***envp)
 	i = 0;
 	while (*ptr)
 	{
-		if (!(!ft_strncmp(*ptr, str, ft_strlen(str))
-				&& (*ptr)[ft_strlen(str)] == '='))
+		if (!(!ft_strncmp(*ptr, str,
+					ft_strlen(str)) && (*ptr)[ft_strlen(str)] == '='))
 			new_tab[i++] = ft_strdup(*ptr);
 		ptr++;
 	}
 	new_tab[i] = NULL;
-	ft_split_free(*envp);
 	*envp = new_tab;
 	return (0);
 }
