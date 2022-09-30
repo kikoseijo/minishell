@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 20:13:41 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/30 11:28:47 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,38 @@ void	set_env_value(char *key, char *value, char ***envp)
 	ft_unset(key, envp);
 	ft_export(entry, envp);
 	free(entry);
+}
+
+void	clear_terminal(void)
+{
+	int				index;
+	struct winsize	w;
+
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	index = 0;
+	while (w.ws_row != index)
+	{
+		printf("\n");
+		index++;
+	}
+}
+
+void	print_prompt(void)
+{
+	struct winsize	w;
+	char			*cur_user;
+	extern char		**environ;
+	char			working_dir[256];
+
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	write(1, "\n", 1);
+	getcwd(working_dir, 256);
+	cur_user = get_env_value((char *)"LOGNAME", environ);
+	ft_putstr_fd((char *)"\e[0;34m", 1);
+	ft_putstr_fd(cur_user, 1);
+	ft_putstr_fd((char *)"\e[0;32m", 1);
+	write(1, " in ", 4);
+	ft_putstr_fd((char *)"\e[0;31m", 1);
+	ft_putstr_fd(working_dir, 1);
+	ft_putstr_fd((char *)"\n\e[0;32m", 1);
 }

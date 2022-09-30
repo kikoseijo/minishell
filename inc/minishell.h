@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 20:21:19 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/30 09:39:47 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void			setup_fdout(t_model *m, int i, t_pipes *pipes);
 // env.c
 char			*get_env_value(char *key, char **envp);
 void			set_env_value(char *key, char *value, char ***envp);
+void			clear_terminal(void);
+void			print_prompt(void);
 
 // builtin
 int				ft_cd(char *path, char ***envp);
