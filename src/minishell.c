@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 09:01:16 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/09/30 11:23:33 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static void	handler(int signal)
 	{
 		printf("\n");
 		rl_on_new_line();
+		// rl_replace_line("", 0);
+		print_prompt();
 		rl_redisplay();
 		exit(-1);
 	}
@@ -85,9 +87,11 @@ int	main(void)
 	model = (t_model *)malloc(sizeof(t_model));
 	model->env = &environ;
 	model->env_paths = ft_split(get_env_path(environ), ':');
+	clear_terminal();
 	while (1)
 	{
-		str = readline("\e[0;32m\U0000269B\e[0;94m prompt \U0001F498 $ \e[m");
+		print_prompt();
+		str = readline("$ ");
 		parser(str, model, *model->env);
 		ret = check_exit(model, str);
 		if (ret >= 0)

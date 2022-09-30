@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/29 19:52:28 by cmac             ###   ########.fr       */
+/*   Updated: 2022/09/30 09:36:12 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	exec_builtin(t_cmd *cmd, char ***envp)
 	{
 		if (ft_cd(cmd->args[1], envp))
 		{
-			set_env_value("?", "1", envp);
+			set_env_value((char *)"?", (char *)"1", envp);
 			return (built);
 		}
 	}
@@ -37,7 +37,7 @@ int	exec_builtin(t_cmd *cmd, char ***envp)
 		ft_env(*envp);
 	else
 		built = 0;
-	set_env_value("?", "0", envp);
+	set_env_value((char *)"?", (char *)"0", envp);
 	return (built);
 }
 
@@ -68,7 +68,7 @@ void	kill_childs(int *childs, int i, t_model *model)
 
 	waitpid(childs[i], &exit_int_code, 0);
 	exit_str_code = ft_itoa(WEXITSTATUS(exit_int_code));
-	set_env_value("?", exit_str_code, model->env);
+	set_env_value((char *)"?", exit_str_code, model->env);
 	free(exit_str_code);
 	while (--i >= 0)
 	{
