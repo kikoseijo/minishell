@@ -6,13 +6,16 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/09/29 18:40:41 by cmac             ###   ########.fr        #
+#    Updated: 2022/09/30 09:46:32 by jseijo-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CFLAGS = -Wall -Wextra -Werror -g -Og
+
+INC_LIBFT = -I libft
+INC_READLINE = -I ${HOME}/.brew/opt/readline/include
 
 SRC = src/minishell.c \
 			src/exec/execute.c \
@@ -43,7 +46,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(CFLAGS) -I libft $(OBJ) ./libft/libft.a -lreadline -lncurses -o $(NAME)
+	$(CC) $(CFLAGS) $(INC_LIBFT) $(INC_READLINE) $(OBJ) ./libft/libft.a -lreadline -lncurses -o $(NAME)
 
 clean:
 	$(MAKE) -C libft fclean
