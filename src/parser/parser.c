@@ -89,7 +89,7 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 				arg_found = 1;
 			}
 			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args],
-					str_aux[i]);
+																			str_aux[i]);
 		}
 		else
 		{

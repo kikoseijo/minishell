@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/03 19:28:51 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:43:54 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,8 @@ char			*clean_white_spaces(char *str);
 int				get_arguments_with_quotes(t_cmd *cmd, char *str, int *pos,
 					int *narg);
 //Parser functions
-int	get_arguments_with_simp_quotes(t_cmd *command,
-									char *str,
-									int *pos,
-									int *num_argument);
+int				get_arguments_with_simp_quotes(t_cmd *command,
+					char *str, int *pos, int *num_argument);
 void			show_list(t_model *command_line);
 void			init_command(t_cmd **new_command);
 int				get_output_file(t_cmd *command, char *str, int pos);

@@ -54,12 +54,13 @@ int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 	command->args[*num_argument][0] = '\0';
 	while (str[*pos] != '\0' && str[*pos] != '\"')
 	{
-		if(str[*pos] == '\\')
+		if (str[*pos] == '\\')
 		{
-			if(str[*pos + 1] == '\"')
+			if (str[*pos + 1] == '\"')
 			{
 				*pos += 1;
-				command->args[*num_argument] = ft_concat_char(command->args[*num_argument], str[*pos]);
+				command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
+						str[*pos]);
 				*pos += 1;
 				continue ;
 			}
@@ -71,7 +72,7 @@ int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 			quotes_found = 1;
 	}
 	command->scape_arguments[*num_argument] = 0;
-	if(str[*pos] == '\"')
+	if (str[*pos] == '\"')
 		quotes_found = 1;
 	(*pos) += 1;
 	if (quotes_found == 0)
@@ -133,14 +134,14 @@ void	show_list(t_model *command_line)
 
 void	init_command(t_cmd **new_command)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	*new_command = (t_cmd *)malloc(sizeof(t_cmd));
 	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
 	(*new_command)->expansions = (int *)malloc(200 * sizeof(int));
 	(*new_command)->scape_arguments = (int *)malloc(200 * sizeof(int));
-	while(i < 200)
+	while (i < 200)
 	{
 		(*new_command)->expansions[i] = 1;
 		(*new_command)->scape_arguments[i] = 1;
@@ -160,10 +161,10 @@ void	init_command(t_cmd **new_command)
 
 int	get_output_file(t_cmd *command, char *str, int pos)
 {
-	int		end;
-	//char	*file; Unused
-	int		i;
+	int	end;
+	int	i;
 
+	//char	*file; Unused
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;

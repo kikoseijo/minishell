@@ -16,10 +16,10 @@ static void	get_expansion(char **str, char **enviroment, int scape);
 
 int	get_input_file(t_cmd *command, char *str, int pos)
 {
-	int		end;
-	//char	*file; Unused
-	int		i;
+	int	end;
+	int	i;
 
+	//char	*file; Unused
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
 		end++;
@@ -41,10 +41,10 @@ int	get_input_file(t_cmd *command, char *str, int pos)
 
 int	get_heredocs(t_cmd *command, char *str, int pos)
 {
-	int		end;
-	//char	*file; Unused
-	int		i;
+	int	end;
+	int	i;
 
+	//char	*file; Unused
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
 		end++;
@@ -75,9 +75,10 @@ void	check_expansions(t_model *model, char **enviroment)
 		i = 1;
 		while (model->cmds[n]->args[i] != NULL)
 		{
-			if(model->cmds[n]->expansions[i] != 0)
+			if (model->cmds[n]->expansions[i] != 0)
 			{
-				get_expansion(&(model->cmds[n]->args[i]), enviroment, model->cmds[n]->scape_arguments[i]);
+				get_expansion(&(model->cmds[n]->args[i]), enviroment,
+						model->cmds[n]->scape_arguments[i]);
 			}
 			i++;
 		}
@@ -91,8 +92,9 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 	int		init;
 	char	*aux;
 	int		j;
-	char *copy_str;
-	
+	char	*copy_str;
+	char	*env2;
+
 	copy_str = *str;
 	*str = (char *)malloc(sizeof(char));
 	(*str)[0] = '\0';
@@ -100,7 +102,7 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 	i = 0;
 	while (copy_str[i] != '\0')
 	{
-		if(copy_str[i] == '\\' && scape == 1)
+		if (copy_str[i] == '\\' && scape == 1)
 		{
 			i++;
 			*str = ft_concat_char(*str, copy_str[i]);
@@ -122,7 +124,8 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 				{
 					free(aux);
 					aux = *str;
-					char *env2 = ft_substr(enviroment[j], i - init + 1, ft_strlen(enviroment[j]));
+					env2 = ft_substr(enviroment[j], i - init + 1,
+							ft_strlen(enviroment[j]));
 					ft_printf("prueba==> %s: %s\n", aux, env2);
 					free(aux);
 					*str = ft_strjoin(*str, env2);
@@ -154,24 +157,23 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 	command->args[*num_argument][0] = '\0';
 	while (str[*pos] != '\0' && str[*pos] != '\'')
 	{
-		if(str[*pos] == '\\')
+		if (str[*pos] == '\\')
+		{
+			if (str[*pos + 1] == '\"')
 			{
-				if(str[*pos + 1] == '\"')
-				{
-					*pos += 1;
-					command->args[*num_argument] = ft_concat_char(command->args[*num_argument], str[*pos]);
-					*pos += 1;
-					continue ;
-				}
+				*pos += 1;
+				command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
+						str[*pos]);
+				*pos += 1;
+				continue ;
 			}
-
+		}
 		command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
 														str[*pos]);
 		(*pos) += 1;
 		if (str[*pos] == '\'')
 			quotes_found = 1;
 	}
-
 	(command)->expansions[*num_argument] = 0;
 	(*pos) += 1;
 	if (quotes_found == 0)

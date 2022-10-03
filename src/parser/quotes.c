@@ -12,23 +12,23 @@
 
 #include "../../inc/minishell.h"
 
-int		check_quotes(t_cmd **new_command, char *str_aux, int *i, int *err)
+int	check_quotes(t_cmd **new_command, char *str_aux, int *i, int *err)
 {
 	if (str_aux[*i] == '"')
 	{
 		(*err) = get_arguments_with_quotes(*new_command, str_aux, i,
 				&(*new_command)->num_args);
 		if (*err != 0)
-			return -1;
-		return 0;
+			return (-1);
+		return (0);
 	}
 	if (str_aux[*i] == '\'')
 	{
 		(*err) = get_arguments_with_simp_quotes(*new_command, str_aux, i,
 				&(*new_command)->num_args);
 		if (*err != 0)
-			return -1;
-		return 0;
+			return (-1);
+		return (0);
 	}
-	return 2;
+	return (2);
 }
