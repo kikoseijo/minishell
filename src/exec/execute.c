@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 17:29:10 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:12:30 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,30 @@ static int	exe_fdout(t_model *m, int i, t_pipes *pipes)
 	return (0);
 }
 
-static int	exe_cmd(t_model *model, int i, char ***envp)
+static int	exe_cmd(t_model *model, int i)
 {
 	int		pid;
 	t_cmd	*cmd;
 	char	*cmd_path;
 
 	cmd = model->cmds[i];
-	if (exec_builtin(cmd, envp))
+	if (exec_builtin(cmd, model->env))
 		return (-1);
 	pid = fork();
 	if (pid == 0)
 	{
-		cmd_path = get_cmd(ft_split(get_env_path(*envp), ':'), cmd->args[0]);
+		cmd_path = get_cmd(model, cmd->args[0]);
 		if (cmd_path == 0)
 		{
 			printf("bash: %s: Command not found.\n", cmd->args[0]);
 			exit(127);
 		}
-		execve(cmd_path, model->cmds[i]->args, *envp);
+		execve(cmd_path, model->cmds[i]->args, *model->env);
+		perror("execve");
 		exit(1);
 	}
 	else if (pid < 0)
-	{
-		perror("fork");
 		return (-1);
-	}
 	return (pid);
 }
 
@@ -91,7 +89,7 @@ static int	exe_fdin(t_model *model, t_pipes *pipes)
 	return (0);
 }
 
-static int	exe_pipes(t_model *model, t_pipes *pipes, char ***envp)
+static int	exe_pipes(t_model *model, t_pipes *pipes)
 {
 	int	i;
 	int	ret;
@@ -107,14 +105,14 @@ static int	exe_pipes(t_model *model, t_pipes *pipes, char ***envp)
 			return (-1);
 		dup2(pipes->fdout, 1);
 		close(pipes->fdout);
-		childs[i] = exe_cmd(model, i, envp);
+		childs[i] = exe_cmd(model, i);
 		i++;
 	}
 	kill_childs(childs, i - 1, model);
 	return (0);
 }
 
-int	execute(t_model *model, char ***envp)
+int	execute(t_model *model)
 {
 	t_pipes	pipes;
 	int		ret;
@@ -124,7 +122,7 @@ int	execute(t_model *model, char ***envp)
 	ret = exe_fdin(model, &pipes);
 	if (ret == -1)
 		return (-1);
-	ret = exe_pipes(model, &pipes, envp);
+	ret = exe_pipes(model, &pipes);
 	dup2(pipes.tmpin, 0);
 	dup2(pipes.tmpout, 1);
 	close(pipes.tmpin);

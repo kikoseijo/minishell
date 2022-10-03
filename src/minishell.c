@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 17:30:12 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:11:01 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	main(void)
 		if (ret >= 0)
 			return (ret);
 		else
-			execute(model, model->env);
+			execute(model);
 	}
 	clear_history();
 	return (0);
