@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/03 19:29:26 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 20:55:49 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,16 @@ void	free_model(t_model *model)
 	while (i-- > 0 && model->cmds[i])
 	{
 		ft_split_free(model->cmds[i]->args);
+		ft_split_free(model->cmds[i]->fd_simple_in);
+		ft_split_free(model->cmds[i]->fd_out);
+		ft_split_free(model->cmds[i]->fd_double_out);
+		ft_split_free(model->cmds[i]->heredocs_close);
+		free(model->cmds[i]->expansions);
+		free(model->cmds[i]->scape_arguments);
 		free(model->cmds[i]);
 	}
 	free(model->cmds);
-	ft_split_free(*model->env);
+	// ft_split_free(*model->env);
 	free(model);
 }
 
@@ -53,23 +59,22 @@ static void	handler(int signal)
 	}
 }
 
-static int	check_exit(t_model *model, char *str)
+static int	check_exit(t_model *model)
 {
 	int	ret;
 
-	if (!ft_strncmp(model->cmds[0]->args[0], "exit", 5))
+	if (!ft_strncmp(model->cmds[0]->args[0], "exit", 4))
 	{
 		ret = ft_exit(model);
 		if (ret >= 0)
 		{
-			free(str);
 			clear_history();
+			system("leaks -q minishell");
 			return (ret);
 		}
 	}
 	return (-1);
 }
-// system("leaks -q minishell");
 
 int	main(void)
 {
@@ -88,7 +93,7 @@ int	main(void)
 		print_prompt();
 		str = readline("$ ");
 		parser(str, model, *model->env);
-		ret = check_exit(model, str);
+		ret = check_exit(model);
 		if (ret >= 0)
 			return (ret);
 		else

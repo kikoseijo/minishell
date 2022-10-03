@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 09:00:52 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 20:49:31 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	del_str_split(char *str, char ***envp)
 	size = get_new_size(str, envp);
 	if (!size)
 		return (0);
-	new_tab = (char **)malloc(sizeof(char *) * (size + 1));
+	new_tab = (char **)ft_calloc(size + 1, sizeof(char *));
 	ptr = *envp;
 	i = 0;
 	while (*ptr)
@@ -53,7 +53,6 @@ static int	del_str_split(char *str, char ***envp)
 			new_tab[i++] = ft_strdup(*ptr);
 		ptr++;
 	}
-	new_tab[i] = NULL;
 	*envp = new_tab;
 	return (0);
 }
