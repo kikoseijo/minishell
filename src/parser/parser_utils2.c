@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/28 20:39:27 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/03 21:07:57 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	get_input_file(t_cmd *command, char *str, int pos)
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
 		end++;
-	command->fd_simple_in[command->num_simple_in] = (char *)malloc((end - pos
-				+ 1) * sizeof(char));
+	command->fd_simple_in[command->num_simple_in] = (char *)ft_calloc((end - pos
+				+ 1), sizeof(char));
 	if (command->fd_simple_in[command->num_simple_in] == NULL)
 		return (-1);
 	i = 0;
@@ -34,8 +34,7 @@ int	get_input_file(t_cmd *command, char *str, int pos)
 		pos++;
 		i++;
 	}
-	command->fd_simple_in[command->num_simple_in][i] = '\0';
-	(command->num_simple_in)++;
+	command->num_simple_in++;
 	return (end);
 }
 
@@ -48,8 +47,8 @@ int	get_heredocs(t_cmd *command, char *str, int pos)
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
 		end++;
-	command->heredocs_close[command->num_heredocs] = (char *)malloc((end - pos
-				+ 1) * sizeof(char));
+	command->heredocs_close[command->num_heredocs] = (char *)ft_calloc((end
+				- pos + 1), sizeof(char));
 	if (command->heredocs_close[command->num_heredocs] == NULL)
 		return (-1);
 	i = 0;
@@ -59,7 +58,6 @@ int	get_heredocs(t_cmd *command, char *str, int pos)
 		pos++;
 		i++;
 	}
-	command->heredocs_close[command->num_heredocs][i] = '\0';
 	(command->num_heredocs)++;
 	return (end);
 }
@@ -96,9 +94,7 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 	char	*env2;
 
 	copy_str = *str;
-	*str = (char *)malloc(sizeof(char));
-	(*str)[0] = '\0';
-	ft_printf("argumentos: %s\n", copy_str);
+	*str = (char *)ft_calloc(1, sizeof(char));
 	i = 0;
 	while (copy_str[i] != '\0')
 	{
@@ -153,8 +149,8 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 	error = 0;
 	(*num_argument)++;
 	(*pos)++;
-	command->args[*num_argument] = (char *)malloc(sizeof(char));
-	command->args[*num_argument][0] = '\0';
+	command->args[*num_argument] = (char *)ft_calloc(1, sizeof(char));
+	// command->args[*num_argument][0] = '\0';
 	while (str[*pos] != '\0' && str[*pos] != '\'')
 	{
 		if (str[*pos] == '\\')
@@ -163,7 +159,7 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 			{
 				*pos += 1;
 				command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
-						str[*pos]);
+																str[*pos]);
 				*pos += 1;
 				continue ;
 			}

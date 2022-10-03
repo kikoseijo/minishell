@@ -6,11 +6,16 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/28 20:15:52 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/03 20:58:01 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static int	is_space(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v' || c == '\f');
+}
 
 char	*clean_white_spaces(char *str)
 {
@@ -20,14 +25,17 @@ char	*clean_white_spaces(char *str)
 	int		i;
 
 	pos = 0;
-	while (str[pos] == ' ')
+	while (is_space(str[pos]))
 		pos++;
 	end = pos;
 	while (str[end] != '\0')
 		end++;
-	str_aux = (char *)malloc((end - pos + 1) * sizeof(char));
+	str_aux = (char *)ft_calloc((end - pos + 1), sizeof(char));
 	if (str_aux == NULL)
+	{
+		free(str);
 		return (NULL);
+	}
 	i = 0;
 	while (pos < end)
 	{
@@ -36,7 +44,6 @@ char	*clean_white_spaces(char *str)
 		i++;
 	}
 	free(str);
-	str_aux[i] = '\0';
 	return (str_aux);
 }
 
@@ -50,8 +57,8 @@ int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 	error = 0;
 	(*num_argument)++;
 	(*pos)++;
-	command->args[*num_argument] = (char *)malloc(sizeof(char));
-	command->args[*num_argument][0] = '\0';
+	command->args[*num_argument] = (char *)ft_calloc(1, sizeof(char));
+	// command->args[*num_argument][0] = '\0';
 	while (str[*pos] != '\0' && str[*pos] != '\"')
 	{
 		if (str[*pos] == '\\')
@@ -60,7 +67,7 @@ int	get_arguments_with_quotes(t_cmd *command, char *str, int *pos,
 			{
 				*pos += 1;
 				command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
-						str[*pos]);
+																str[*pos]);
 				*pos += 1;
 				continue ;
 			}
@@ -138,9 +145,9 @@ void	init_command(t_cmd **new_command)
 
 	i = 0;
 	*new_command = (t_cmd *)malloc(sizeof(t_cmd));
-	(*new_command)->args = (char **)malloc(200 * sizeof(char *));
-	(*new_command)->expansions = (int *)malloc(200 * sizeof(int));
-	(*new_command)->scape_arguments = (int *)malloc(200 * sizeof(int));
+	(*new_command)->args = (char **)ft_calloc(200, sizeof(char *));
+	(*new_command)->expansions = (int *)ft_calloc(200, sizeof(int));
+	(*new_command)->scape_arguments = (int *)ft_calloc(200, sizeof(int));
 	while (i < 200)
 	{
 		(*new_command)->expansions[i] = 1;
@@ -149,17 +156,17 @@ void	init_command(t_cmd **new_command)
 	}
 	(*new_command)->num_args = -1;
 	(*new_command)->pipe = 0;
-	(*new_command)->fd_out = (char **)malloc(100 * sizeof(char *));
+	(*new_command)->fd_out = (char **)ft_calloc(100, sizeof(char *));
 	(*new_command)->n_fdout = 0;
-	(*new_command)->fd_double_out = (char **)malloc(100 * sizeof(char *));
+	(*new_command)->fd_double_out = (char **)ft_calloc(100, sizeof(char *));
 	(*new_command)->num_double_out = 0;
-	(*new_command)->fd_simple_in = (char **)malloc(100 * sizeof(char *));
+	(*new_command)->fd_simple_in = (char **)ft_calloc(100, sizeof(char *));
 	(*new_command)->num_simple_in = 0;
-	(*new_command)->heredocs_close = (char **)malloc(100 * sizeof(char *));
+	(*new_command)->heredocs_close = (char **)ft_calloc(100, sizeof(char *));
 	(*new_command)->num_heredocs = 0;
 }
 
-int	get_output_file(t_cmd *command, char *str, int pos)
+int	get_output_file(t_cmd *c, char *str, int pos)
 {
 	int	end;
 	int	i;
@@ -168,20 +175,17 @@ int	get_output_file(t_cmd *command, char *str, int pos)
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;
-	command->fd_out[command->n_fdout] = (char *)malloc((end - pos + 1)
-			* sizeof(char));
-	if (command->fd_out[command->n_fdout] == NULL)
+	c->fd_out[c->n_fdout] = (char *)ft_calloc((end - pos + 1), sizeof(char));
+	if (c->fd_out[c->n_fdout] == NULL)
 		return (-1);
 	i = 0;
 	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
 	{
-		command->fd_out[command->n_fdout][i] = str[pos];
+		c->fd_out[c->n_fdout][i] = str[pos];
 		pos++;
 		i++;
 	}
-	command->fd_out[command->n_fdout][i] = '\0';
-	(command->n_fdout)++;
-	ft_printf("end: %s\n", &str[end]);
+	(c->n_fdout)++;
 	return (end);
 }
 
@@ -194,8 +198,8 @@ int	get_double_file(t_cmd *command, char *str, int pos)
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;
-	command->fd_double_out[command->num_double_out] = (char *)malloc((end - pos
-				+ 1) * sizeof(char));
+	command->fd_double_out[command->num_double_out] = (char *)ft_calloc((end
+				- pos + 1), sizeof(char));
 	if (command->fd_double_out[command->num_double_out] == NULL)
 		return (-1);
 	i = 0;
@@ -205,7 +209,6 @@ int	get_double_file(t_cmd *command, char *str, int pos)
 		pos++;
 		i++;
 	}
-	command->fd_double_out[command->num_double_out][i] = '\0';
 	(command->num_double_out)++;
 	return (end);
 }

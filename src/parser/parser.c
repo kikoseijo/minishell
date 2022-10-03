@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/29 20:17:03 by cmac             ###   ########.fr       */
+/*   Updated: 2022/10/03 21:03:23 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static char	*ft_substr_modified(char *str, int pos)
 
 	i = pos;
 	len = 0;
-	if (str[pos] == '\0' || str[pos - 1] == '\0')
+	if (!str[pos] || str[pos] == '\0' || str[pos - 1] == '\0')
 		return (NULL);
 	while (str[pos] != '\0')
 		pos++;
 	len += (pos - i);
-	str_aux = (char *)malloc((len + 1) * sizeof(char));
+	str_aux = (char *)ft_calloc((len + 1), sizeof(char));
 	if (str_aux == NULL)
 		return (NULL);
 	pos = 0;
@@ -35,8 +35,6 @@ static char	*ft_substr_modified(char *str, int pos)
 		pos++;
 		i++;
 	}
-	str_aux[pos] = '\0';
-	free(str);
 	return (str_aux);
 }
 
@@ -84,8 +82,8 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 			if (arg_found == 0)
 			{
 				(*new_command)->num_args += 1;
-				(*new_command)->args[(*new_command)->num_args] = (char *)malloc(sizeof(char));
-				(*new_command)->args[(*new_command)->num_args][0] = '\0';
+				(*new_command)->args[(*new_command)->num_args] = (char *)ft_calloc(1,
+																					sizeof(char));
 				arg_found = 1;
 			}
 			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args],
@@ -101,6 +99,7 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 	pos = i + 1;
 	(*new_command)->args[(*new_command)->num_args + 1] = NULL;
 	new_str = ft_substr_modified(str_aux, pos);
+	free(str_aux);
 	return (new_str);
 }
 
@@ -114,6 +113,7 @@ void	parser(char *str, t_model *model, char **envp)
 	model->n_cmd = 0;
 	model->cmds = (t_cmd **)malloc(100 * sizeof(t_cmd *));
 	str_aux = get_command(str, (&model->cmds[model->n_cmd]), &error);
+	free(str);
 	if (check_error(error, model) != 0)
 		return ;
 	model->n_cmd++;
@@ -124,6 +124,7 @@ void	parser(char *str, t_model *model, char **envp)
 			return ;
 		model->n_cmd++;
 	}
+	free(str_aux);
 	check_expansions(model, envp);
 }
 
