@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 17:28:46 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:06:58 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_model
 	t_cmd		**cmds;
 	int			n_cmd;
 	char		***env;
-	char		**env_paths;
 	const char	*infile;
 	const char	*infile_type;
 	const char	*outfile;
@@ -67,9 +66,9 @@ typedef struct s_pipes
 }				t_pipes;
 
 void			parser(char *str, t_model *model, char **envp);
-int				execute(t_model *model, char ***envp);
+int				execute(t_model *model);
 int				exec_builtin(t_cmd *cmd, char ***envp);
-char			*get_cmd(char **paths, char *cmd);
+char			*get_cmd(t_model *model, char *cmd);
 void			free_model(t_model *model);
 void			kill_childs(int *childs, int i, t_model *model);
 void			setup_fdout(t_model *m, int i, t_pipes *pipes);
@@ -77,7 +76,7 @@ void			setup_fdout(t_model *m, int i, t_pipes *pipes);
 // env.c
 char			*get_env_value(char *key, char **envp);
 void			set_env_value(char *key, char *value, char ***envp);
-char			*get_env_path(char **envp);
+char			**get_env_path(char **envp);
 void			clear_terminal(void);
 void			print_prompt(void);
 

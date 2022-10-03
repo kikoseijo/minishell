@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 09:36:12 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:09:42 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ int	exec_builtin(t_cmd *cmd, char ***envp)
 	built = 1;
 	if (!ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])))
 		ft_echo(cmd->num_args + 1, cmd->args);
+	else if (!ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])))
+		ft_unset(cmd->args[1], envp);
+	else if (!ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])))
+		ft_export(cmd->args[1], envp);
+	else if (!ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])))
+		ft_env(*envp);
+	else if (!ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])))
+		ft_pwd();
 	else if (!ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])))
 	{
 		if (ft_cd(cmd->args[1], envp))
@@ -27,32 +35,26 @@ int	exec_builtin(t_cmd *cmd, char ***envp)
 			return (built);
 		}
 	}
-	else if (!ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_pwd();
-	else if (!ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_export(cmd->args[1], envp);
-	else if (!ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_unset(cmd->args[1], envp);
-	else if (!ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_env(*envp);
 	else
 		built = 0;
 	set_env_value((char *)"?", (char *)"0", envp);
 	return (built);
 }
 
-char	*get_cmd(char **paths, char *cmd)
+char	*get_cmd(t_model *model, char *cmd)
 {
-	char	*tmp;
 	char	*res;
+	char	**paths;
 
 	if (ft_strchr(cmd, '/') && access(cmd, F_OK | X_OK) == 0)
 		return (cmd);
+	paths = get_env_path(*model->env);
+	if (!paths)
+		return (0);
 	while (*paths)
 	{
-		tmp = ft_strjoin(*paths, "/");
-		res = ft_strjoin(tmp, cmd);
-		free(tmp);
+		res = ft_strjoin(*paths, "/");
+		res = ft_strjoin(res, cmd);
 		if (access(res, F_OK | X_OK) == 0)
 			return (res);
 		free(res);
