@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/03 16:06:58 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:28:51 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_cmd
 	char		**heredocs_close;
 	int			num_heredocs;
 	int			pipe;
-	char		*error;
 	int			*expansions;
 	int			*scape_arguments;
 }				t_cmd;
@@ -52,9 +51,8 @@ typedef struct s_model
 	int			n_cmd;
 	char		***env;
 	const char	*infile;
-	const char	*infile_type;
 	const char	*outfile;
-	const char	*outfile_type;
+	int			is_double_outfile;
 }				t_model;
 
 typedef struct s_pipes
@@ -94,8 +92,10 @@ char			*clean_white_spaces(char *str);
 int				get_arguments_with_quotes(t_cmd *cmd, char *str, int *pos,
 					int *narg);
 //Parser functions
-int				get_arguments_with_simp_quotes(t_cmd *command,
-					char *str, int *pos, int *num_argument);
+int	get_arguments_with_simp_quotes(t_cmd *command,
+									char *str,
+									int *pos,
+									int *num_argument);
 void			show_list(t_model *command_line);
 void			init_command(t_cmd **new_command);
 int				get_output_file(t_cmd *command, char *str, int pos);

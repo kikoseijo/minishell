@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/03 16:11:01 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:29:26 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,12 @@ void	free_model(t_model *model)
 
 	i = model->n_cmd;
 	while (i-- > 0 && model->cmds[i])
+	{
+		ft_split_free(model->cmds[i]->args);
 		free(model->cmds[i]);
+	}
 	free(model->cmds);
+	ft_split_free(*model->env);
 	free(model);
 }
 
