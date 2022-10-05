@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/28 20:15:52 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/05 22:27:58 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,27 +98,11 @@ void	show_list(t_model *command_line)
 			ft_printf("args[%d]: %s\n", i, command_line->cmds[n]->args[i]);
 			i++;
 		}
-		i = 0;
-		while (i < command_line->cmds[n]->n_fdout)
-		{
-			ft_printf("simple output file[%d]: %s\n", i,
-					command_line->cmds[n]->fd_out[i]);
-			i++;
-		}
-		i = 0;
-		while (i < command_line->cmds[n]->num_double_out)
-		{
-			ft_printf("double output file[%d]: %s\n", i,
-					command_line->cmds[n]->fd_double_out[i]);
-			i++;
-		}
-		i = 0;
-		while (i < command_line->cmds[n]->num_simple_in)
-		{
-			ft_printf("simple input file[%d]: %s\n", i,
-					command_line->cmds[n]->fd_simple_in[i]);
-			i++;
-		}
+		ft_printf("output file: %s\n",
+				command_line->cmds[n]->outfile);
+		ft_printf("is_double_outfile: %d\n", command_line->cmds[n]->is_double_outfile);
+		ft_printf("input file: %s\n",
+					command_line->cmds[n]->infile);
 		i = 0;
 		while (i < command_line->cmds[n]->num_heredocs)
 		{
@@ -149,12 +133,15 @@ void	init_command(t_cmd **new_command)
 	}
 	(*new_command)->num_args = -1;
 	(*new_command)->pipe = 0;
-	(*new_command)->fd_out = (char **)malloc(100 * sizeof(char *));
-	(*new_command)->n_fdout = 0;
-	(*new_command)->fd_double_out = (char **)malloc(100 * sizeof(char *));
-	(*new_command)->num_double_out = 0;
-	(*new_command)->fd_simple_in = (char **)malloc(100 * sizeof(char *));
-	(*new_command)->num_simple_in = 0;
+	(*new_command)->is_double_outfile = -1;
+	(*new_command)->outfile = NULL;
+	(*new_command)->infile = NULL;
+	//(*new_command)- = (char **)malloc(100 * sizeof(char *));
+	//(*new_command)->n_fdout = 0;
+	//(*new_command)->fd_double_out = (char **)malloc(100 * sizeof(char *));
+	//(*new_command)->num_double_out = 0;
+	//(*new_command)->fd_simple_in = (char **)malloc(100 * sizeof(char *));
+	//(*new_command)->num_simple_in = 0;
 	(*new_command)->heredocs_close = (char **)malloc(100 * sizeof(char *));
 	(*new_command)->num_heredocs = 0;
 }
@@ -164,24 +151,26 @@ int	get_output_file(t_cmd *command, char *str, int pos)
 	int	end;
 	int	i;
 
-	//char	*file; Unused
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;
-	command->fd_out[command->n_fdout] = (char *)malloc((end - pos + 1)
+	if(command->outfile != NULL)
+		free(command->outfile);
+	command->outfile = (char *)malloc((end - pos + 1)
 			* sizeof(char));
-	if (command->fd_out[command->n_fdout] == NULL)
+	if (command->outfile == NULL)
 		return (-1);
 	i = 0;
 	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
 	{
-		command->fd_out[command->n_fdout][i] = str[pos];
+		command->outfile[i] = str[pos];
 		pos++;
 		i++;
 	}
-	command->fd_out[command->n_fdout][i] = '\0';
-	(command->n_fdout)++;
-	ft_printf("end: %s\n", &str[end]);
+	command->outfile[i] = '\0';
+	//(command->n_fdout)++;
+	//ft_printf("end: %s\n", &str[end]);
+	command->is_double_outfile = 0;
 	return (end);
 }
 
@@ -194,18 +183,19 @@ int	get_double_file(t_cmd *command, char *str, int pos)
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
 		end++;
-	command->fd_double_out[command->num_double_out] = (char *)malloc((end - pos
-				+ 1) * sizeof(char));
-	if (command->fd_double_out[command->num_double_out] == NULL)
+	if(command->outfile != NULL)
+		free(command->outfile);
+	command->outfile = (char *)malloc((end - pos + 1) * sizeof(char));
+	if (command->outfile == NULL)
 		return (-1);
 	i = 0;
 	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
 	{
-		command->fd_double_out[command->num_double_out][i] = str[pos];
+		command->outfile[i] = str[pos];
 		pos++;
 		i++;
 	}
-	command->fd_double_out[command->num_double_out][i] = '\0';
-	(command->num_double_out)++;
+	command->outfile[i] = '\0';
+	command->is_double_outfile = 1;
 	return (end);
 }

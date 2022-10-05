@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/03 16:09:42 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/05 21:39:13 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,13 @@ void	kill_childs(int *childs, int i, t_model *model)
 
 void	setup_fdout(t_model *m, int i, t_pipes *pipes)
 {
-	int		t;
-	t_cmd	*cmd;
+	(void)m;
+	(void)i;
+	(void)pipes;
+	//int		t;
+	//t_cmd	*cmd;
 
-	cmd = m->cmds[i];
+	/*cmd = m->cmds[i];
 	if (cmd->num_double_out > 0)
 	{
 		t = 0;
@@ -93,8 +96,8 @@ void	setup_fdout(t_model *m, int i, t_pipes *pipes)
 			pipes->fdout = open(cmd->fd_double_out[t], O_WRONLY | O_APPEND);
 			t++;
 		}
-	}
-	else if (cmd->n_fdout > 0)
+	}*/
+	/*else if (cmd->n_fdout > 0)
 	{
 		t = 0;
 		while (t < cmd->n_fdout)
@@ -103,7 +106,7 @@ void	setup_fdout(t_model *m, int i, t_pipes *pipes)
 					0664);
 			t++;
 		}
-	}
-	else
-		pipes->fdout = dup(pipes->tmpout);
+	}*/
+	//else
+	//	pipes->fdout = dup(pipes->tmpout);
 }

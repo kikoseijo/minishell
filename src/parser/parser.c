@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/29 20:17:03 by cmac             ###   ########.fr       */
+/*   Updated: 2022/10/05 22:22:47 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,12 @@ static char	*ft_substr_modified(char *str, int pos)
 static char	*get_command(char *str, t_cmd **new_command, int *err)
 {
 	int		i;
-	int		command_found;
-	int		num_argument;
 	int		arg_found;
 	int		pos;
 	char	*str_aux;
 	char	*new_str;
 
 	i = 0;
-	command_found = 0;
-	num_argument = -1;
 	arg_found = 0;
 	init_command(new_command);
 	str_aux = clean_white_spaces(str);
@@ -84,12 +80,14 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 			if (arg_found == 0)
 			{
 				(*new_command)->num_args += 1;
-				(*new_command)->args[(*new_command)->num_args] = (char *)malloc(sizeof(char));
+				(*new_command)->args[(*new_command)->num_args]
+					= (char *)malloc(sizeof(char));
 				(*new_command)->args[(*new_command)->num_args][0] = '\0';
 				arg_found = 1;
 			}
-			(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args],
-																			str_aux[i]);
+			(*new_command)->args[(*new_command)->num_args]
+				= ft_concat_char((*new_command)->args[(*new_command)->num_args],
+					str_aux[i]);
 		}
 		else
 		{

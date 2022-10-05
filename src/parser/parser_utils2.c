@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/28 20:39:27 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/05 21:59:10 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,22 @@ int	get_input_file(t_cmd *command, char *str, int pos)
 	int	end;
 	int	i;
 
-	//char	*file; Unused
 	end = pos;
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
 		end++;
-	command->fd_simple_in[command->num_simple_in] = (char *)malloc((end - pos
-				+ 1) * sizeof(char));
-	if (command->fd_simple_in[command->num_simple_in] == NULL)
+	if(command->infile != NULL)
+		free(command->infile);
+	command->infile = (char *)malloc((end - pos + 1) * sizeof(char));
+	if (command->infile == NULL)
 		return (-1);
 	i = 0;
 	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '<'))
 	{
-		command->fd_simple_in[command->num_simple_in][i] = str[pos];
+		command->infile[i] = str[pos];
 		pos++;
 		i++;
 	}
-	command->fd_simple_in[command->num_simple_in][i] = '\0';
-	(command->num_simple_in)++;
+	command->infile[i] = '\0';
 	return (end);
 }
 
