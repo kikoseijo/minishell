@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:51:52 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/30 11:53:11 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:55:59 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_exit(t_model *model)
 	else if (ft_str_is_numeric(model->cmds[0]->args[1]))
 	{
 		ret = ft_atoi(model->cmds[0]->args[1]);
+		free_model(model);
 		return ((int)((unsigned char)ret));
 	}
 	else

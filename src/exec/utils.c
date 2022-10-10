@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/10 16:44:32 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:53:05 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	setup_fdout(t_model *m, int i, t_pipes *pipes)
 	if (cmd->is_double_outfile != -1)
 	{
 		if (cmd->is_double_outfile == 0)
-			pipes->fdout = open(cmd->outfile, O_WRONLY | O_APPEND, 0664);
+			pipes->fdout = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND,
+					0664);
 		else
 			pipes->fdout = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC,
 					0664);
