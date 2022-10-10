@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/05 21:56:52 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:24:35 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,22 @@ static int	exe_cmd(t_model *model, int i)
 static int	exe_fdin(t_model *model, t_pipes *pipes)
 {
 	int	i;
-	int	t;
 
-	//Borrar una vez arreglado
-	(void) t;
-	(void) pipes;
 	i = -1;
 	while (++i < model->n_cmd)
 	{
-		/*if (model->cmds[i]->num_simple_in > 0)
-		{
-			t = 0;
-			while (t < model->cmds[i]->num_simple_in)
-				pipes->fdin = open(model->cmds[i]->fd_simple_in[t++], O_RDONLY);
-		}
+		if (model->cmds[i]->infile)
+			pipes->fdin = open(model->cmds[i]->infile, O_RDONLY);
 		else
-			pipes->fdin = dup(pipes->tmpin);*/
+			pipes->fdin = dup(pipes->tmpin);
 	}
-	/*
 	if (pipes->fdin < 0)
 	{
-		perror(model->infile);
+		perror(model->cmds[i]->infile);
 		close(pipes->tmpin);
 		close(pipes->tmpout);
 		return (-1);
-	}*/
+	}
 	return (0);
 }
 

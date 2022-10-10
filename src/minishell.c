@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/05 21:54:04 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:00:08 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,17 @@ void	free_model(t_model *model)
 	while (i-- > 0 && model->cmds[i])
 	{
 		ft_split_free(model->cmds[i]->args);
-		if(model->cmds[i]->infile != NULL)
+		if (model->cmds[i]->infile != NULL)
 			free(model->cmds[i]->infile);
-		if(model->cmds[i]->outfile != NULL)
+		if (model->cmds[i]->outfile != NULL)
 			free(model->cmds[i]->outfile);
-		//ft_split_free(model->cmds[i]->fd_double_out);
 		ft_split_free(model->cmds[i]->heredocs_close);
 		free(model->cmds[i]->expansions);
 		free(model->cmds[i]->scape_arguments);
 		free(model->cmds[i]);
 	}
 	free(model->cmds);
-	// ft_split_free(*model->env);
+	// free(model->env);
 	free(model);
 }
 
@@ -96,11 +95,10 @@ int	main(void)
 		str = readline("$ ");
 		parser(str, model, *model->env);
 		ret = check_exit(model);
-		show_list(model);
 		if (ret >= 0)
 			return (ret);
-		//else
-		//	execute(model);
+		else
+			execute(model);
 	}
 	clear_history();
 	return (0);

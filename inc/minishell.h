@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/10 18:47:09 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/10 19:03:27 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,8 @@ typedef struct s_cmd
 	char		**args;
 	int			num_args;
 	char		*infile;
-	//int			num_simple_in;
 	char		*outfile;
-	int			is_double_outfile;//0 ->simple output; 1-> append output; -1 -> neither simple nor append output
-	//int			n_fdout;
-	//char		**fd_double_out;
-	//int			num_double_out;
+	int			is_double_outfile;
 	char		**heredocs_close;
 	int			num_heredocs;
 	int			pipe;
@@ -49,12 +45,9 @@ typedef struct s_cmd
 
 typedef struct s_model
 {
-	t_cmd		**cmds;
 	int			n_cmd;
+	t_cmd		**cmds;
 	char		***env;
-	//const char	*infile;
-	//const char	*outfile;
-	int			is_double_outfile;
 }				t_model;
 
 typedef struct s_pipes
