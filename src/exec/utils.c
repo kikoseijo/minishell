@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/05 21:39:13 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:44:32 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,32 +81,17 @@ void	kill_childs(int *childs, int i, t_model *model)
 
 void	setup_fdout(t_model *m, int i, t_pipes *pipes)
 {
-	(void)m;
-	(void)i;
-	(void)pipes;
-	//int		t;
-	//t_cmd	*cmd;
+	t_cmd	*cmd;
 
-	/*cmd = m->cmds[i];
-	if (cmd->num_double_out > 0)
+	cmd = m->cmds[i];
+	if (cmd->is_double_outfile != -1)
 	{
-		t = 0;
-		while (t < cmd->num_double_out)
-		{
-			pipes->fdout = open(cmd->fd_double_out[t], O_WRONLY | O_APPEND);
-			t++;
-		}
-	}*/
-	/*else if (cmd->n_fdout > 0)
-	{
-		t = 0;
-		while (t < cmd->n_fdout)
-		{
-			pipes->fdout = open(cmd->fd_out[t], O_WRONLY | O_CREAT | O_TRUNC,
+		if (cmd->is_double_outfile == 0)
+			pipes->fdout = open(cmd->outfile, O_WRONLY | O_APPEND, 0664);
+		else
+			pipes->fdout = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC,
 					0664);
-			t++;
-		}
-	}*/
-	//else
-	//	pipes->fdout = dup(pipes->tmpout);
+	}
+	else
+		pipes->fdout = dup(pipes->tmpout);
 }
