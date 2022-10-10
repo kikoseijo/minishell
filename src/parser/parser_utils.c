@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/05 22:27:58 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:35:31 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void	init_command(t_cmd **new_command)
 		(*new_command)->scape_arguments[i] = 1;
 		i++;
 	}
+	(*new_command)->arg_found = 0;
 	(*new_command)->num_args = -1;
 	(*new_command)->pipe = 0;
 	(*new_command)->is_double_outfile = -1;

@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/05 22:26:34 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:34:37 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_cmd
 	int			pipe;
 	int			*expansions;
 	int			*scape_arguments;
+	int			arg_found;
 }				t_cmd;
 
 typedef struct s_model
