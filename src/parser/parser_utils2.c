@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/05 21:59:10 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/10 19:00:32 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,17 @@ int	get_input_file(t_cmd *command, char *str, int pos)
 	int	i;
 
 	end = pos;
-	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
+	while (str[end] != '\0' && (str[end] != ' ')
+		&& (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
 		end++;
-	if(command->infile != NULL)
+	if (command->infile != NULL)
 		free(command->infile);
 	command->infile = (char *)malloc((end - pos + 1) * sizeof(char));
 	if (command->infile == NULL)
 		return (-1);
 	i = 0;
-	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '<'))
+	while (str[pos] != '\0' && (str[pos] != ' ')
+		&& (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '<'))
 	{
 		command->infile[i] = str[pos];
 		pos++;
@@ -43,16 +45,17 @@ int	get_heredocs(t_cmd *command, char *str, int pos)
 	int	end;
 	int	i;
 
-	//char	*file; Unused
 	end = pos;
-	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
+	while (str[end] != '\0' && (str[end] != ' ')
+		&& (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
 		end++;
 	command->heredocs_close[command->num_heredocs] = (char *)malloc((end - pos
 				+ 1) * sizeof(char));
 	if (command->heredocs_close[command->num_heredocs] == NULL)
 		return (-1);
 	i = 0;
-	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '<'))
+	while (str[pos] != '\0' && (str[pos] != ' ')
+		&& (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '<'))
 	{
 		command->heredocs_close[command->num_heredocs][i] = str[pos];
 		pos++;
@@ -77,7 +80,7 @@ void	check_expansions(t_model *model, char **enviroment)
 			if (model->cmds[n]->expansions[i] != 0)
 			{
 				get_expansion(&(model->cmds[n]->args[i]), enviroment,
-						model->cmds[n]->scape_arguments[i]);
+					model->cmds[n]->scape_arguments[i]);
 			}
 			i++;
 		}
@@ -97,7 +100,6 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 	copy_str = *str;
 	*str = (char *)malloc(sizeof(char));
 	(*str)[0] = '\0';
-	ft_printf("argumentos: %s\n", copy_str);
 	i = 0;
 	while (copy_str[i] != '\0')
 	{
@@ -115,7 +117,6 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 			while (copy_str[i] != ' ' && copy_str[i] != '$' && copy_str[i] != '\0')
 				i++;
 			aux = ft_substr(copy_str, init, i - init + 1);
-			ft_printf("substr: %s\n", aux);
 			j = 0;
 			while (enviroment[j])
 			{
@@ -125,7 +126,6 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 					aux = *str;
 					env2 = ft_substr(enviroment[j], i - init + 1,
 							ft_strlen(enviroment[j]));
-					ft_printf("prueba==> %s: %s\n", aux, env2);
 					free(aux);
 					*str = ft_strjoin(*str, env2);
 					free(env2);
@@ -146,36 +146,18 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 		int *num_argument)
 {
 	int	error;
-	int	quotes_found;
+	int returned_quotes;
 
-	quotes_found = 0;
+	returned_quotes = 0;
 	error = 0;
 	(*num_argument)++;
 	(*pos)++;
 	command->args[*num_argument] = (char *)malloc(sizeof(char));
 	command->args[*num_argument][0] = '\0';
-	while (str[*pos] != '\0' && str[*pos] != '\'')
-	{
-		if (str[*pos] == '\\')
-		{
-			if (str[*pos + 1] == '\"')
-			{
-				*pos += 1;
-				command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
-						str[*pos]);
-				*pos += 1;
-				continue ;
-			}
-		}
-		command->args[*num_argument] = ft_concat_char(command->args[*num_argument],
-														str[*pos]);
-		(*pos) += 1;
-		if (str[*pos] == '\'')
-			quotes_found = 1;
-	}
+	returned_quotes = simp_quotes_core(command, str, pos, num_argument);
 	(command)->expansions[*num_argument] = 0;
 	(*pos) += 1;
-	if (quotes_found == 0)
+	if (returned_quotes < 0)
 		error = -2;
 	return (error);
 }

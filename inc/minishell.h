@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/10 17:34:37 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/10 18:47:09 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,5 @@ int				checks_input(t_cmd **new_command, char *str_aux, int *i,
 					int *err);
 int				check_quotes(t_cmd **new_command, char *str_aux, int *i,
 					int *err);
+int				simp_quotes_core(t_cmd *command, char *str, int *pos, int *num_argument);
 #endif

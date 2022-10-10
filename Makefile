@@ -6,7 +6,7 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/09/30 09:46:32 by jseijo-p         ###   ########.fr        #
+#    Updated: 2022/10/10 18:18:37 by anramire         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ SRC = src/minishell.c \
 			src/env.c \
 			src/parser/errors.c \
 			src/parser/redirections_files.c \
-			src/parser/quotes.c
+			src/parser/quotes.c \
+			src/parser/parser_utils3.c
 
 # SRC_BONUS = pipex_bonus.c helpers.c
 
