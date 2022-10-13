@@ -92,10 +92,7 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 {
 	int		i;
 	int		init;
-	char	*aux;
-	int		j;
 	char	*copy_str;
-	char	*env2;
 
 	copy_str = *str;
 	*str = (char *)malloc(sizeof(char));
@@ -112,27 +109,7 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 		}
 		if (copy_str[i] == '$')
 		{
-			i++;
-			init = i;
-			while (copy_str[i] != ' ' && copy_str[i] != '$' && copy_str[i] != '\0')
-				i++;
-			aux = ft_substr(copy_str, init, i - init + 1);
-			j = 0;
-			while (enviroment[j])
-			{
-				if (ft_strncmp(aux, enviroment[j], i - init) == 0)
-				{
-					free(aux);
-					aux = *str;
-					env2 = ft_substr(enviroment[j], i - init + 1,
-							ft_strlen(enviroment[j]));
-					free(aux);
-					*str = ft_strjoin(*str, env2);
-					free(env2);
-					break ;
-				}
-				j++;
-			}
+			main_loop(copy_str, &i, enviroment, str);
 			continue ;
 		}
 		*str = ft_concat_char(*str, copy_str[i]);
@@ -162,36 +139,31 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 	return (error);
 }
 
-int	main_loop(char *copy_str,int *i, char **enviroment)
+void	main_loop(char *copy_str, int *i, char **enviroment, char **str)
 {
-
 	int		init;
 	char	*aux;
-
-	if (copy_str[*i] == '$')
-	{
+	int		j;
+	char	*env2;
+	(*i)++;
+	init = (*i);
+	while (copy_str[*i] != ' ' && copy_str[*i] != '$' && copy_str[*i] != '\0')
 		(*i)++;
-		init = (*i);
-		while (copy_str[*i] != ' ' && copy_str[*i] != '$' && copy_str[*i] != '\0')
-			(*i)++;
-		aux = ft_substr(copy_str, init, (*i) - init + 1);
-		j = 0;
-		while (enviroment[j])
+	aux = ft_substr(copy_str, init, (*i) - init + 1);
+	j = 0;
+	while (enviroment[j])
+	{
+		if (ft_strncmp(aux, enviroment[j], (*i) - init) == 0)
 		{
-			if (ft_strncmp(aux, enviroment[j], (*i) - init) == 0)
-			{
-				free(aux);
-				aux = *str;
-				env2 = ft_substr(enviroment[j], (*i) - init + 1,
-						ft_strlen(enviroment[j]));
-				free(aux);
-				*str = ft_strjoin(*str, env2);
-				free(env2);
-				break ;
-			}
-			j++;
+			free(aux);
+			aux = *str;
+			env2 = ft_substr(enviroment[j], (*i) - init + 1,
+					ft_strlen(enviroment[j]));
+			free(aux);
+			*str = ft_strjoin(*str, env2);
+			free(env2);
+			break ;
 		}
-		return 1 ;
+		j++;
 	}
-	return 0;
 }

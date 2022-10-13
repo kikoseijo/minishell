@@ -105,4 +105,6 @@ int				check_quotes(t_cmd **new_command, char *str_aux, int *i,
 					int *err);
 int				simp_quotes_core(t_cmd *command, char *str, int *pos, int *num_argument);
 int				double_quotes_core(t_cmd *command, char *str, int *pos, int *num_argument);
+void			main_loop(char *copy_str,int *i, char **enviroment, char **str);
+
 #endif
