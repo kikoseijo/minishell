@@ -161,3 +161,37 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 		error = -2;
 	return (error);
 }
+
+int	main_loop(char *copy_str,int *i, char **enviroment)
+{
+
+	int		init;
+	char	*aux;
+
+	if (copy_str[*i] == '$')
+	{
+		(*i)++;
+		init = (*i);
+		while (copy_str[*i] != ' ' && copy_str[*i] != '$' && copy_str[*i] != '\0')
+			(*i)++;
+		aux = ft_substr(copy_str, init, (*i) - init + 1);
+		j = 0;
+		while (enviroment[j])
+		{
+			if (ft_strncmp(aux, enviroment[j], (*i) - init) == 0)
+			{
+				free(aux);
+				aux = *str;
+				env2 = ft_substr(enviroment[j], (*i) - init + 1,
+						ft_strlen(enviroment[j]));
+				free(aux);
+				*str = ft_strjoin(*str, env2);
+				free(env2);
+				break ;
+			}
+			j++;
+		}
+		return 1 ;
+	}
+	return 0;
+}

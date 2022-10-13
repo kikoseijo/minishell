@@ -12,7 +12,7 @@
 
 NAME = minishell
 
-CFLAGS = -Wall -Wextra -Werror -g -Og
+CFLAGS = -g -Og
 
 INC_LIBFT = -I libft
 INC_READLINE = -I ${HOME}/.brew/opt/readline/include
