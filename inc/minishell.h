@@ -103,8 +103,11 @@ int				checks_input(t_cmd **new_command, char *str_aux, int *i,
 					int *err);
 int				check_quotes(t_cmd **new_command, char *str_aux, int *i,
 					int *err);
-int				simp_quotes_core(t_cmd *command, char *str, int *pos, int *num_argument);
-int				double_quotes_core(t_cmd *command, char *str, int *pos, int *num_argument);
-void			main_loop(char *copy_str,int *i, char **enviroment, char **str);
+int				simp_quotes_core(t_cmd *command, char *str, int *pos,
+					int *num_argument);
+int				double_quotes_core(t_cmd *command, char *str, int *pos,
+					int *num_argument);
+void			main_loop(char *copy_str, int *i, char **ev, char **str);
+int				main_scapes(char *copy_str, int *i, char **str, int scape);
 
 #endif
