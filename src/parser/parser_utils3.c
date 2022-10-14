@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:13:49 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/10 19:01:03 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:14:43 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,45 @@ void	show_list(t_model *command_line)
 			n++;
 	}
 	ft_printf("final\n");
+}
+
+int	check_scapes(char **str, char *copy_str, int *i, int scape)
+{
+	if (copy_str[*i] == '\\' && scape == 1)
+	{
+		(*i)++;
+		*str = ft_concat_char(*str, copy_str[*i]);
+		i++;
+		return (1);
+	}
+	return (0);
+}
+
+void	main_loop(char *copy_str, int *i, char **env, char **str)
+{
+	int		init;
+	char	*aux;
+	int		j;
+	char	*env2;
+
+	(*i)++;
+	init = (*i);
+	while (copy_str[*i] != ' ' && copy_str[*i] != '$' && copy_str[*i] != '\0')
+		(*i)++;
+	aux = ft_substr(copy_str, init, (*i) - init + 1);
+	j = 0;
+	while (env[j])
+	{
+		if (ft_strncmp(aux, env[j], (*i) - init) == 0)
+		{
+			free(aux);
+			aux = *str;
+			env2 = ft_substr(env[j], (*i) - init + 1, ft_strlen(env[j]));
+			free(aux);
+			*str = ft_strjoin(*str, env2);
+			free(env2);
+			break ;
+		}
+		j++;
+	}
 }

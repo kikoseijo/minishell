@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/10 19:00:32 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:11:59 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,8 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 	i = 0;
 	while (copy_str[i] != '\0')
 	{
-		if (copy_str[i] == '\\' && scape == 1)
-		{
-			i++;
-			*str = ft_concat_char(*str, copy_str[i]);
-			i++;
+		if (check_scapes(str, copy_str, &i, scape) == 1)
 			continue ;
-		}
 		if (copy_str[i] == '$')
 		{
 			main_loop(copy_str, &i, enviroment, str);
@@ -123,7 +118,7 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 		int *num_argument)
 {
 	int	error;
-	int returned_quotes;
+	int	returned_quotes;
 
 	returned_quotes = 0;
 	error = 0;
@@ -137,33 +132,4 @@ int	get_arguments_with_simp_quotes(t_cmd *command, char *str, int *pos,
 	if (returned_quotes < 0)
 		error = -2;
 	return (error);
-}
-
-void	main_loop(char *copy_str, int *i, char **enviroment, char **str)
-{
-	int		init;
-	char	*aux;
-	int		j;
-	char	*env2;
-	(*i)++;
-	init = (*i);
-	while (copy_str[*i] != ' ' && copy_str[*i] != '$' && copy_str[*i] != '\0')
-		(*i)++;
-	aux = ft_substr(copy_str, init, (*i) - init + 1);
-	j = 0;
-	while (enviroment[j])
-	{
-		if (ft_strncmp(aux, enviroment[j], (*i) - init) == 0)
-		{
-			free(aux);
-			aux = *str;
-			env2 = ft_substr(enviroment[j], (*i) - init + 1,
-					ft_strlen(enviroment[j]));
-			free(aux);
-			*str = ft_strjoin(*str, env2);
-			free(env2);
-			break ;
-		}
-		j++;
-	}
 }

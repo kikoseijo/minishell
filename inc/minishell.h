@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/10 19:03:27 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 16:59:37 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,12 @@ int				checks_input(t_cmd **new_command, char *str_aux, int *i,
 					int *err);
 int				check_quotes(t_cmd **new_command, char *str_aux, int *i,
 					int *err);
-int				simp_quotes_core(t_cmd *command, char *str, int *pos, int *num_argument);
-int				double_quotes_core(t_cmd *command, char *str, int *pos, int *num_argument);
-void			main_loop(char *copy_str,int *i, char **enviroment, char **str);
+int				simp_quotes_core(t_cmd *command, char *str, int *pos,
+					int *num_argument);
+int				double_quotes_core(t_cmd *command, char *str, int *pos,
+					int *num_argument);
+void			main_loop(char *copy_str, int *i, char **ev, char **str);
+int				main_scapes(char *copy_str, int *i, char **str, int scape);
 
+int				check_scapes(char **str, char *copy_str, int *i, int scape);
 #endif
