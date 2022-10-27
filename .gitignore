@@ -1,4 +1,5 @@
 /.gtm/
+*.log
 minishell
 minishell.dSYM
 # Created by https://www.toptal.com/developers/gitignore/api/macos,c++
