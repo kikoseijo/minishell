@@ -6,13 +6,13 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/10 16:53:05 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/27 20:01:33 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	exec_builtin(t_cmd *cmd, char ***envp)
+int	exec_builtin(t_cmd *cmd, char **envp)
 {
 	int	built;
 
@@ -24,7 +24,7 @@ int	exec_builtin(t_cmd *cmd, char ***envp)
 	else if (!ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])))
 		ft_export(cmd->args[1], envp);
 	else if (!ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_env(*envp);
+		ft_env(envp);
 	else if (!ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])))
 		ft_pwd();
 	else if (!ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])))
@@ -48,7 +48,7 @@ char	*get_cmd(t_model *model, char *cmd)
 
 	if (ft_strchr(cmd, '/') && access(cmd, F_OK | X_OK) == 0)
 		return (cmd);
-	paths = get_env_path(*model->env);
+	paths = get_env_path(model->env);
 	if (!paths)
 		return (0);
 	while (*paths)
@@ -71,7 +71,8 @@ void	kill_childs(int *childs, int i, t_model *model)
 	waitpid(childs[i], &exit_int_code, 0);
 	exit_str_code = ft_itoa(WEXITSTATUS(exit_int_code));
 	set_env_value((char *)"?", exit_str_code, model->env);
-	free(exit_str_code);
+	if (exit_str_code != NULL)
+		free(exit_str_code);
 	while (--i >= 0)
 	{
 		if (childs[i] > 0)

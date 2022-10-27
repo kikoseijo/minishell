@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/27 16:59:37 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:25:00 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_model
 {
 	int			n_cmd;
 	t_cmd		**cmds;
-	char		***env;
+	char		**env;
 }				t_model;
 
 typedef struct s_pipes
@@ -60,7 +60,7 @@ typedef struct s_pipes
 
 void			parser(char *str, t_model *model, char **envp);
 int				execute(t_model *model);
-int				exec_builtin(t_cmd *cmd, char ***envp);
+int				exec_builtin(t_cmd *cmd, char **envp);
 char			*get_cmd(t_model *model, char *cmd);
 void			free_model(t_model *model);
 void			kill_childs(int *childs, int i, t_model *model);
@@ -68,19 +68,19 @@ void			setup_fdout(t_model *m, int i, t_pipes *pipes);
 
 // env.c
 char			*get_env_value(char *key, char **envp);
-void			set_env_value(char *key, char *value, char ***envp);
+void			set_env_value(char *key, char *value, char **envp);
 char			**get_env_path(char **envp);
 void			clear_terminal(void);
 void			print_prompt(void);
 
 // builtin
-int				ft_cd(char *path, char ***envp);
+int				ft_cd(char *path, char **envp);
 void			ft_echo(int argc, char **args);
 void			ft_env(char **envp);
 int				ft_exit(t_model *model);
-void			ft_export(char *input, char ***envp);
+void			ft_export(char *input, char **envp);
 void			ft_pwd(void);
-void			ft_unset(char *input, char ***envp);
+void			ft_unset(char *input, char **envp);
 
 //Utilities functions
 char			*clean_white_spaces(char *str);

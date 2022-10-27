@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/10 17:35:31 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 20:39:14 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*clean_white_spaces(char *str)
 	end = pos;
 	while (str[end] != '\0')
 		end++;
-	str_aux = (char *)malloc((end - pos + 1) * sizeof(char));
+	str_aux = (char *)ft_calloc(end - pos + 2, sizeof(char));
 	if (str_aux == NULL)
 		return (NULL);
 	i = 0;
@@ -36,7 +36,6 @@ char	*clean_white_spaces(char *str)
 		i++;
 	}
 	free(str);
-	str_aux[i] = '\0';
 	return (str_aux);
 }
 
@@ -98,8 +97,7 @@ int	get_output_file(t_cmd *command, char *str, int pos)
 		end++;
 	if (command->outfile != NULL)
 		free(command->outfile);
-	command->outfile = (char *)malloc((end - pos + 1)
-			* sizeof(char));
+	command->outfile = (char *)malloc((end - pos + 1) * sizeof(char));
 	if (command->outfile == NULL)
 		return (-1);
 	i = 0;
@@ -121,8 +119,8 @@ int	get_double_file(t_cmd *command, char *str, int pos)
 	int	i;
 
 	end = pos;
-	while (str[end] != '\0' && (str[end] != ' ')
-		&& (str[end] != '|') && (str[end] != ';') && (str[end] != '>'))
+	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|')
+		&& (str[end] != ';') && (str[end] != '>'))
 		end++;
 	if (command->outfile != NULL)
 		free(command->outfile);
@@ -130,8 +128,8 @@ int	get_double_file(t_cmd *command, char *str, int pos)
 	if (command->outfile == NULL)
 		return (-1);
 	i = 0;
-	while (str[pos] != '\0' && (str[pos] != ' ')
-		&& (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '>'))
+	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|')
+		&& (str[pos] != ';') && (str[pos] != '>'))
 	{
 		command->outfile[i] = str[pos];
 		pos++;

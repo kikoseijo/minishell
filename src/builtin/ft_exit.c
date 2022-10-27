@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:51:52 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/10 16:55:59 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:46:57 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,16 @@ int	ft_exit(t_model *model)
 {
 	int	ret;
 
-	if (model->cmds[0]->num_args + 1 > 2)
+	if (model->cmds[0]->num_args > 2)
 	{
 		ft_putstr_fd((char *)"exit: too many arguments\n", 2);
 		return (-1);
 	}
 	else if (model->cmds[0]->args[1] == NULL)
-	{
-		free_model(model);
 		return (0);
-	}
 	else if (ft_str_is_numeric(model->cmds[0]->args[1]))
 	{
 		ret = ft_atoi(model->cmds[0]->args[1]);
-		free_model(model);
 		return ((int)((unsigned char)ret));
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:13:49 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/27 17:22:55 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 19:11:47 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int	simp_quotes_core(t_cmd *c, char *str, int *pos, int *n_arg)
 			quotes_found = 1;
 	}
 	if (str[*pos] == '\'')
-			quotes_found = 1;
+		quotes_found = 1;
 	if (quotes_found == 0)
 		return (-1);
 	return (1);
 }
 
 int	double_quotes_core(t_cmd *c, char *str, int *pos, int *n_arg)
-{	
+{
 	int	quotes_found;
 
 	quotes_found = 0;
@@ -88,18 +88,18 @@ void	show_list(t_model *command_line)
 		}
 		ft_printf("output file: %s\n", command_line->cmds[n]->outfile);
 		ft_printf("is_double_outfile: %d\n",
-			command_line->cmds[n]->is_double_outfile);
+					command_line->cmds[n]->is_double_outfile);
 		ft_printf("input file: %s\n",
-			command_line->cmds[n]->infile);
+					command_line->cmds[n]->infile);
 		i = 0;
 		while (i < command_line->cmds[n]->num_heredocs)
 		{
 			ft_printf("heredocs[%d]: %s\n", i,
-				command_line->cmds[n]->heredocs_close[i]);
+					command_line->cmds[n]->heredocs_close[i]);
 			i++;
 		}
 		ft_printf("pipe: %d\n", command_line->cmds[n]->pipe);
-			n++;
+		n++;
 	}
 	ft_printf("final\n");
 }
@@ -136,8 +136,8 @@ void	main_loop(char *copy_str, int *i, char **env, char **str)
 			free(aux);
 			aux = *str;
 			env2 = ft_substr(env[j], (*i) - init + 1, ft_strlen(env[j]));
-			free(aux);
 			*str = ft_strjoin(*str, env2);
+			free(aux);
 			free(env2);
 			break ;
 		}

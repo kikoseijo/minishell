@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/27 17:18:04 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 19:12:17 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ int	get_input_file(t_cmd *command, char *str, int pos)
 	int	i;
 
 	end = pos;
-	while (str[end] != '\0' && (str[end] != ' ')
-		&& (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
+	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|')
+		&& (str[end] != ';') && (str[end] != '<'))
 		end++;
-	if (command->infile != NULL)
-		free(command->infile);
+	// if (command->infile != NULL)
+	// 	free(command->infile);
 	command->infile = (char *)malloc((end - pos + 1) * sizeof(char));
 	if (command->infile == NULL)
 		return (-1);
 	i = 0;
-	while (str[pos] != '\0' && (str[pos] != ' ')
-		&& (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '<'))
+	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|')
+		&& (str[pos] != ';') && (str[pos] != '<'))
 	{
 		command->infile[i] = str[pos];
 		pos++;
@@ -46,16 +46,16 @@ int	get_heredocs(t_cmd *command, char *str, int pos)
 	int	i;
 
 	end = pos;
-	while (str[end] != '\0' && (str[end] != ' ')
-		&& (str[end] != '|') && (str[end] != ';') && (str[end] != '<'))
+	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|')
+		&& (str[end] != ';') && (str[end] != '<'))
 		end++;
 	command->heredocs_close[command->num_heredocs] = (char *)malloc((end - pos
 				+ 1) * sizeof(char));
 	if (command->heredocs_close[command->num_heredocs] == NULL)
 		return (-1);
 	i = 0;
-	while (str[pos] != '\0' && (str[pos] != ' ')
-		&& (str[pos] != '|') && (str[pos] != ';') && (str[pos] != '<'))
+	while (str[pos] != '\0' && (str[pos] != ' ') && (str[pos] != '|')
+		&& (str[pos] != ';') && (str[pos] != '<'))
 	{
 		command->heredocs_close[command->num_heredocs][i] = str[pos];
 		pos++;
@@ -80,7 +80,7 @@ void	check_expansions(t_model *model, char **enviroment)
 			if (model->cmds[n]->expansions[i] != 0)
 			{
 				get_expansion(&(model->cmds[n]->args[i]), enviroment,
-					model->cmds[n]->scape_arguments[i]);
+						model->cmds[n]->scape_arguments[i]);
 			}
 			i++;
 		}

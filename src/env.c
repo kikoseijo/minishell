@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/03 16:22:44 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:55:47 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_env_value(char *key, char **envp)
 	return (NULL);
 }
 
-void	set_env_value(char *key, char *value, char ***envp)
+void	set_env_value(char *key, char *value, char **envp)
 {
 	char	key_eq[100];
 	char	*entry;

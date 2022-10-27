@@ -6,28 +6,28 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/03 20:49:31 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/27 21:13:24 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	get_new_size(char *str, char ***envp)
+static int	get_new_size(char *str, char **envp)
 {
 	int		count;
-	char	**ptr;
+	char	**tmp;
 	int		size;
 
 	count = 0;
-	ptr = *envp;
-	while (*ptr)
+	tmp = envp;
+	while (*tmp)
 	{
-		if (!ft_strncmp(*ptr, str,
-				ft_strlen(str)) && (*ptr)[ft_strlen(str)] == '=')
+		if (!ft_strncmp(*tmp, str, ft_strlen(str))
+			&& (*tmp)[ft_strlen(str)] == '=')
 			count++;
-		ptr++;
+		tmp++;
 	}
-	size = ft_array_len(*envp) - count;
+	size = ft_array_len(envp) - count;
 	if (size <= 0)
 		return (0);
 	return (size);
@@ -36,28 +36,29 @@ static int	get_new_size(char *str, char ***envp)
 static int	del_str_split(char *str, char ***envp)
 {
 	int		size;
-	char	**ptr;
-	char	**new_tab;
+	char	**tmp;
+	char	**new_env;
 	int		i;
 
-	size = get_new_size(str, envp);
+	size = get_new_size(str, *envp);
 	if (!size)
 		return (0);
-	new_tab = (char **)ft_calloc(size + 1, sizeof(char *));
-	ptr = *envp;
+	new_env = (char **)ft_calloc(size + 1, sizeof(char *));
+	tmp = *envp;
 	i = 0;
-	while (*ptr)
+	while (*tmp)
 	{
-		if (!(!ft_strncmp(*ptr, str,
-					ft_strlen(str)) && (*ptr)[ft_strlen(str)] == '='))
-			new_tab[i++] = ft_strdup(*ptr);
-		ptr++;
+		if (!(!ft_strncmp(*tmp, str, ft_strlen(str))
+				&& (*tmp)[ft_strlen(str)] == '='))
+			new_env[i++] = ft_strdup(*tmp);
+		tmp++;
 	}
-	*envp = new_tab;
+	ft_split_free(*envp);
+	*envp = new_env;
 	return (0);
 }
 
-void	ft_unset(char *input, char ***envp)
+void	ft_unset(char *input, char **envp)
 {
-	del_str_split(input, envp);
+	del_str_split(input, &envp);
 }

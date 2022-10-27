@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/27 17:25:58 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 21:12:02 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,22 @@ void	free_model(t_model *model)
 	int	i;
 
 	i = model->n_cmd;
-	while (i-- > 0 && model->cmds[i])
+	printf("n_cmd: %d\n", i);
+	while (i > 0)
 	{
-		ft_split_free(model->cmds[i]->args);
-		if (model->cmds[i]->infile != NULL)
-			free(model->cmds[i]->infile);
-		if (model->cmds[i]->outfile != NULL)
-			free(model->cmds[i]->outfile);
-		ft_split_free(model->cmds[i]->heredocs_close);
+		i--;
+		if (model->cmds[i]->args)
+			ft_split_free(model->cmds[i]->args);
+		if (model->cmds[i]->heredocs_close)
+			ft_split_free(model->cmds[i]->heredocs_close);
+		free(model->cmds[i]->infile);
+		free(model->cmds[i]->outfile);
 		free(model->cmds[i]->expansions);
 		free(model->cmds[i]->scape_arguments);
 		free(model->cmds[i]);
 	}
 	free(model->cmds);
-	model->env = NULL;
+	// ft_split_free(model->env);
 	free(model);
 }
 
@@ -70,6 +72,8 @@ static int	check_exit(t_model *model)
 		if (ret >= 0)
 		{
 			clear_history();
+			if (model != NULL)
+				free_model(model);
 			system("leaks -q minishell");
 			return (ret);
 		}
@@ -87,13 +91,13 @@ int	main(void)
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
-	model->env = &environ;
+	model->env = ft_array_join(environ, NULL);
 	clear_terminal();
 	while (1)
 	{
 		print_prompt();
 		str = readline("$ ");
-		parser(str, model, *model->env);
+		parser(str, model, model->env);
 		ret = check_exit(model);
 		if (ret >= 0)
 			return (ret);

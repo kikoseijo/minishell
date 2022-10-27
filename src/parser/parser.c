@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/10 17:56:20 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 20:49:37 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ static char	*ft_substr_modified(char *str, int pos)
 	i = pos;
 	len = 0;
 	if (str[pos] == '\0' || str[pos - 1] == '\0')
+	{
+		free(str);
 		return (NULL);
+	}
 	while (str[pos] != '\0')
 		pos++;
 	len += (pos - i);
-	str_aux = (char *)malloc((len + 1) * sizeof(char));
+	str_aux = (char *)ft_calloc(len + 1, sizeof(char));
 	if (str_aux == NULL)
 		return (NULL);
 	pos = 0;
@@ -38,7 +41,7 @@ static char	*ft_substr_modified(char *str, int pos)
 		pos++;
 		i++;
 	}
-	str_aux[pos] = '\0';
+	// str_aux[pos] = '\0';
 	free(str);
 	return (str_aux);
 }
@@ -56,9 +59,15 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 	init_command(new_command);
 	str_aux = clean_white_spaces(str);
 	if ((str_aux[0] == ';') || (str_aux[0] == '|'))
+	{
+		free(str_aux);
 		str_aux = clean_white_spaces(str);
+	}
 	if (core_parser(new_command, str_aux, &i, err) < 0)
+	{
+		free(str_aux);
 		return (NULL);
+	}
 	pos = i + 1;
 	(*new_command)->args[(*new_command)->num_args + 1] = NULL;
 	new_str = ft_substr_modified(str_aux, pos);
@@ -92,21 +101,19 @@ void	parser(char *str, t_model *model, char **envp)
 ** show_list(model);
 */
 
-static void	check_command(t_cmd **new_command, char *str_aux,
-				int *i) {
+static void	check_command(t_cmd **new_command, char *str_aux, int *i)
+{
 	if (str_aux[*i] != ' ' && (str_aux[*i] != '\0'))
 	{
 		if ((*new_command)->arg_found == 0)
 		{
 			(*new_command)->num_args += 1;
-			(*new_command)->args[(*new_command)->num_args]
-				= (char *)malloc(sizeof(char));
+			(*new_command)->args[(*new_command)->num_args] = (char *)malloc(sizeof(char));
 			(*new_command)->args[(*new_command)->num_args][0] = '\0';
 			(*new_command)->arg_found = 1;
 		}
-		(*new_command)->args[(*new_command)->num_args]
-			= ft_concat_char((*new_command)->args[(*new_command)->num_args],
-				str_aux[*i]);
+		(*new_command)->args[(*new_command)->num_args] = ft_concat_char((*new_command)->args[(*new_command)->num_args],
+																		str_aux[*i]);
 	}
 	else
 	{
@@ -116,7 +123,7 @@ static void	check_command(t_cmd **new_command, char *str_aux,
 }
 
 static int	core_parser(t_cmd **new_command, char *str_aux, int *i, int *err)
-{	
+{
 	while (str_aux[*i] != '\0')
 	{
 		if (checks_output(new_command, str_aux, i, err) == 0)
