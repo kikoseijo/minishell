@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:13:49 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/27 17:14:43 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:22:55 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	check_scapes(char **str, char *copy_str, int *i, int scape)
 	{
 		(*i)++;
 		*str = ft_concat_char(*str, copy_str[*i]);
-		i++;
+		(*i)++;
 		return (1);
 	}
 	return (0);

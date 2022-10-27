@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/27 17:11:59 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:18:04 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	check_expansions(t_model *model, char **enviroment)
 static void	get_expansion(char **str, char **enviroment, int scape)
 {
 	int		i;
-	int		init;
 	char	*copy_str;
 
 	copy_str = *str;

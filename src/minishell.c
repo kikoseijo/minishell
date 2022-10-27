@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/10 17:00:08 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:25:58 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_model(t_model *model)
 		free(model->cmds[i]);
 	}
 	free(model->cmds);
-	// free(model->env);
+	model->env = NULL;
 	free(model);
 }
 
