@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/27 20:49:37 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:15:06 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*ft_substr_modified(char *str, int pos)
 
 	i = pos;
 	len = 0;
-	if (str[pos] == '\0' || str[pos - 1] == '\0')
+	if (str[pos] == '\0' || (pos > 0 && str[pos - 1] == '\0'))
 	{
 		free(str);
 		return (NULL);
@@ -50,7 +50,6 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 {
 	int		i;
 	int		arg_found;
-	int		pos;
 	char	*str_aux;
 	char	*new_str;
 
@@ -68,9 +67,8 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 		free(str_aux);
 		return (NULL);
 	}
-	pos = i + 1;
 	(*new_command)->args[(*new_command)->num_args + 1] = NULL;
-	new_str = ft_substr_modified(str_aux, pos);
+	new_str = ft_substr_modified(str_aux, i);
 	return (new_str);
 }
 
@@ -79,11 +77,13 @@ void	parser(char *str, t_model *model, char **envp)
 	char	*str_aux;
 	int		error;
 
+	if (!str)
+		return ;
 	error = 0;
 	add_history(str);
 	model->n_cmd = 0;
-	model->cmds = (t_cmd **)malloc(100 * sizeof(t_cmd *));
-	str_aux = get_command(str, (&model->cmds[model->n_cmd]), &error);
+	model->cmds = (t_cmd **)ft_calloc(100, sizeof(t_cmd *));
+	str_aux = get_command(str, &model->cmds[model->n_cmd], &error);
 	if (check_error(error, model) != 0)
 		return ;
 	model->n_cmd++;

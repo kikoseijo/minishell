@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/27 18:55:47 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/30 19:48:56 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,18 @@ char	*get_env_value(char *key, char **envp)
 
 void	set_env_value(char *key, char *value, char **envp)
 {
-	char	key_eq[100];
+	char	*tmp;
 	char	*entry;
+	int		size;
 
 	if (!value)
 		return ;
-	ft_strlcpy(key_eq, key, 100);
-	ft_strlcat(key_eq, "=", 100);
-	entry = ft_strjoin(key_eq, value);
+	size = (int)ft_strlen(key);
+	tmp = (char *)ft_calloc(size + 2, sizeof(char));
+	ft_strlcpy(tmp, key, size);
+	ft_strlcat(tmp, "=", 1);
+	entry = ft_strjoin(tmp, value);
+	free(tmp);
 	ft_unset(key, envp);
 	ft_export(entry, envp);
 	free(entry);

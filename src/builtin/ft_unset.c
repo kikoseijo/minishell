@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/27 21:13:24 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/30 13:49:09 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 static int	get_new_size(char *str, char **envp)
 {
-	int		count;
-	char	**tmp;
-	int		size;
+	int	count;
+	int	size;
 
 	count = 0;
-	tmp = envp;
-	while (*tmp)
+	while (*envp)
 	{
-		if (!ft_strncmp(*tmp, str, ft_strlen(str))
-			&& (*tmp)[ft_strlen(str)] == '=')
+		if (!ft_strncmp(*envp, str, ft_strlen(str))
+			&& (*envp)[ft_strlen(str)] == '=')
 			count++;
-		tmp++;
+		envp++;
 	}
 	size = ft_array_len(envp) - count;
 	if (size <= 0)

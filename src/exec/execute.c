@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/27 18:23:04 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:16:02 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,10 @@ static int	exe_pipes(t_model *model, t_pipes *pipes)
 {
 	int	i;
 	int	ret;
-	int	childs[256];
+	int	*childs;
 
 	i = 0;
+	childs = (int *)ft_calloc(model->n_cmd + 1, sizeof(int));
 	while (i < model->n_cmd)
 	{
 		dup2(pipes->fdin, 0);
@@ -103,7 +104,8 @@ static int	exe_pipes(t_model *model, t_pipes *pipes)
 		childs[i] = exe_cmd(model, i);
 		i++;
 	}
-	kill_childs(childs, i - 1, model);
+	kill_childs(childs, i, model);
+	free(childs);
 	return (0);
 }
 

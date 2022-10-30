@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/27 21:12:02 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:38:57 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,34 @@
 ** tgetnum, tgetstr, tgoto, tputs
 */
 
+char		**global_envp;
+
 void	free_model(t_model *model)
 {
 	int	i;
 
+	//
 	i = model->n_cmd;
-	printf("n_cmd: %d\n", i);
+	// printf("KKKKK\n");
 	while (i > 0)
 	{
 		i--;
-		if (model->cmds[i]->args)
-			ft_split_free(model->cmds[i]->args);
-		if (model->cmds[i]->heredocs_close)
-			ft_split_free(model->cmds[i]->heredocs_close);
+		printf("1KKKKK\n");
+		ft_split_free(model->cmds[i]->args);
+		// printf("2KKKKK\n");
+		ft_split_free(model->cmds[i]->heredocs_close);
+		printf("3KKKKK\n");
 		free(model->cmds[i]->infile);
 		free(model->cmds[i]->outfile);
 		free(model->cmds[i]->expansions);
 		free(model->cmds[i]->scape_arguments);
-		free(model->cmds[i]);
+		// free(model->cmds[i]);
+		printf("5KKKKK\n");
+		printf("HELLLOOOOOO\n");
 	}
+	printf("333HELLLOOOOOO\n");
 	free(model->cmds);
-	// ft_split_free(model->env);
+	ft_split_free(model->env);
 	free(model);
 }
 
@@ -56,9 +63,11 @@ static void	handler(int signal)
 	{
 		printf("\n");
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		print_prompt();
 		rl_redisplay();
-		exit(-1);
+		set_env_value((char *)"?", (char *)"1", global_envp);
+		set_env_value((char *)"_", (char *)"1", global_envp);
 	}
 }
 
@@ -71,10 +80,9 @@ static int	check_exit(t_model *model)
 		ret = ft_exit(model);
 		if (ret >= 0)
 		{
+			printf("[ret]:%d\n", ret);
 			clear_history();
-			if (model != NULL)
-				free_model(model);
-			system("leaks -q minishell");
+			free_model(model);
 			return (ret);
 		}
 	}
@@ -91,7 +99,8 @@ int	main(void)
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
-	model->env = ft_array_join(environ, NULL);
+	model->n_cmd = -1;
+	model->env = global_envp = ft_array_join(environ, NULL);
 	clear_terminal();
 	while (1)
 	{

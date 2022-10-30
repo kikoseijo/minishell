@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/27 20:01:33 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:16:18 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,25 @@ void	kill_childs(int *childs, int i, t_model *model)
 {
 	int		exit_int_code;
 	char	*exit_str_code;
+	int		exit_status_code;
 
 	waitpid(childs[i], &exit_int_code, 0);
-	exit_str_code = ft_itoa(WEXITSTATUS(exit_int_code));
-	set_env_value((char *)"?", exit_str_code, model->env);
-	if (exit_str_code != NULL)
+	exit_status_code = WEXITSTATUS(exit_int_code);
+	if (exit_status_code)
+	{
+		printf("exit_status_code:::: %d]\n", exit_status_code);
+		exit_str_code = ft_itoa(exit_status_code);
+		set_env_value((char *)"?", exit_str_code, model->env);
 		free(exit_str_code);
+	}
+	else
+		set_env_value((char *)"?", (char *)"0", model->env);
 	while (--i >= 0)
 	{
 		if (childs[i] > 0)
 			kill(childs[i], SIGKILL);
 	}
+	// free(childs);
 }
 
 void	setup_fdout(t_model *m, int i, t_pipes *pipes)
