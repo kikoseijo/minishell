@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:12 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 20:15:46 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 21:56:53 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@
 ** 	ft_unset(key, envp);
 ** 	new_input[0] = input;
 ** 	new_env = ft_array_join(envp, new_input);
-** 	ft_split_free(envp);
-** 	ft_split_free(new_input);
+** 	ft_free_array(envp);
+** 	ft_free_array(new_input);
 ** 	envp = new_env;
 ** }
 */
@@ -71,7 +71,7 @@ void	ft_export(char *entry, char **envp)
 	new_entry[0] = entry;
 	new_entry[1] = NULL;
 	new_env = ft_array_join(envp, new_entry);
-	ft_split_free(envp);
-	ft_split_free(new_entry);
+	ft_free_array(envp);
+	ft_free_array(new_entry);
 	envp = new_env;
 }

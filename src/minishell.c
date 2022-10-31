@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 20:38:57 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 22:28:13 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,30 @@
 
 char		**global_envp;
 
-void	free_model(t_model *model)
+void	free_model(t_model *model, int with_env)
 {
 	int	i;
 
-	//
 	i = model->n_cmd;
-	// printf("KKKKK\n");
 	while (i > 0)
 	{
 		i--;
-		printf("1KKKKK\n");
-		ft_split_free(model->cmds[i]->args);
-		// printf("2KKKKK\n");
-		ft_split_free(model->cmds[i]->heredocs_close);
-		printf("3KKKKK\n");
+		ft_free_array(model->cmds[i]->args);
+		if (model->cmds[i]->num_heredocs > 0)
+			ft_free_array(model->cmds[i]->heredocs_close);
 		free(model->cmds[i]->infile);
 		free(model->cmds[i]->outfile);
 		free(model->cmds[i]->expansions);
 		free(model->cmds[i]->scape_arguments);
-		// free(model->cmds[i]);
-		printf("5KKKKK\n");
-		printf("HELLLOOOOOO\n");
+		printf("im HERE\n");
+		free(model->cmds[i]);
 	}
-	printf("333HELLLOOOOOO\n");
 	free(model->cmds);
-	ft_split_free(model->env);
-	free(model);
+	if (with_env == 1)
+	{
+		ft_free_array(model->env);
+		free(model);
+	}
 }
 
 static void	handler(int signal)
@@ -80,9 +77,8 @@ static int	check_exit(t_model *model)
 		ret = ft_exit(model);
 		if (ret >= 0)
 		{
-			printf("[ret]:%d\n", ret);
 			clear_history();
-			free_model(model);
+			free_model(model, 1);
 			return (ret);
 		}
 	}
@@ -112,6 +108,7 @@ int	main(void)
 			return (ret);
 		else
 			execute(model);
+		free_model(model, 0);
 	}
 	clear_history();
 	return (0);

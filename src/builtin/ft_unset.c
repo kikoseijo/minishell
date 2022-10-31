@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 13:49:09 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 21:56:06 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	del_str_split(char *str, char ***envp)
 			new_env[i++] = ft_strdup(*tmp);
 		tmp++;
 	}
-	ft_split_free(*envp);
+	ft_free_array(*envp);
 	*envp = new_env;
 	return (0);
 }

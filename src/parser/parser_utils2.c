@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/27 19:12:17 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 22:40:22 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	get_input_file(t_cmd *command, char *str, int pos)
 	while (str[end] != '\0' && (str[end] != ' ') && (str[end] != '|')
 		&& (str[end] != ';') && (str[end] != '<'))
 		end++;
-	// if (command->infile != NULL)
-	// 	free(command->infile);
+	if (command->infile != NULL)
+		free(command->infile);
 	command->infile = (char *)malloc((end - pos + 1) * sizeof(char));
 	if (command->infile == NULL)
 		return (-1);

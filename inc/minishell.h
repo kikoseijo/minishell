@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 20:14:13 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 22:40:53 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void			parser(char *str, t_model *model, char **envp);
 int				execute(t_model *model);
 int				exec_builtin(t_cmd *cmd, char **envp);
 char			*get_cmd(t_model *model, char *cmd);
-void			free_model(t_model *model);
+void			free_model(t_model *model, int with_env);
 void			kill_childs(int *childs, int i, t_model *model);
 void			setup_fdout(t_model *m, int i, t_pipes *pipes);
 

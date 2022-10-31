@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 18:55:51 by anramire          #+#    #+#             */
-/*   Updated: 2022/09/28 22:14:53 by anramire         ###   ########.fr       */
+/*   Updated: 2022/10/31 22:40:11 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	checks_input(t_cmd **new_command, char *str_aux, int *i, int *err)
 }
 
 static int	checks_higher_than(t_cmd **new_command, char *str_aux, int *i,
-				int ht_number)
-{	
+		int ht_number)
+{
 	if (ht_number == 1)
 	{
 		(*i) = get_output_file(*new_command, str_aux, *i);
@@ -95,7 +95,7 @@ static int	checks_higher_than(t_cmd **new_command, char *str_aux, int *i,
 }
 
 static int	checks_less_than(t_cmd **new_command, char *str_aux, int *i,
-				int lt_number)
+		int lt_number)
 {
 	if (lt_number == 1)
 	{
@@ -111,11 +111,10 @@ static int	checks_less_than(t_cmd **new_command, char *str_aux, int *i,
 }
 
 static int	check_conditions(char *str_aux, int *i)
-{	
+{
 	if (!((str_aux[*i] >= 'a') && (str_aux[*i] <= 'z'))
 		&& !((str_aux[*i] >= 'A') && (str_aux[*i] <= 'Z'))
-		&& !((str_aux[*i] >= '0') && str_aux[*i] <= '9')
-		&& str_aux[*i] != '\\')
+		&& !((str_aux[*i] >= '0') && str_aux[*i] <= '9') && str_aux[*i] != '\\')
 	{
 		return (1);
 	}
