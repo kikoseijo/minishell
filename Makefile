@@ -6,7 +6,7 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/10/30 20:21:43 by jseijo-p         ###   ########.fr        #
+#    Updated: 2022/10/31 21:35:18 by cmac             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,11 @@ NAME = minishell
 CFLAGS = -Wall -Werror -Wextra -g
 
 INC_LIBFT = -I libft
-INC_READLINE = -I ~/.brew/opt/readline/include
 INCDIR	= ./inc/
+INC_READLINE = -I ~/.brew/opt/readline/include
 LINK_READLINE = -L ~/.brew/opt/readline/lib
+INC_READLINE_K = -I /usr/local/opt/readline/include
+LINK_READLINE_K = -L /usr/local/opt/readline/lib
 
 SRC = src/minishell.c \
 			src/exec/execute.c \
@@ -49,7 +51,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(CFLAGS) $(INC_LIBFT) -I $(INCDIR) $(INC_READLINE) $(LINK_READLINE) $(OBJ) ./libft/libft.a -lreadline -lncurses -o $(NAME)
+	$(CC) $(CFLAGS) $(INC_LIBFT) -I $(INCDIR) $(INC_READLINE_K) $(LINK_READLINE_K) $(OBJ) ./libft/libft.a -lreadline -lncurses -o $(NAME)
 
 clean:
 	$(MAKE) -C libft fclean

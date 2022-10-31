@@ -6,100 +6,11 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/30 20:15:06 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 20:16:34 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-static void	check_command(t_cmd **new_command, char *str_aux, int *i);
-static int	core_parser(t_cmd **new_command, char *str_aux, int *i, int *err);
-
-static char	*ft_substr_modified(char *str, int pos)
-{
-	char	*str_aux;
-	int		len;
-	int		i;
-
-	i = pos;
-	len = 0;
-	if (str[pos] == '\0' || (pos > 0 && str[pos - 1] == '\0'))
-	{
-		free(str);
-		return (NULL);
-	}
-	while (str[pos] != '\0')
-		pos++;
-	len += (pos - i);
-	str_aux = (char *)ft_calloc(len + 1, sizeof(char));
-	if (str_aux == NULL)
-		return (NULL);
-	pos = 0;
-	while (str[i] != '\0')
-	{
-		str_aux[pos] = str[i];
-		pos++;
-		i++;
-	}
-	// str_aux[pos] = '\0';
-	free(str);
-	return (str_aux);
-}
-
-static char	*get_command(char *str, t_cmd **new_command, int *err)
-{
-	int		i;
-	int		arg_found;
-	char	*str_aux;
-	char	*new_str;
-
-	i = 0;
-	arg_found = 0;
-	init_command(new_command);
-	str_aux = clean_white_spaces(str);
-	if ((str_aux[0] == ';') || (str_aux[0] == '|'))
-	{
-		free(str_aux);
-		str_aux = clean_white_spaces(str);
-	}
-	if (core_parser(new_command, str_aux, &i, err) < 0)
-	{
-		free(str_aux);
-		return (NULL);
-	}
-	(*new_command)->args[(*new_command)->num_args + 1] = NULL;
-	new_str = ft_substr_modified(str_aux, i);
-	return (new_str);
-}
-
-void	parser(char *str, t_model *model, char **envp)
-{
-	char	*str_aux;
-	int		error;
-
-	if (!str)
-		return ;
-	error = 0;
-	add_history(str);
-	model->n_cmd = 0;
-	model->cmds = (t_cmd **)ft_calloc(100, sizeof(t_cmd *));
-	str_aux = get_command(str, &model->cmds[model->n_cmd], &error);
-	if (check_error(error, model) != 0)
-		return ;
-	model->n_cmd++;
-	while (str_aux)
-	{
-		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
-		if (check_error(error, model) != 0)
-			return ;
-		model->n_cmd++;
-	}
-	check_expansions(model, envp);
-}
-
-/*
-** show_list(model);
-*/
 
 static void	check_command(t_cmd **new_command, char *str_aux, int *i)
 {
@@ -149,4 +60,86 @@ static int	core_parser(t_cmd **new_command, char *str_aux, int *i, int *err)
 		(*i)++;
 	}
 	return (0);
+}
+
+static char	*ft_substr_modified(char *str, int pos)
+{
+	char	*str_aux;
+	int		len;
+	int		i;
+
+	i = pos;
+	len = 0;
+	if (str[pos] == '\0' || (pos > 0 && str[pos - 1] == '\0'))
+	{
+		free(str);
+		return (NULL);
+	}
+	while (str[pos] != '\0')
+		pos++;
+	len += (pos - i);
+	str_aux = (char *)ft_calloc(len + 1, sizeof(char));
+	if (str_aux == NULL)
+		return (NULL);
+	pos = 0;
+	while (str[i] != '\0')
+	{
+		str_aux[pos] = str[i];
+		pos++;
+		i++;
+	}
+	// str_aux[pos] = '\0';
+	free(str);
+	return (str_aux);
+}
+
+static char	*get_command(char *str, t_cmd **new_command, int *err)
+{
+	int		i;
+	int		arg_found;
+	char	*str_aux;
+	char	*new_str;
+
+	i = 0;
+	arg_found = 0;
+	init_command(new_command);
+	str_aux = clean_white_spaces(str);
+	// if ((str_aux[0] == ';') || (str_aux[0] == '|'))
+	// {
+	// 	free(str_aux);
+	// 	str_aux = clean_white_spaces(str);
+	// }
+	if (core_parser(new_command, str_aux, &i, err) < 0)
+	{
+		free(str_aux);
+		return (NULL);
+	}
+	(*new_command)->args[(*new_command)->num_args + 1] = NULL;
+	new_str = ft_substr_modified(str_aux, i);
+	return (new_str);
+}
+
+void	parser(char *str, t_model *model, char **envp)
+{
+	char	*str_aux;
+	int		error;
+
+	if (!str)
+		return ;
+	error = 0;
+	add_history(str);
+	model->n_cmd = 0;
+	model->cmds = (t_cmd **)ft_calloc(100, sizeof(t_cmd *));
+	str_aux = get_command(str, &model->cmds[model->n_cmd], &error);
+	if (check_error(error, model) != 0)
+		return ;
+	model->n_cmd++;
+	while (str_aux)
+	{
+		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
+		if (check_error(error, model) != 0)
+			return ;
+		model->n_cmd++;
+	}
+	check_expansions(model, envp);
 }

@@ -6,57 +6,62 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 13:49:09 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 21:48:38 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	get_new_size(char *str, char **envp)
+static int	find_env_position(char *str, char ***envp)
 {
-	int	count;
-	int	size;
+	char	**ptr;
+	int		count;
+	int		res;
 
+	ptr = *envp;
 	count = 0;
-	while (*envp)
+	while (*ptr)
 	{
-		if (!ft_strncmp(*envp, str, ft_strlen(str))
-			&& (*envp)[ft_strlen(str)] == '=')
+		if (!ft_strncmp(*ptr, str, ft_strlen(str))
+			&& (*ptr)[ft_strlen(str)] == '=')
 			count++;
-		envp++;
+		ptr++;
 	}
-	size = ft_array_len(envp) - count;
-	if (size <= 0)
+	res = ft_array_len(*envp) - count;
+	if (res <= 0)
 		return (0);
-	return (size);
+	return (res);
 }
 
 static int	del_str_split(char *str, char ***envp)
 {
-	int		size;
+	int		pos;
 	char	**tmp;
-	char	**new_env;
+	char	**res;
 	int		i;
 
-	size = get_new_size(str, *envp);
-	if (!size)
+	pos = find_env_position(str, envp);
+	if (!pos)
 		return (0);
-	new_env = (char **)ft_calloc(size + 1, sizeof(char *));
+	res = (char **)ft_calloc(ft_array_len(*envp) + 1, sizeof(char *));
 	tmp = *envp;
 	i = 0;
 	while (*tmp)
 	{
 		if (!(!ft_strncmp(*tmp, str, ft_strlen(str))
 				&& (*tmp)[ft_strlen(str)] == '='))
-			new_env[i++] = ft_strdup(*tmp);
+		{
+			res[i] = ft_strdup(*tmp);
+			i++;
+		}
 		tmp++;
 	}
-	ft_split_free(*envp);
-	*envp = new_env;
+	ft_free_array(*envp);
+	*envp = res;
 	return (0);
 }
 
-void	ft_unset(char *input, char **envp)
+void	ft_unset(char *input, char ***envp)
 {
-	del_str_split(input, &envp);
+	del_str_split(input, envp);
 }

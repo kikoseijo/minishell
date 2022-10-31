@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:51:52 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/27 18:24:02 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 21:39:19 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	ft_cd(char *path, char **envp)
 		perror("cd");
 		return (1);
 	}
-	set_env_value((char *)"OLDPWD", get_env_value((char *)"PWD", envp), envp);
+	set_env_value((char *)"OLDPWD", get_env_value((char *)"PWD", envp), &envp);
 	getcwd(buffer, 200);
-	set_env_value((char *)"PWD", buffer, envp);
+	set_env_value((char *)"PWD", buffer, &envp);
 	return (0);
 }

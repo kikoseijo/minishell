@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 19:48:56 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 21:42:40 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_env_value(char *key, char **envp)
 	return (NULL);
 }
 
-void	set_env_value(char *key, char *value, char **envp)
+void	set_env_value(char *key, char *value, char ***envp)
 {
 	char	*tmp;
 	char	*entry;
@@ -36,16 +36,31 @@ void	set_env_value(char *key, char *value, char **envp)
 
 	if (!value)
 		return ;
-	size = (int)ft_strlen(key);
-	tmp = (char *)ft_calloc(size + 2, sizeof(char));
+	size = (int)ft_strlen(key) + 2;
+	tmp = (char *)ft_calloc(size, sizeof(char));
 	ft_strlcpy(tmp, key, size);
-	ft_strlcat(tmp, "=", 1);
+	ft_strlcat(tmp, "=", size);
 	entry = ft_strjoin(tmp, value);
 	free(tmp);
 	ft_unset(key, envp);
-	ft_export(entry, envp);
-	free(entry);
+	ft_export(entry, *envp);
+	// free(entry);
 }
+
+// void	set_env_value(char *key, char *value, char **envp)
+// {
+// 	char	key_eq[100];
+// 	char	*entry;
+//
+// 	if (!value)
+// 		return ;
+// 	ft_strlcpy(key_eq, key, 100);
+// 	ft_strlcat(key_eq, "=", 100);
+// 	entry = ft_strjoin(key_eq, value);
+// 	ft_unset(key, envp);
+// 	ft_export(entry, envp);
+// 	free(entry);
+// }
 
 char	**get_env_path(char **envp)
 {

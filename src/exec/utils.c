@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 20:16:18 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 21:42:56 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	exec_builtin(t_cmd *cmd, char **envp)
 	if (!ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])))
 		ft_echo(cmd->num_args + 1, cmd->args);
 	else if (!ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_unset(cmd->args[1], envp);
+		ft_unset(cmd->args[1], &envp);
 	else if (!ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])))
 		ft_export(cmd->args[1], envp);
 	else if (!ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])))
@@ -31,13 +31,13 @@ int	exec_builtin(t_cmd *cmd, char **envp)
 	{
 		if (ft_cd(cmd->args[1], envp))
 		{
-			set_env_value((char *)"?", (char *)"1", envp);
+			set_env_value((char *)"?", (char *)"1", &envp);
 			return (built);
 		}
 	}
 	else
 		built = 0;
-	set_env_value((char *)"?", (char *)"0", envp);
+	set_env_value((char *)"?", (char *)"0", &envp);
 	return (built);
 }
 
@@ -63,23 +63,25 @@ char	*get_cmd(t_model *model, char *cmd)
 	return (0);
 }
 
-void	kill_childs(int *childs, int i, t_model *model)
+void	kill_childs(int *childs, t_model *model)
 {
 	int		exit_int_code;
 	char	*exit_str_code;
 	int		exit_status_code;
+	int		i;
 
+	i = model->n_cmd - 1;
 	waitpid(childs[i], &exit_int_code, 0);
 	exit_status_code = WEXITSTATUS(exit_int_code);
 	if (exit_status_code)
 	{
 		printf("exit_status_code:::: %d]\n", exit_status_code);
 		exit_str_code = ft_itoa(exit_status_code);
-		set_env_value((char *)"?", exit_str_code, model->env);
+		set_env_value((char *)"?", exit_str_code, &model->env);
 		free(exit_str_code);
 	}
 	else
-		set_env_value((char *)"?", (char *)"0", model->env);
+		set_env_value((char *)"?", (char *)"0", &model->env);
 	while (--i >= 0)
 	{
 		if (childs[i] > 0)
