@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/30 20:39:55 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/10/31 23:04:00 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	init_command(t_cmd **new_command)
 	(*new_command)->is_double_outfile = -1;
 	(*new_command)->outfile = NULL;
 	(*new_command)->infile = NULL;
-	(*new_command)->heredocs_close = (char **)ft_calloc(100, sizeof(char *));
 	(*new_command)->num_heredocs = 0;
 }
 
