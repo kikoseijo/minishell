@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 18:49:30 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 21:01:29 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,34 +37,29 @@ static int	get_new_size(char *str)
 	return (size);
 }
 
-static void	ft_array_splice(char *str)
+void	ft_unset(char *str)
 {
 	int		size;
 	char	**tmp;
-	char	**new_env;
+	char	**res;
 	int		i;
 
 	size = get_new_size(str);
 	if (!size)
 		return ;
-	new_env = (char **)ft_calloc(size + 1, sizeof(char *));
+	res = (char **)ft_calloc(size + 1, sizeof(char *));
 	tmp = global_envp;
 	i = 0;
 	while (*tmp)
 	{
-		if (!(!ft_strncmp(*tmp, str, ft_strlen(str))
-				&& (*tmp)[ft_strlen(str)] == '='))
+		if (!((*tmp)[ft_strlen(str)] == '=' && !ft_strncmp(*tmp, str,
+					ft_strlen(str))))
 		{
-			new_env[i] = ft_strdup(*tmp);
+			res[i] = ft_strdup(*tmp);
 			i++;
 		}
 		tmp++;
 	}
 	ft_free_array(global_envp);
-	global_envp = new_env;
-}
-
-void	ft_unset(char *input)
-{
-	ft_array_splice(input);
+	global_envp = res;
 }

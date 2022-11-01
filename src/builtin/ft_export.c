@@ -6,72 +6,42 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:12 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 19:02:58 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 20:56:57 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-/*
-** static void	wrong_variable(char *key)
-** {
-** 	ft_putstr_fd((char *)"Invalid variable name\n", 2);
-** 	free(key);
-** 	return ;
-** }
-**
-** void	ft_export(char *input, char **envp)
-** {
-** 	char	**new_input;
-** 	char	**new_env;
-** 	char	*key;
-** 	int		i;
-**
-** 	new_input = (char **)ft_calloc(2, sizeof(char *));
-** 	key = (char *)ft_calloc(ft_strlen(input), sizeof(char));
-** 	i = 0;
-** 	while (input[i] && (ft_isalnum(input[i]) || ft_isset(input[i], "_?"))
-** 		&& input[i] != '=')
-** 	{
-** 		key[i] = input[i];
-** 		i++;
-** 	}
-** 	if (input[i] != '=')
-** 		return (wrong_variable(key));
-** 	ft_unset(key, envp);
-** 	new_input[0] = input;
-** 	new_env = ft_array_join(envp, new_input);
-** 	ft_free_array(envp);
-** 	ft_free_array(new_input);
-** 	envp = new_env;
-** }
-*/
-
-void	ft_export(char *entry)
+static void	wrong_variable(char *key)
 {
-	char	*new_entry[2];
-	char	**new_env;
-	int		i;
-	char	key[100];
+	ft_putstr_fd((char *)"Invalid variable name\n", 2);
+	free(key);
+	return ;
+}
 
+void	ft_export(char *input)
+{
+	char	**new_input;
+	char	**new_env;
+	char	*key;
+	int		i;
+
+	new_input = (char **)ft_calloc(2, sizeof(char *));
+	key = (char *)ft_calloc(ft_strlen(input) + 1, sizeof(char));
 	i = 0;
-	printf("entry;: %s\n", entry);
-	while (entry[i] && (ft_isalnum(entry[i]) || ft_isset(entry[i], "_?"))
-		&& entry[i] != '=')
+	while (input[i] && (ft_isalnum(input[i]) || ft_isset(input[i], "_?"))
+		&& input[i] != '=')
 	{
-		key[i] = entry[i];
+		key[i] = input[i];
 		i++;
 	}
-	key[i] = '\0';
-	if (entry[i] != '=')
-	{
-		ft_putstr_fd("Invalid variable name\n", 2);
-		return ;
-	}
+	if (input[i] != '=')
+		return (wrong_variable(key));
 	ft_unset(key);
-	new_entry[0] = entry;
-	new_entry[1] = NULL;
-	new_env = ft_array_join(global_envp, new_entry);
+	free(key);
+	new_input[0] = input;
+	new_env = ft_array_join(global_envp, new_input);
 	ft_free_array(global_envp);
+	ft_free_array(new_input);
 	global_envp = new_env;
 }

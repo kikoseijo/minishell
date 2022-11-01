@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:51:52 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 09:38:27 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/11/01 20:52:26 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 void	ft_echo(int argc, char **args)
 {
 	int	i;
-	int	n;
+	int	j;
 
-	n = 0;
+	j = 0;
 	i = 1;
 	if (argc > 1 && !ft_strncmp("-n", args[i], 3))
 	{
-		n = 1;
+		j = 1;
 		i++;
 	}
 	while (i < argc)
@@ -31,6 +31,6 @@ void	ft_echo(int argc, char **args)
 			ft_putstr_fd((char *)" ", 1);
 		i++;
 	}
-	if (!n)
+	if (!j)
 		ft_putstr_fd((char *)"\n", 1);
 }
