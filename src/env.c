@@ -6,29 +6,29 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 19:48:56 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/11/01 18:55:16 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*get_env_value(char *key, char **envp)
+char	*get_env_value(char *key)
 {
 	int	i;
 	int	len;
 
 	len = ft_strlen(key);
 	i = 0;
-	while (envp[i])
+	while (global_envp[i])
 	{
-		if (!ft_strncmp(envp[i], key, len) && envp[i][len] == '=')
-			return (&envp[i][len + 1]);
+		if (!ft_strncmp(global_envp[i], key, len) && global_envp[i][len] == '=')
+			return (&global_envp[i][len + 1]);
 		i++;
 	}
 	return (NULL);
 }
 
-void	set_env_value(char *key, char *value, char **envp)
+void	set_env_value(const char *key, char *value)
 {
 	char	*tmp;
 	char	*entry;
@@ -36,23 +36,23 @@ void	set_env_value(char *key, char *value, char **envp)
 
 	if (!value)
 		return ;
-	size = (int)ft_strlen(key);
-	tmp = (char *)ft_calloc(size + 2, sizeof(char));
+	size = (int)ft_strlen(key) + 2;
+	tmp = (char *)ft_calloc(size, sizeof(char));
 	ft_strlcpy(tmp, key, size);
-	ft_strlcat(tmp, "=", 1);
+	ft_strlcat(tmp, "=", size);
 	entry = ft_strjoin(tmp, value);
 	free(tmp);
-	ft_unset(key, envp);
-	ft_export(entry, envp);
+	ft_unset((char *)key);
+	ft_export(entry);
 	free(entry);
 }
 
-char	**get_env_path(char **envp)
+char	**get_env_path()
 {
 	char	**path;
 	char	*tmp;
 
-	tmp = get_env_value((char *)"PATH", envp);
+	tmp = get_env_value((char *)"PATH");
 	if (!tmp)
 		return (NULL);
 	path = ft_split(tmp, ':');
@@ -79,12 +79,11 @@ void	print_prompt(void)
 {
 	struct winsize	w;
 	char			*cur_user;
-	extern char		**environ;
 	char			working_dir[256];
 
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 	getcwd(working_dir, 256);
-	cur_user = get_env_value((char *)"LOGNAME", environ);
+	cur_user = get_env_value((char *)"LOGNAME");
 	ft_putstr_fd((char *)"\e[0;34m", 1);
 	ft_putstr_fd(cur_user, 1);
 	ft_putstr_fd((char *)"\e[0;32m", 1);

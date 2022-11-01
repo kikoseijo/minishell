@@ -6,13 +6,13 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/31 22:40:22 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 18:51:26 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	get_expansion(char **str, char **enviroment, int scape);
+static void	get_expansion(char **str, int scape);
 
 int	get_input_file(t_cmd *command, char *str, int pos)
 {
@@ -66,7 +66,7 @@ int	get_heredocs(t_cmd *command, char *str, int pos)
 	return (end);
 }
 
-void	check_expansions(t_model *model, char **enviroment)
+void	check_expansions(t_model *model)
 {
 	int	n;
 	int	i;
@@ -78,17 +78,15 @@ void	check_expansions(t_model *model, char **enviroment)
 		while (model->cmds[n]->args[i] != NULL)
 		{
 			if (model->cmds[n]->expansions[i] != 0)
-			{
-				get_expansion(&(model->cmds[n]->args[i]), enviroment,
-						model->cmds[n]->scape_arguments[i]);
-			}
+				get_expansion(&(model->cmds[n]->args[i]),
+								model->cmds[n]->scape_arguments[i]);
 			i++;
 		}
 		n++;
 	}
 }
 
-static void	get_expansion(char **str, char **enviroment, int scape)
+static void	get_expansion(char **str, int scape)
 {
 	int		i;
 	char	*copy_str;
@@ -103,7 +101,7 @@ static void	get_expansion(char **str, char **enviroment, int scape)
 			continue ;
 		if (copy_str[i] == '$')
 		{
-			main_loop(copy_str, &i, enviroment, str);
+			main_loop(copy_str, &i, str);
 			continue ;
 		}
 		*str = ft_concat_char(*str, copy_str[i]);

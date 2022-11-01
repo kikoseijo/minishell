@@ -6,57 +6,65 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/31 21:56:06 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 18:49:30 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	get_new_size(char *str, char **envp)
+static int	get_new_size(char *str)
 {
-	int	count;
-	int	size;
+	int		count;
+	char	**ptr;
+	int		size;
 
 	count = 0;
-	while (*envp)
+	ptr = global_envp;
+	while (*ptr)
 	{
-		if (!ft_strncmp(*envp, str, ft_strlen(str))
-			&& (*envp)[ft_strlen(str)] == '=')
+		if (!ft_strncmp(*ptr, str, ft_strlen(str))
+			&& (*ptr)[ft_strlen(str)] == '=')
 			count++;
-		envp++;
+		ptr++;
 	}
-	size = ft_array_len(envp) - count;
+	size = ft_array_len(global_envp) - count;
 	if (size <= 0)
+	{
+		free(global_envp);
+		global_envp = NULL;
 		return (0);
+	}
 	return (size);
 }
 
-static int	del_str_split(char *str, char ***envp)
+static void	ft_array_splice(char *str)
 {
 	int		size;
 	char	**tmp;
 	char	**new_env;
 	int		i;
 
-	size = get_new_size(str, *envp);
+	size = get_new_size(str);
 	if (!size)
-		return (0);
+		return ;
 	new_env = (char **)ft_calloc(size + 1, sizeof(char *));
-	tmp = *envp;
+	tmp = global_envp;
 	i = 0;
 	while (*tmp)
 	{
 		if (!(!ft_strncmp(*tmp, str, ft_strlen(str))
 				&& (*tmp)[ft_strlen(str)] == '='))
-			new_env[i++] = ft_strdup(*tmp);
+		{
+			new_env[i] = ft_strdup(*tmp);
+			i++;
+		}
 		tmp++;
 	}
-	ft_free_array(*envp);
-	*envp = new_env;
-	return (0);
+	ft_free_array(global_envp);
+	global_envp = new_env;
 }
 
-void	ft_unset(char *input, char **envp)
+void	ft_unset(char *input)
 {
-	del_str_split(input, &envp);
+	ft_array_splice(input);
 }

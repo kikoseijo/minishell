@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/31 22:28:13 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 18:57:05 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 ** tgetnum, tgetstr, tgoto, tputs
 */
 
-char		**global_envp;
-
 void	free_model(t_model *model, int with_env)
 {
 	int	i;
@@ -43,13 +41,12 @@ void	free_model(t_model *model, int with_env)
 		free(model->cmds[i]->outfile);
 		free(model->cmds[i]->expansions);
 		free(model->cmds[i]->scape_arguments);
-		printf("im HERE\n");
 		free(model->cmds[i]);
 	}
 	free(model->cmds);
 	if (with_env == 1)
 	{
-		ft_free_array(model->env);
+		ft_free_array(global_envp);
 		free(model);
 	}
 }
@@ -63,8 +60,8 @@ static void	handler(int signal)
 		rl_replace_line("", 0);
 		print_prompt();
 		rl_redisplay();
-		set_env_value((char *)"?", (char *)"1", global_envp);
-		set_env_value((char *)"_", (char *)"1", global_envp);
+		set_env_value((char *)"?", (char *)"1");
+		set_env_value((char *)"_", (char *)"1");
 	}
 }
 
@@ -95,14 +92,13 @@ int	main(void)
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
-	model->n_cmd = -1;
-	model->env = global_envp = ft_array_join(environ, NULL);
+	global_envp = ft_array_join(environ, NULL);
 	clear_terminal();
 	while (1)
 	{
 		print_prompt();
 		str = readline("$ ");
-		parser(str, model, model->env);
+		parser(str, model);
 		ret = check_exit(model);
 		if (ret >= 0)
 			return (ret);

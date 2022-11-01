@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/31 22:40:53 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 18:59:03 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define ERROR_QUOTES -2
 # define ERROR_SYNTAX -1
 
+char		**global_envp;
+
 typedef struct s_cmd
 {
 	char		**args;
@@ -47,7 +49,6 @@ typedef struct s_model
 {
 	int			n_cmd;
 	t_cmd		**cmds;
-	char		**env;
 }				t_model;
 
 typedef struct s_pipes
@@ -58,29 +59,29 @@ typedef struct s_pipes
 	int			fdout;
 }				t_pipes;
 
-void			parser(char *str, t_model *model, char **envp);
+void			parser(char *str, t_model *model);
 int				execute(t_model *model);
-int				exec_builtin(t_cmd *cmd, char **envp);
-char			*get_cmd(t_model *model, char *cmd);
+int				exec_builtin(t_cmd *cmd);
+char			*get_cmd(char *cmd);
 void			free_model(t_model *model, int with_env);
-void			kill_childs(int *childs, int i, t_model *model);
+void			kill_childs(int *childs, int i);
 void			setup_fdout(t_model *m, int i, t_pipes *pipes);
 
 // env.c
-char			*get_env_value(char *key, char **envp);
-void			set_env_value(char *key, char *value, char **envp);
-char			**get_env_path(char **envp);
+char			*get_env_value(char *key);
+void			set_env_value(const char *key, char *value);
+char			**get_env_path();
 void			clear_terminal(void);
 void			print_prompt(void);
 
 // builtin
-int				ft_cd(char *path, char **envp);
+int				ft_cd(char *path);
 void			ft_echo(int argc, char **args);
-void			ft_env(char **envp);
+void			ft_env();
 int				ft_exit(t_model *model);
-void			ft_export(char *input, char **envp);
+void			ft_export(char *input);
 void			ft_pwd(void);
-void			ft_unset(char *input, char **envp);
+void			ft_unset(char *input);
 
 //Utilities functions
 char			*clean_white_spaces(char *str);
@@ -95,8 +96,8 @@ int				get_output_file(t_cmd *command, char *str, int pos);
 int				get_double_file(t_cmd *command, char *str, int pos);
 int				get_input_file(t_cmd *command, char *str, int pos);
 int				get_heredocs(t_cmd *command, char *str, int pos);
-void			check_expansions(t_model *model, char **enviroment);
-int				check_error(int error, t_model *model);
+void			check_expansions(t_model *model);
+int				check_error(int error);
 int				checks_output(t_cmd **new_command, char *str_aux, int *i,
 					int *err);
 int				checks_input(t_cmd **new_command, char *str_aux, int *i,
@@ -107,7 +108,7 @@ int				simp_quotes_core(t_cmd *command, char *str, int *pos,
 					int *num_argument);
 int				double_quotes_core(t_cmd *command, char *str, int *pos,
 					int *num_argument);
-void			main_loop(char *copy_str, int *i, char **ev, char **str);
+void			main_loop(char *copy_str, int *i, char **str);
 int				main_scapes(char *copy_str, int *i, char **str, int scape);
 
 int				check_scapes(char **str, char *copy_str, int *i, int scape);

@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 20:16:02 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/11/01 18:59:41 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,18 @@ static int	exe_cmd(t_model *model, int i)
 	char	*cmd_path;
 
 	cmd = model->cmds[i];
-	if (exec_builtin(cmd, model->env))
+	if (exec_builtin(cmd))
 		return (-1);
 	pid = fork();
 	if (pid == 0)
 	{
-		cmd_path = get_cmd(model, cmd->args[0]);
+		cmd_path = get_cmd(cmd->args[0]);
 		if (cmd_path == 0)
 		{
 			printf("bash: %s: Command not found.\n", cmd->args[0]);
 			exit(127);
 		}
-		execve(cmd_path, model->cmds[i]->args, model->env);
+		execve(cmd_path, model->cmds[i]->args, global_envp);
 		perror("execve");
 		exit(1);
 	}
@@ -104,7 +104,7 @@ static int	exe_pipes(t_model *model, t_pipes *pipes)
 		childs[i] = exe_cmd(model, i);
 		i++;
 	}
-	kill_childs(childs, i, model);
+	kill_childs(childs, i);
 	free(childs);
 	return (0);
 }

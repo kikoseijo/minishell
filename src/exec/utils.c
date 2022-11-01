@@ -6,13 +6,13 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/30 20:16:18 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/11/01 18:58:34 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	exec_builtin(t_cmd *cmd, char **envp)
+int	exec_builtin(t_cmd *cmd)
 {
 	int	built;
 
@@ -20,35 +20,35 @@ int	exec_builtin(t_cmd *cmd, char **envp)
 	if (!ft_strncmp("echo", cmd->args[0], ft_strlen(cmd->args[0])))
 		ft_echo(cmd->num_args + 1, cmd->args);
 	else if (!ft_strncmp("unset", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_unset(cmd->args[1], envp);
+		ft_unset(cmd->args[1]);
 	else if (!ft_strncmp("export", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_export(cmd->args[1], envp);
+		ft_export(cmd->args[1]);
 	else if (!ft_strncmp("env", cmd->args[0], ft_strlen(cmd->args[0])))
-		ft_env(envp);
+		ft_env();
 	else if (!ft_strncmp("pwd", cmd->args[0], ft_strlen(cmd->args[0])))
 		ft_pwd();
 	else if (!ft_strncmp("cd", cmd->args[0], ft_strlen(cmd->args[0])))
 	{
-		if (ft_cd(cmd->args[1], envp))
+		if (ft_cd(cmd->args[1]))
 		{
-			set_env_value((char *)"?", (char *)"1", envp);
+			set_env_value((char *)"?", (char *)"1");
 			return (built);
 		}
 	}
 	else
 		built = 0;
-	set_env_value((char *)"?", (char *)"0", envp);
+	set_env_value((char *)"?", (char *)"0");
 	return (built);
 }
 
-char	*get_cmd(t_model *model, char *cmd)
+char	*get_cmd(char *cmd)
 {
 	char	*res;
 	char	**paths;
 
 	if (ft_strchr(cmd, '/') && access(cmd, F_OK | X_OK) == 0)
 		return (cmd);
-	paths = get_env_path(model->env);
+	paths = get_env_path();
 	if (!paths)
 		return (0);
 	while (*paths)
@@ -63,7 +63,7 @@ char	*get_cmd(t_model *model, char *cmd)
 	return (0);
 }
 
-void	kill_childs(int *childs, int i, t_model *model)
+void	kill_childs(int *childs, int i)
 {
 	int		exit_int_code;
 	char	*exit_str_code;
@@ -73,13 +73,12 @@ void	kill_childs(int *childs, int i, t_model *model)
 	exit_status_code = WEXITSTATUS(exit_int_code);
 	if (exit_status_code)
 	{
-		printf("exit_status_code:::: %d]\n", exit_status_code);
 		exit_str_code = ft_itoa(exit_status_code);
-		set_env_value((char *)"?", exit_str_code, model->env);
+		set_env_value((char *)"?", exit_str_code);
 		free(exit_str_code);
 	}
 	else
-		set_env_value((char *)"?", (char *)"0", model->env);
+		set_env_value((char *)"?", (char *)"0");
 	while (--i >= 0)
 	{
 		if (childs[i] > 0)

@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:13:49 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/27 19:11:47 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/11/01 18:52:14 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	check_scapes(char **str, char *copy_str, int *i, int scape)
 	return (0);
 }
 
-void	main_loop(char *copy_str, int *i, char **env, char **str)
+void	main_loop(char *copy_str, int *i, char **str)
 {
 	int		init;
 	char	*aux;
@@ -129,13 +129,14 @@ void	main_loop(char *copy_str, int *i, char **env, char **str)
 		(*i)++;
 	aux = ft_substr(copy_str, init, (*i) - init + 1);
 	j = 0;
-	while (env[j])
+	while (global_envp[j])
 	{
-		if (ft_strncmp(aux, env[j], (*i) - init) == 0)
+		if (ft_strncmp(aux, global_envp[j], (*i) - init) == 0)
 		{
 			free(aux);
 			aux = *str;
-			env2 = ft_substr(env[j], (*i) - init + 1, ft_strlen(env[j]));
+			env2 = ft_substr(global_envp[j], (*i) - init + 1,
+					ft_strlen(global_envp[j]));
 			*str = ft_strjoin(*str, env2);
 			free(aux);
 			free(env2);

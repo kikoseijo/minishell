@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/10/30 20:15:06 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:00:07 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,12 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 	arg_found = 0;
 	init_command(new_command);
 	str_aux = clean_white_spaces(str);
-	if ((str_aux[0] == ';') || (str_aux[0] == '|'))
-	{
-		free(str_aux);
-		str_aux = clean_white_spaces(str);
-	}
+	free(str);
+	// if ((str_aux[0] == ';') || (str_aux[0] == '|'))
+	// {
+	// 	free(str_aux);
+	// 	str_aux = clean_white_spaces(str);
+	// }
 	if (core_parser(new_command, str_aux, &i, err) < 0)
 	{
 		free(str_aux);
@@ -72,7 +73,7 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 	return (new_str);
 }
 
-void	parser(char *str, t_model *model, char **envp)
+void	parser(char *str, t_model *model)
 {
 	char	*str_aux;
 	int		error;
@@ -82,19 +83,19 @@ void	parser(char *str, t_model *model, char **envp)
 	error = 0;
 	add_history(str);
 	model->n_cmd = 0;
-	model->cmds = (t_cmd **)ft_calloc(100, sizeof(t_cmd *));
-	str_aux = get_command(str, &model->cmds[model->n_cmd], &error);
-	if (check_error(error, model) != 0)
+	model->cmds = (t_cmd **)malloc(100 * sizeof(t_cmd *));
+	str_aux = get_command(str, &model->cmds[0], &error);
+	if (check_error(error) != 0)
 		return ;
 	model->n_cmd++;
 	while (str_aux)
 	{
 		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
-		if (check_error(error, model) != 0)
+		if (check_error(error) != 0)
 			return ;
 		model->n_cmd++;
 	}
-	check_expansions(model, envp);
+	check_expansions(model);
 }
 
 /*

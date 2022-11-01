@@ -6,14 +6,17 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:36 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/09/23 09:38:25 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/11/01 18:46:58 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	ft_env(char **envp)
+void	ft_env(void)
 {
+	char	**envp;
+
+	envp = global_envp;
 	while (*envp)
 	{
 		printf("%s\n", *envp);

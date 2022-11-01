@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:12 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/10/31 21:56:53 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 18:47:54 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 ** }
 */
 
-void	ft_export(char *entry, char **envp)
+void	ft_export(char *entry)
 {
 	char	*new_entry[2];
 	char	**new_env;
@@ -67,11 +67,10 @@ void	ft_export(char *entry, char **envp)
 		ft_putstr_fd("Invalid variable name\n", 2);
 		return ;
 	}
-	ft_unset(key, envp);
+	ft_unset(key);
 	new_entry[0] = entry;
 	new_entry[1] = NULL;
-	new_env = ft_array_join(envp, new_entry);
-	ft_free_array(envp);
-	ft_free_array(new_entry);
-	envp = new_env;
+	new_env = ft_array_join(global_envp, new_entry);
+	ft_free_array(global_envp);
+	global_envp = new_env;
 }
