@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/01 19:00:07 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 20:33:14 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static char	*ft_substr_modified(char *str, int pos)
 		pos++;
 		i++;
 	}
-	// str_aux[pos] = '\0';
 	free(str);
 	return (str_aux);
 }
@@ -57,12 +56,12 @@ static char	*get_command(char *str, t_cmd **new_command, int *err)
 	arg_found = 0;
 	init_command(new_command);
 	str_aux = clean_white_spaces(str);
-	free(str);
 	// if ((str_aux[0] == ';') || (str_aux[0] == '|'))
 	// {
 	// 	free(str_aux);
-	// 	str_aux = clean_white_spaces(str);
+	// 	str_aux = clean_white_spaces(str++);
 	// }
+	free(str);
 	if (core_parser(new_command, str_aux, &i, err) < 0)
 	{
 		free(str_aux);
@@ -90,6 +89,7 @@ void	parser(char *str, t_model *model)
 	model->n_cmd++;
 	while (str_aux)
 	{
+		printf("str_aux:%s\n", str_aux);
 		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
 		if (check_error(error) != 0)
 			return ;

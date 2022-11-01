@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 18:59:41 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 19:07:32 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static int	exe_pipes(t_model *model, t_pipes *pipes)
 		childs[i] = exe_cmd(model, i);
 		i++;
 	}
-	kill_childs(childs, i);
+	kill_childs(childs, i - 1);
 	free(childs);
 	return (0);
 }

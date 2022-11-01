@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 18:57:05 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 20:46:24 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	free_model(t_model *model, int with_env)
 	while (i > 0)
 	{
 		i--;
+		// if (model->cmds[i]->num_args > 0)
 		ft_free_array(model->cmds[i]->args);
 		if (model->cmds[i]->num_heredocs > 0)
 			ft_free_array(model->cmds[i]->heredocs_close);
@@ -51,8 +52,9 @@ void	free_model(t_model *model, int with_env)
 	}
 }
 
-static void	handler(int signal)
+static void	signal_handler(int signal)
 {
+	printf("signal:%d", signal);
 	if (signal == SIGINT)
 	{
 		printf("\n");
@@ -69,7 +71,7 @@ static int	check_exit(t_model *model)
 {
 	int	ret;
 
-	if (!ft_strncmp(model->cmds[0]->args[0], "exit", 4))
+	if (!ft_strncmp(model->cmds[0]->args[0], "exit", 5))
 	{
 		ret = ft_exit(model);
 		if (ret >= 0)
@@ -89,9 +91,10 @@ int	main(void)
 	char		*str;
 	int			ret;
 
-	signal(SIGINT, handler);
+	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 	model = (t_model *)malloc(sizeof(t_model));
+	model->n_cmd = 0;
 	global_envp = ft_array_join(environ, NULL);
 	clear_terminal();
 	while (1)

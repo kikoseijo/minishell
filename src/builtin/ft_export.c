@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:12 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 18:47:54 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/01 19:02:58 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	ft_export(char *entry)
 	char	key[100];
 
 	i = 0;
+	printf("entry;: %s\n", entry);
 	while (entry[i] && (ft_isalnum(entry[i]) || ft_isset(entry[i], "_?"))
 		&& entry[i] != '=')
 	{
