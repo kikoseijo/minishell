@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/02 16:41:15 by anramire         ###   ########.fr       */
+/*   Updated: 2022/11/02 21:14:38 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define ERROR_QUOTES -2
 # define ERROR_SYNTAX -1
 
-char		**global_envp;
+char		**g_envp;
 
 typedef struct s_cmd
 {
@@ -69,14 +69,14 @@ void			setup_fdout(t_model *m, int i, t_pipes *pipes);
 // env.c
 char			*get_env_value(char *key);
 void			set_env_value(const char *key, char *value);
-char			**get_env_path();
+char			**get_env_path(void);
 void			clear_terminal(void);
 void			print_prompt(void);
 
 // builtin
 int				ft_cd(char *path);
 void			ft_echo(int argc, char **args);
-void			ft_env();
+void			ft_env(void);
 int				ft_exit(t_model *model);
 void			ft_export(char *input);
 void			ft_pwd(void);
@@ -86,6 +86,8 @@ void			ft_unset(char *input);
 char			*clean_white_spaces(char *str);
 int				get_arguments_with_quotes(t_cmd *cmd, char *str, int *pos,
 					int *narg);
+
+int				allocate_memory(char **str_aux, int tam);
 //Parser functions
 int				get_arguments_with_simp_quotes(t_cmd *command,
 					char *str, int *pos, int *num_argument);

@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:13:49 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/01 18:52:14 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 21:21:26 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	double_quotes_core(t_cmd *c, char *str, int *pos, int *n_arg)
 	return (1);
 }
 
+/*
 void	show_list(t_model *command_line)
 {
 	int	i;
@@ -88,14 +89,14 @@ void	show_list(t_model *command_line)
 		}
 		ft_printf("output file: %s\n", command_line->cmds[n]->outfile);
 		ft_printf("is_double_outfile: %d\n",
-					command_line->cmds[n]->is_double_outfile);
+			command_line->cmds[n]->is_double_outfile);
 		ft_printf("input file: %s\n",
-					command_line->cmds[n]->infile);
+			command_line->cmds[n]->infile);
 		i = 0;
 		while (i < command_line->cmds[n]->num_heredocs)
 		{
 			ft_printf("heredocs[%d]: %s\n", i,
-					command_line->cmds[n]->heredocs_close[i]);
+				command_line->cmds[n]->heredocs_close[i]);
 			i++;
 		}
 		ft_printf("pipe: %d\n", command_line->cmds[n]->pipe);
@@ -103,6 +104,7 @@ void	show_list(t_model *command_line)
 	}
 	ft_printf("final\n");
 }
+*/
 
 int	check_scapes(char **str, char *copy_str, int *i, int scape)
 {
@@ -129,14 +131,13 @@ void	main_loop(char *copy_str, int *i, char **str)
 		(*i)++;
 	aux = ft_substr(copy_str, init, (*i) - init + 1);
 	j = 0;
-	while (global_envp[j])
+	while (g_envp[j])
 	{
-		if (ft_strncmp(aux, global_envp[j], (*i) - init) == 0)
+		if (ft_strncmp(aux, g_envp[j], (*i) - init) == 0)
 		{
 			free(aux);
 			aux = *str;
-			env2 = ft_substr(global_envp[j], (*i) - init + 1,
-					ft_strlen(global_envp[j]));
+			env2 = ft_substr(g_envp[j], (*i) - init + 1, ft_strlen(g_envp[j]));
 			*str = ft_strjoin(*str, env2);
 			free(aux);
 			free(env2);

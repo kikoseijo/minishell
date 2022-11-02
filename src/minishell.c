@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/02 16:39:44 by anramire         ###   ########.fr       */
+/*   Updated: 2022/11/02 21:00:50 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 ** tgetnum, tgetstr, tgoto, tputs
 */
 
+void	init(t_model **model, char **environ);
+
 void	free_model(t_model *model, int with_env)
 {
 	int	i;
@@ -34,7 +36,6 @@ void	free_model(t_model *model, int with_env)
 	while (i > 0)
 	{
 		i--;
-		// if (model->cmds[i]->num_args > 0)
 		ft_free_array(model->cmds[i]->args);
 		if (model->cmds[i]->num_heredocs > 0)
 			ft_free_array(model->cmds[i]->heredocs_close);
@@ -47,7 +48,7 @@ void	free_model(t_model *model, int with_env)
 	free(model->cmds);
 	if (with_env == 1)
 	{
-		ft_free_array(global_envp);
+		ft_free_array(g_envp);
 		free(model);
 	}
 }
@@ -59,7 +60,6 @@ static void	signal_handler(int signal)
 	{
 		printf("\n");
 		rl_on_new_line();
-		//rl_replace_line("", 0);
 		print_prompt();
 		rl_redisplay();
 		set_env_value((char *)"?", (char *)"1");
@@ -91,16 +91,13 @@ int	main(void)
 	char		*str;
 	int			ret;
 
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
-	model = (t_model *)malloc(sizeof(t_model));
-	model->n_cmd = 0;
-	global_envp = ft_array_join(environ, NULL);
-	clear_terminal();
+	init(&model, environ);
 	while (1)
 	{
 		print_prompt();
 		str = readline("$ ");
+		if (str == NULL)
+			return (0);
 		parser(str, model);
 		ret = check_exit(model);
 		if (ret >= 0)
@@ -111,4 +108,14 @@ int	main(void)
 	}
 	clear_history();
 	return (0);
+}
+
+void	init(t_model **model, char **environ)
+{	
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+	(*model) = (t_model *)malloc(sizeof(t_model));
+	(*model)->n_cmd = 0;
+	g_envp = ft_array_join(environ, NULL);
+	clear_terminal();
 }

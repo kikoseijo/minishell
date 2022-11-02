@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/01 16:34:41 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 21:05:51 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	*clean_white_spaces(char *str)
 		pos++;
 		i++;
 	}
-	// free(str);
 	return (str_aux);
 }
 

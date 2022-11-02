@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/01 18:51:26 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 21:05:09 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	check_expansions(t_model *model)
 		{
 			if (model->cmds[n]->expansions[i] != 0)
 				get_expansion(&(model->cmds[n]->args[i]),
-								model->cmds[n]->scape_arguments[i]);
+					model->cmds[n]->scape_arguments[i]);
 			i++;
 		}
 		n++;

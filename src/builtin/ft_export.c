@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:12 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 20:56:57 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 20:56:24 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	ft_export(char *input)
 	ft_unset(key);
 	free(key);
 	new_input[0] = input;
-	new_env = ft_array_join(global_envp, new_input);
-	ft_free_array(global_envp);
+	new_env = ft_array_join(g_envp, new_input);
+	ft_free_array(g_envp);
 	ft_free_array(new_input);
-	global_envp = new_env;
+	g_envp = new_env;
 }

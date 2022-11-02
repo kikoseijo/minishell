@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/02 17:02:54 by anramire         ###   ########.fr       */
+/*   Updated: 2022/11/02 21:01:23 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ char	*get_env_value(char *key)
 
 	len = ft_strlen(key);
 	i = 0;
-	while (global_envp[i])
+	while (g_envp[i])
 	{
-		if (!ft_strncmp(global_envp[i], key, len) && global_envp[i][len] == '=')
-			return (&global_envp[i][len + 1]);
+		if (!ft_strncmp(g_envp[i], key, len) && g_envp[i][len] == '=')
+			return (&g_envp[i][len + 1]);
 		i++;
 	}
 	return (NULL);
@@ -44,10 +44,9 @@ void	set_env_value(const char *key, char *value)
 	free(tmp);
 	ft_unset((char *)key);
 	ft_export(entry);
-	//free(entry);
 }
 
-char	**get_env_path()
+char	**get_env_path(void)
 {
 	char	**path;
 	char	*tmp;

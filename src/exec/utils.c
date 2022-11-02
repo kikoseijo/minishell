@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 18:58:34 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 21:06:49 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	kill_childs(int *childs, int i)
 		if (childs[i] > 0)
 			kill(childs[i], SIGKILL);
 	}
-	// free(childs);
 }
 
 void	setup_fdout(t_model *m, int i, t_pipes *pipes)

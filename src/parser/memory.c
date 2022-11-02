@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/23 08:54:36 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/02 20:55:53 by anramire         ###   ########.fr       */
+/*   Created: 2022/11/02 21:08:50 by anramire          #+#    #+#             */
+/*   Updated: 2022/11/02 21:15:07 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	ft_env(void)
-{
-	char	**envp;
-
-	envp = g_envp;
-	while (*envp)
-	{
-		printf("%s\n", *envp);
-		envp++;
-	}
+int	allocate_memory(char **str_aux, int tam)
+{	
+	*str_aux = (char *)ft_calloc(tam, sizeof(char));
+	if (*str_aux == NULL)
+		return (-1);
+	return (0);
 }

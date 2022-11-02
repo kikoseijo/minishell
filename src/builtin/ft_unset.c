@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 08:54:23 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 21:01:29 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 21:06:26 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	get_new_size(char *str)
 	int		size;
 
 	count = 0;
-	ptr = global_envp;
+	ptr = g_envp;
 	while (*ptr)
 	{
 		if (!ft_strncmp(*ptr, str, ft_strlen(str))
@@ -27,11 +27,11 @@ static int	get_new_size(char *str)
 			count++;
 		ptr++;
 	}
-	size = ft_array_len(global_envp) - count;
+	size = ft_array_len(g_envp) - count;
 	if (size <= 0)
 	{
-		free(global_envp);
-		global_envp = NULL;
+		free(g_envp);
+		g_envp = NULL;
 		return (0);
 	}
 	return (size);
@@ -48,18 +48,18 @@ void	ft_unset(char *str)
 	if (!size)
 		return ;
 	res = (char **)ft_calloc(size + 1, sizeof(char *));
-	tmp = global_envp;
+	tmp = g_envp;
 	i = 0;
 	while (*tmp)
 	{
 		if (!((*tmp)[ft_strlen(str)] == '=' && !ft_strncmp(*tmp, str,
-					ft_strlen(str))))
+				ft_strlen(str))))
 		{
 			res[i] = ft_strdup(*tmp);
 			i++;
 		}
 		tmp++;
 	}
-	ft_free_array(global_envp);
-	global_envp = res;
+	ft_free_array(g_envp);
+	g_envp = res;
 }
