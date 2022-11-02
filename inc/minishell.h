@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:57:42 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 20:50:04 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 16:41:15 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <signal.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 
 # define ERROR_QUOTES -2
 # define ERROR_SYNTAX -1

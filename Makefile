@@ -6,7 +6,7 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/10/30 20:21:43 by jseijo-p         ###   ########.fr        #
+#    Updated: 2022/11/02 16:52:25 by anramire         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CFLAGS = -Wall -Werror -Wextra -g
 INC_LIBFT = -I libft
 INC_READLINE = -I ~/.brew/opt/readline/include
 INCDIR	= ./inc/
-LINK_READLINE = -L ~/.brew/opt/readline/lib
+#LINK_READLINE = -L ~/.brew/opt/readline/lib
 
 SRC = src/minishell.c \
 			src/exec/execute.c \

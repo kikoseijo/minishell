@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/01 20:33:14 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 17:33:41 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*ft_substr_modified(char *str, int pos)
 	int		len;
 	int		i;
 
-	i = pos;
+	i = pos + 1;
 	len = 0;
 	if (str[pos] == '\0' || (pos > 0 && str[pos - 1] == '\0'))
 	{
@@ -89,7 +89,6 @@ void	parser(char *str, t_model *model)
 	model->n_cmd++;
 	while (str_aux)
 	{
-		printf("str_aux:%s\n", str_aux);
 		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
 		if (check_error(error) != 0)
 			return ;

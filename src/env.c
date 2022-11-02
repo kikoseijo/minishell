@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:35:47 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/01 18:55:16 by cmac             ###   ########.fr       */
+/*   Updated: 2022/11/02 17:02:54 by anramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	set_env_value(const char *key, char *value)
 	free(tmp);
 	ft_unset((char *)key);
 	ft_export(entry);
-	free(entry);
+	//free(entry);
 }
 
 char	**get_env_path()
