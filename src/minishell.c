@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/15 19:48:35 by anramire         ###   ########.fr       */
+/*   Updated: 2022/11/15 19:58:21 by cmac             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ void	free_model(t_model *model, int with_env)
 		free(model->cmds[i]->scape_arguments);
 		free(model->cmds[i]);
 	}
-	if (model->n_cmd > 0)
-		free(model->cmds);
+	free(model->cmds);
 	if (with_env == 1)
 	{
 		ft_free_array(g_envp);
@@ -56,7 +55,7 @@ void	free_model(t_model *model, int with_env)
 
 static void	signal_handler(int signal)
 {
-	printf("Signal: %d", signal);
+	printf("signal:%d", signal);
 	if (signal == SIGINT)
 	{
 		printf("\n");
@@ -68,26 +67,12 @@ static void	signal_handler(int signal)
 	}
 }
 
-void	handle_sig_prnt(int sig)
-{
-	if (sig == 2)
-	{
-		ft_putstr_fd("Ft_minishell: SIGINT: stopping child proccess\n", 2);
-	}
-	if (sig == 18)
-		ft_putstr_fd("Ft_minishell: SIGTSTP: Ctrl-D stopping child proccess\n",
-				2);
-	return ;
-}
-
 static int	check_exit(t_model *model)
 {
 	int	ret;
 
-	printf("LOG: %d %s\n", model->cmds[0]->num_args, model->cmds[0]->args[0]);
-	if (model->cmds[0]->num_args == 0 || !model->cmds[0]->args[0])
-		return (-1);
-	if (!ft_strncmp(model->cmds[0]->args[0], "exit", 5))
+	if (model->cmds[0]->num_args > 0 && !ft_strncmp(model->cmds[0]->args[0],
+			"exit", 5))
 	{
 		ret = ft_exit(model);
 		if (ret >= 0)
@@ -112,17 +97,15 @@ int	main(void)
 	{
 		print_prompt();
 		str = readline("$ ");
-		printf("str: %da\n", str[0]);
-		if (str != NULL && ft_strlen(str) > 0)
-		{
-			parser(str, model);
-			ret = check_exit(model);
-			if (ret >= 0)
-				return (ret);
-
-		execute(model);
+		if (str == NULL)
+			return (0);
+		parser(str, model);
+		ret = check_exit(model);
+		if (ret >= 0)
+			return (ret);
+		else
+			execute(model);
 		free_model(model, 0);
-		}
 	}
 	clear_history();
 	return (0);
@@ -131,7 +114,7 @@ int	main(void)
 void	init(t_model **model, char **environ)
 {
 	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	(*model) = (t_model *)malloc(sizeof(t_model));
 	(*model)->n_cmd = 0;
 	g_envp = ft_array_join(environ, NULL);
