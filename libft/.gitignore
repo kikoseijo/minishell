@@ -1,8 +1,7 @@
-/.gtm/
-*.log
-Intra Projects minishell Edit*
-minishell
-minishell.dSYM
+.on-save.json
+main.c
+test*
+
 # Created by https://www.toptal.com/developers/gitignore/api/macos,c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,c++
 
@@ -69,8 +68,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-### macOS Patch ###
-# iCloud generated files
-*.icloud
-
 # End of https://www.toptal.com/developers/gitignore/api/macos,c++
+/.gtm/
