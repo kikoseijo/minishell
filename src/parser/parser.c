@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 20:27:33 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/02 21:13:53 by anramire         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:11:11 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,14 @@ void	parser(char *str, t_model *model)
 	model->n_cmd = 0;
 	model->cmds = (t_cmd **)malloc(100 * sizeof(t_cmd *));
 	str_aux = get_command(str, &model->cmds[0], &error);
+	model->cmds[0]->model = model;
 	if (check_error(error) != 0)
 		return ;
 	model->n_cmd++;
 	while (str_aux)
 	{
 		str_aux = get_command(str_aux, &(model->cmds[model->n_cmd]), &error);
+		model->cmds[model->n_cmd]->model = model;
 		if (check_error(error) != 0)
 			return ;
 		model->n_cmd++;

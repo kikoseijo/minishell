@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/23 08:54:36 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/30 16:24:12 by jseijo-p         ###   ########.fr       */
+/*   Created: 2022/11/28 18:34:10 by jseijo-p          #+#    #+#             */
+/*   Updated: 2022/11/28 19:10:07 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	ft_env(t_cmd *cmd)
+int	heredoc(t_cmd *cmd)
 {
-	char	**envp;
+	int		fdpipe[2];
+	char	*line;
+	char	*close_doc;
 
-	envp = g_envp;
-	while (*envp)
+	if (pipe(fdpipe) < 0)
+		return (-1);
+	line = readline("> ");
+	close_doc = cmd->heredocs_close[cmd->num_heredocs - 1];
+	while (ft_strcmp(close_doc, line) != 0)
 	{
-		printf("%s\n", *envp);
-		envp++;
+		ft_putstr_fd(line, fdpipe[1]);
+		ft_putstr_fd((char *)"\n", fdpipe[1]);
+		free(line);
+		line = readline("> ");
 	}
-	cmd->model->dollar = 0;
+	free(line);
+	close(fdpipe[1]);
+	return (fdpipe[0]);
 }

@@ -6,7 +6,7 @@ This project is about coding a C library.
 Lots of general purpose functions your programs will rely upon.
 
 > Version: 15
--
+
 - Final grade: 125%
 - Bonus: YES
 

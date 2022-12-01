@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 08:47:01 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/15 19:58:21 by cmac             ###   ########.fr       */
+/*   Updated: 2022/12/01 17:24:13 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,28 @@
 ** tgetnum, tgetstr, tgoto, tputs
 */
 
-void		init(t_model **model, char **environ);
+static void	signal_handler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		print_prompt();
+		rl_redisplay();
+		set_env_value((char *)"_", (char *)"1");
+	}
+}
+
+void	init(t_model **model, char **environ)
+{
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
+	(*model) = (t_model *)malloc(sizeof(t_model));
+	(*model)->n_cmd = 0;
+	g_envp = ft_array_join(environ, NULL);
+	clear_terminal();
+}
 
 void	free_model(t_model *model, int with_env)
 {
@@ -37,15 +58,15 @@ void	free_model(t_model *model, int with_env)
 	{
 		i--;
 		ft_free_array(model->cmds[i]->args);
-		if (model->cmds[i]->num_heredocs > 0)
-			ft_free_array(model->cmds[i]->heredocs_close);
+		ft_free_array(model->cmds[i]->heredocs_close);
 		free(model->cmds[i]->infile);
 		free(model->cmds[i]->outfile);
 		free(model->cmds[i]->expansions);
 		free(model->cmds[i]->scape_arguments);
 		free(model->cmds[i]);
 	}
-	free(model->cmds);
+	if (model->n_cmd > 0)
+		free(model->cmds);
 	if (with_env == 1)
 	{
 		ft_free_array(g_envp);
@@ -53,26 +74,13 @@ void	free_model(t_model *model, int with_env)
 	}
 }
 
-static void	signal_handler(int signal)
-{
-	printf("signal:%d", signal);
-	if (signal == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		print_prompt();
-		rl_redisplay();
-		set_env_value((char *)"?", (char *)"1");
-		set_env_value((char *)"_", (char *)"1");
-	}
-}
-
 static int	check_exit(t_model *model)
 {
 	int	ret;
 
-	if (model->cmds[0]->num_args > 0 && !ft_strncmp(model->cmds[0]->args[0],
-			"exit", 5))
+	if (model->cmds[0]->num_args < 0 || !model->cmds[0]->args[0])
+		return (-1);
+	if (!ft_strncmp(model->cmds[0]->args[0], "exit", 5))
 	{
 		ret = ft_exit(model);
 		if (ret >= 0)
@@ -97,26 +105,18 @@ int	main(void)
 	{
 		print_prompt();
 		str = readline("$ ");
-		if (str == NULL)
-			return (0);
-		parser(str, model);
-		ret = check_exit(model);
-		if (ret >= 0)
-			return (ret);
-		else
+		if (str == NULL && ft_strlen(str) == 0)
+			exit(-1);
+		if (str != NULL && ft_strlen(str) > 0 && check_empty_spaces(str) != -1)
+		{
+			parser(str, model);
+			ret = check_exit(model);
+			if (ret >= 0)
+				return (ret);
 			execute(model);
-		free_model(model, 0);
+			free_model(model, 0);
+		}
 	}
 	clear_history();
 	return (0);
-}
-
-void	init(t_model **model, char **environ)
-{
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
-	(*model) = (t_model *)malloc(sizeof(t_model));
-	(*model)->n_cmd = 0;
-	g_envp = ft_array_join(environ, NULL);
-	clear_terminal();
 }

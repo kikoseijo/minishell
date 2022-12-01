@@ -6,22 +6,24 @@
 #    By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/07 08:55:28 by jseijo-p          #+#    #+#              #
-#    Updated: 2022/11/02 21:18:01 by anramire         ###   ########.fr        #
+#    Updated: 2022/12/01 17:14:02 by jseijo-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -g3
 
+INCDIR	= ./inc/
 INC_LIBFT = -I libft
 INC_READLINE = -I ~/.brew/opt/readline/include
-INCDIR	= ./inc/
-#LINK_READLINE = -L ~/.brew/opt/readline/lib
+LINK_READLINE = -L ~/.brew/opt/readline/lib
+
 
 SRC = src/minishell.c \
 			src/exec/execute.c \
 			src/exec/utils.c \
+			src/exec/heredoc.c \
 			src/builtin/ft_cd.c \
 			src/builtin/ft_echo.c \
 			src/builtin/ft_env.c \
@@ -39,10 +41,7 @@ SRC = src/minishell.c \
 			src/parser/parser_utils3.c \
 			src/parser/memory.c
 
-# SRC_BONUS = pipex_bonus.c helpers.c
-
 OBJ = $(SRC:.c=.o)
-# OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 CC := gcc
 

@@ -6,135 +6,25 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:13:49 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/02 21:21:26 by anramire         ###   ########.fr       */
+/*   Updated: 2022/12/01 16:07:16 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	simp_quotes_core(t_cmd *c, char *str, int *pos, int *n_arg)
+int	check_is_located(int *i, int init, char *aux, char **str)
 {
-	int	quotes_found;
-
-	quotes_found = 0;
-	while (str[*pos] != '\0' && str[*pos] != '\'')
-	{
-		if (str[*pos] == '\\')
-		{
-			if (str[*pos + 1] == '\"')
-			{
-				*pos += 1;
-				c->args[*n_arg] = ft_concat_char(c->args[*n_arg], str[*pos]);
-				*pos += 1;
-				continue ;
-			}
-		}
-		c->args[*n_arg] = ft_concat_char(c->args[*n_arg], str[*pos]);
-		(*pos) += 1;
-		if (str[*pos] == '\'')
-			quotes_found = 1;
-	}
-	if (str[*pos] == '\'')
-		quotes_found = 1;
-	if (quotes_found == 0)
-		return (-1);
-	return (1);
-}
-
-int	double_quotes_core(t_cmd *c, char *str, int *pos, int *n_arg)
-{
-	int	quotes_found;
-
-	quotes_found = 0;
-	while (str[*pos] != '\0' && str[*pos] != '\"')
-	{
-		if (str[*pos] == '\\')
-		{
-			if (str[*pos + 1] == '\"')
-			{
-				*pos += 1;
-				c->args[*n_arg] = ft_concat_char(c->args[*n_arg], str[*pos]);
-				*pos += 1;
-				continue ;
-			}
-		}
-		c->args[*n_arg] = ft_concat_char(c->args[*n_arg], str[*pos]);
-		(*pos) += 1;
-		if (str[*pos] == '\"')
-			quotes_found = 1;
-	}
-	if (str[*pos] == '\"')
-		quotes_found = 1;
-	if (quotes_found == 0)
-		return (-1);
-	return (1);
-}
-
-/*
-void	show_list(t_model *command_line)
-{
-	int	i;
-	int	n;
-
-	ft_printf("N. pipes: %d\n", command_line->n_cmd);
-	n = 0;
-	while (n < (command_line->n_cmd))
-	{
-		i = 0;
-		ft_printf("<------------------------->\n");
-		while (command_line->cmds[n]->args[i] != NULL)
-		{
-			ft_printf("args[%d]: %s\n", i, command_line->cmds[n]->args[i]);
-			i++;
-		}
-		ft_printf("output file: %s\n", command_line->cmds[n]->outfile);
-		ft_printf("is_double_outfile: %d\n",
-			command_line->cmds[n]->is_double_outfile);
-		ft_printf("input file: %s\n",
-			command_line->cmds[n]->infile);
-		i = 0;
-		while (i < command_line->cmds[n]->num_heredocs)
-		{
-			ft_printf("heredocs[%d]: %s\n", i,
-				command_line->cmds[n]->heredocs_close[i]);
-			i++;
-		}
-		ft_printf("pipe: %d\n", command_line->cmds[n]->pipe);
-		n++;
-	}
-	ft_printf("final\n");
-}
-*/
-
-int	check_scapes(char **str, char *copy_str, int *i, int scape)
-{
-	if (copy_str[*i] == '\\' && scape == 1)
-	{
-		(*i)++;
-		*str = ft_concat_char(*str, copy_str[*i]);
-		(*i)++;
-		return (1);
-	}
-	return (0);
-}
-
-void	main_loop(char *copy_str, int *i, char **str)
-{
-	int		init;
-	char	*aux;
 	int		j;
+	int		located;
 	char	*env2;
 
-	(*i)++;
-	init = (*i);
-	while (copy_str[*i] != ' ' && copy_str[*i] != '$' && copy_str[*i] != '\0')
-		(*i)++;
-	aux = ft_substr(copy_str, init, (*i) - init + 1);
 	j = 0;
+	located = 0;
 	while (g_envp[j])
 	{
 		if (ft_strncmp(aux, g_envp[j], (*i) - init) == 0)
 		{
+			located = 1;
 			free(aux);
 			aux = *str;
 			env2 = ft_substr(g_envp[j], (*i) - init + 1, ft_strlen(g_envp[j]));
@@ -145,4 +35,57 @@ void	main_loop(char *copy_str, int *i, char **str)
 		}
 		j++;
 	}
+	return (located);
+}
+
+void	main_loop_dollar(char *copy_str, int *i, char **str, t_model *model)
+{
+	int		init;
+	char	*dollar;
+	char	*aux;
+
+	(*i)++;
+	init = (*i);
+	while (copy_str[*i] != ' ' && copy_str[*i] != '$' && copy_str[*i] != '\0')
+		(*i)++;
+	dollar = ft_itoa(model->dollar);
+	aux = *str;
+	*str = ft_strjoin(*str, dollar);
+	free(dollar);
+	free(aux);
+}
+
+void	main_loop(char *copy_str, int *i, char **str)
+{
+	int		init;
+	char	*aux;
+	int		located;
+
+	(*i)++;
+	init = (*i);
+	while (copy_str[*i] != ' ' && copy_str[*i] != '$' && copy_str[*i] != '\0')
+		(*i)++;
+	aux = ft_substr(copy_str, init, (*i) - init + 1);
+	located = check_is_located(i, init, aux, str);
+	if (located == 0)
+		free(aux);
+}
+
+int	check_empty_spaces(char *str)
+{
+	int	i;
+	int	value;
+
+	value = -1;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] != ' ' && (str[i] != '\t'))
+		{
+			value = 0;
+			break ;
+		}
+		i++;
+	}
+	return (value);
 }

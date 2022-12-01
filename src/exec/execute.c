@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:53:59 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/02 20:55:30 by anramire         ###   ########.fr       */
+/*   Updated: 2022/12/01 13:25:09 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	exe_cmd(t_model *model, int i)
 	char	*cmd_path;
 
 	cmd = model->cmds[i];
-	if (exec_builtin(cmd))
+	if (cmd->args[0] && exec_builtin(cmd))
 		return (-1);
 	pid = fork();
 	if (pid == 0)
@@ -51,10 +51,12 @@ static int	exe_cmd(t_model *model, int i)
 		if (cmd_path == 0)
 		{
 			printf("bash: %s: Command not found.\n", cmd->args[0]);
+			model->dollar = 127;
 			exit(127);
 		}
 		execve(cmd_path, model->cmds[i]->args, g_envp);
 		perror("execve");
+		model->dollar = 1;
 		exit(1);
 	}
 	else if (pid < 0)
@@ -69,8 +71,10 @@ static int	exe_fdin(t_model *model, t_pipes *pipes)
 	i = -1;
 	while (++i < model->n_cmd)
 	{
-		if (model->cmds[i]->infile)
+		if (model->cmds[i]->infile && model->cmds[i]->num_heredocs == 0)
 			pipes->fdin = open(model->cmds[i]->infile, O_RDONLY);
+		else if (model->cmds[i]->num_heredocs > 0)
+			pipes->fdin = heredoc(model->cmds[i]);
 		else
 			pipes->fdin = dup(pipes->tmpin);
 	}
@@ -104,7 +108,7 @@ static int	exe_pipes(t_model *model, t_pipes *pipes)
 		childs[i] = exe_cmd(model, i);
 		i++;
 	}
-	kill_childs(childs, i - 1);
+	kill_childs(childs, i - 1, model);
 	free(childs);
 	return (0);
 }

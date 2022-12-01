@@ -6,7 +6,7 @@
 /*   By: jseijo-p <jseijo-p@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 09:13:22 by jseijo-p          #+#    #+#             */
-/*   Updated: 2022/11/14 17:33:35 by jseijo-p         ###   ########.fr       */
+/*   Updated: 2022/12/01 16:03:57 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,29 @@ int	exec_builtin(t_cmd *cmd)
 	else if (ft_strcmp(cmd->args[0], "export") == 0)
 		ft_export(cmd->args[1]);
 	else if (ft_strcmp(cmd->args[0], "env") == 0)
-		ft_env();
+		ft_env(cmd);
 	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
 		ft_pwd();
 	else if (ft_strcmp(cmd->args[0], "cd") == 0)
 	{
 		if (ft_cd(cmd->args[1]))
 		{
-			set_env_value((char *)"?", (char *)"1");
+			cmd->model->dollar = 1;
 			return (built);
 		}
 	}
 	else
 		built = 0;
-	set_env_value((char *)"?", (char *)"0");
+	cmd->model->dollar = 0;
 	return (built);
 }
 
-char	*get_cmd(char *cmd)
+static char	*find_cmd_in_path(char **paths, char *cmd)
 {
 	int		i;
 	char	*res;
 	char	*tmp;
-	char	**paths;
 
-	if (ft_strchr(cmd, '/') && access(cmd, F_OK | X_OK) == 0)
-		return (cmd);
-	paths = get_env_path();
-	if (!paths)
-		return (0);
 	i = 0;
 	while (paths[i])
 	{
@@ -71,22 +65,31 @@ char	*get_cmd(char *cmd)
 	return (0);
 }
 
-void	kill_childs(int *childs, int i)
+char	*get_cmd(char *cmd)
+{
+	char	**paths;
+
+	if (ft_strchr(cmd, '/') && access(cmd, F_OK | X_OK) == 0)
+		return (cmd);
+	paths = get_env_path();
+	if (!paths)
+		return (0);
+	return (find_cmd_in_path(paths, cmd));
+}
+
+void	kill_childs(int *childs, int i, t_model *model)
 {
 	int		exit_int_code;
-	char	*exit_str_code;
 	int		exit_status_code;
 
+	if (i < 0)
+		return ;
 	waitpid(childs[i], &exit_int_code, 0);
 	exit_status_code = WEXITSTATUS(exit_int_code);
 	if (exit_status_code)
-	{
-		exit_str_code = ft_itoa(exit_status_code);
-		set_env_value((char *)"?", exit_str_code);
-		free(exit_str_code);
-	}
+		model->dollar = exit_status_code;
 	else
-		set_env_value((char *)"?", (char *)"0");
+		model->dollar = 0;
 	while (--i >= 0)
 	{
 		if (childs[i] > 0)
@@ -101,7 +104,7 @@ void	setup_fdout(t_model *m, int i, t_pipes *pipes)
 	cmd = m->cmds[i];
 	if (cmd->is_double_outfile != -1)
 	{
-		if (cmd->is_double_outfile == 0)
+		if (cmd->is_double_outfile == 1)
 			pipes->fdout = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND,
 					0664);
 		else

@@ -6,13 +6,13 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 20:20:55 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/02 21:05:09 by anramire         ###   ########.fr       */
+/*   Updated: 2022/12/01 16:06:11 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	get_expansion(char **str, int scape);
+static void	get_expansion(char **str, int scape, t_model *model);
 
 int	get_input_file(t_cmd *command, char *str, int pos)
 {
@@ -79,14 +79,14 @@ void	check_expansions(t_model *model)
 		{
 			if (model->cmds[n]->expansions[i] != 0)
 				get_expansion(&(model->cmds[n]->args[i]),
-					model->cmds[n]->scape_arguments[i]);
+					model->cmds[n]->scape_arguments[i], model);
 			i++;
 		}
 		n++;
 	}
 }
 
-static void	get_expansion(char **str, int scape)
+static void	get_expansion(char **str, int scape, t_model *model)
 {
 	int		i;
 	char	*copy_str;
@@ -101,7 +101,10 @@ static void	get_expansion(char **str, int scape)
 			continue ;
 		if (copy_str[i] == '$')
 		{
-			main_loop(copy_str, &i, str);
+			if (copy_str[i + 1] == '?')
+				main_loop_dollar(copy_str, &i, str, model);
+			else
+				main_loop(copy_str, &i, str);
 			continue ;
 		}
 		*str = ft_concat_char(*str, copy_str[i]);

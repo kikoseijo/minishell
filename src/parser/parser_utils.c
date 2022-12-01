@@ -6,7 +6,7 @@
 /*   By: anramire <anramire@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:34:24 by anramire          #+#    #+#             */
-/*   Updated: 2022/11/02 21:05:51 by anramire         ###   ########.fr       */
+/*   Updated: 2022/11/21 16:37:02 by jseijo-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	init_command(t_cmd **new_command)
 	i = 0;
 	*new_command = (t_cmd *)malloc(sizeof(t_cmd));
 	(*new_command)->args = (char **)ft_calloc(200, sizeof(char *));
+	(*new_command)->heredocs_close = (char **)ft_calloc(200, sizeof(char *));
 	(*new_command)->expansions = (int *)malloc(200 * sizeof(int));
 	(*new_command)->scape_arguments = (int *)malloc(200 * sizeof(int));
 	while (i < 200)
